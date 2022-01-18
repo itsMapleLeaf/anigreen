@@ -88,14 +88,16 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <header className="shadow mb-4 sticky top-0 bg-slate-600/25 backdrop-blur-sm">
-          <div className={maxWidthContainerClass}>
-            <HeaderNavigation />
-          </div>
-        </header>
-        <main className={maxWidthContainerClass}>
-          <Outlet />
-        </main>
+        <div className="isolate">
+          <header className="shadow mb-6 sticky top-0 bg-slate-600/25 backdrop-blur-sm z-10">
+            <div className={maxWidthContainerClass}>
+              <HeaderNavigation />
+            </div>
+          </header>
+          <main className={maxWidthContainerClass}>
+            <Outlet />
+          </main>
+        </div>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
