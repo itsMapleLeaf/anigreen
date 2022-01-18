@@ -1,3 +1,4 @@
-export default function Index() {
-  return <div className="text-4xl font-light">i am batman</div>
-}
+import type { LoaderFunction } from "remix"
+import { redirect } from "remix"
+
+export const loader: LoaderFunction = () => redirect("/schedule", 303)

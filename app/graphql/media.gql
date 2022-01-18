@@ -1,0 +1,39 @@
+fragment media on Media {
+  id
+  format
+  episodes
+  nextAiringEpisode {
+    airingAt
+    episode
+  }
+  bannerImage
+  title {
+    english
+    romaji
+    native
+    userPreferred
+  }
+  coverImage {
+    medium
+    large
+    extraLarge
+    color
+  }
+  externalLinks {
+    ...mediaExternalLink
+  }
+  isAdult
+  isLicensed
+  countryOfOrigin
+  format
+  siteUrl
+  mediaListEntry {
+    status
+  }
+}
+
+fragment mediaExternalLink on MediaExternalLink {
+  id
+  url
+  site
+}

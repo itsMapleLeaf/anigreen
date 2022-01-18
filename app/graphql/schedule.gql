@@ -1,0 +1,17 @@
+query Schedule($startDate: Int!, $page: Int!) {
+  Page(page: $page, perPage: 50) {
+    airingSchedules(airingAt_greater: $startDate, sort: TIME) {
+      id
+      episode
+      airingAt
+      media {
+        title {
+          native
+          romaji
+          english
+          userPreferred
+        }
+      }
+    }
+  }
+}

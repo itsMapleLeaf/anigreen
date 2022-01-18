@@ -16,11 +16,12 @@ import { anilistClient } from "./anilist-client.server"
 import { buttonClass, maxWidthContainerClass } from "./components"
 import { ViewerDocument } from "./graphql.out"
 import { raise } from "./helpers/errors"
+import { getAppTitle } from "./meta"
 import { getSession } from "./session.server"
 import tailwind from "./tailwind.out.css"
 
 export const meta: MetaFunction = () => ({
-  title: "anigreen",
+  title: getAppTitle(),
   description: "your week in anime 🌠",
 })
 
