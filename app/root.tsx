@@ -151,7 +151,8 @@ function UserMenuButton({ user }: { user: UserData }) {
           <img
             src={user.avatarUrl}
             alt={`Logged in as ${user.name}`}
-            className="w-8 h-8 rounded-full"
+            // display block adds random bottom space for some reason
+            className="w-8 h-8 rounded-full inline"
           />
         </Popover.Button>
         <Portal>
