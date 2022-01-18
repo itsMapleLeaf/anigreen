@@ -50,7 +50,7 @@ export const loader: LoaderFunction = async ({
 
     const result = await client
       .query({ query: ViewerDocument })
-      .catch(() => undefined)
+      .catch((error) => console.warn("Failed to fetch viewer", error))
 
     if (result?.data.Viewer) {
       user = {
