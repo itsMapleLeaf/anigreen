@@ -13,6 +13,7 @@ specifiers:
   autoprefixer: ^10.4.2
   clsx: ^1.1.1
   concurrently: ^7.0.0
+  dotenv: ^14.2.0
   eslint: ^8.7.0
   eslint-config-prettier: ^8.3.0
   eslint-import-resolver-typescript: ^2.5.0
@@ -33,6 +34,7 @@ dependencies:
   '@remix-run/react': 1.1.1_react-dom@17.0.2+react@17.0.2
   '@remix-run/serve': 1.1.1_react-dom@17.0.2+react@17.0.2
   clsx: 1.1.1
+  dotenv: 14.2.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   remix: 1.1.1
@@ -1674,6 +1676,11 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dotenv/14.2.0:
+    resolution: {integrity: sha512-05POuPJyPpO6jqzTNweQFfAyMSD4qa4lvsMOWyTRTdpHKy6nnnN+IYWaXF+lHivhBH/ufDKlR4IWCAN3oPnHuw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /ee-first/1.1.1:
     resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
