@@ -29,12 +29,12 @@ export const links: LinksFunction = () => [
 ]
 
 type LoaderData = {
-  user?: LoaderDataUser
+  user?: UserData
   anilistClientId: string
   anilistRedirectUri: string
 }
 
-type LoaderDataUser = {
+type UserData = {
   name: string
   avatarUrl?: string
 }
@@ -44,7 +44,7 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   const session = await getSession(request)
 
-  let user: LoaderDataUser | undefined
+  let user: UserData | undefined
   if (session) {
     const client = createAuthenticatedClient(session.accessToken)
 
@@ -89,8 +89,11 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <AppHeader />
-        <div className="h-4" />
+        <header className="shadow bg-slate-800 mb-4">
+          <div className={maxWidthContainerClass}>
+            <HeaderNavigation />
+          </div>
+        </header>
         <main className={maxWidthContainerClass}>
           <Outlet />
         </main>
@@ -102,7 +105,7 @@ export default function App() {
   )
 }
 
-function AppHeader() {
+function HeaderNavigation() {
   const data = useLoaderData<LoaderData>()
 
   const loginUrl =
@@ -112,40 +115,32 @@ function AppHeader() {
     `&response_type=code`
 
   return (
-    <header className="shadow bg-slate-800">
-      <div className={maxWidthContainerClass}>
-        <div className="flex items-center justify-between h-16">
-          <a href="/" title="Home" className="translate-y-[-2px]">
-            <h1 className="text-3xl font-light">
-              <span className="text-sky-400">ani</span>
-              <span className="text-emerald-400">green</span>
-            </h1>
-          </a>
-          {data.user ? (
-            <UserMenuButton user={data.user} />
-          ) : (
-            <a href={loginUrl} className={buttonClass({ variant: "clear" })}>
-              log in with AniList
-            </a>
-          )}
-        </div>
-      </div>
-    </header>
+    <nav className="flex items-center justify-between h-16">
+      <a href="/" title="Home" className="translate-y-[-2px]">
+        <h1 className="text-3xl font-light">
+          <span className="text-sky-400">ani</span>
+          <span className="text-emerald-400">green</span>
+        </h1>
+      </a>
+      {data.user ? (
+        <UserMenuButton user={data.user} />
+      ) : (
+        <a href={loginUrl} className={buttonClass({ variant: "clear" })}>
+          log in with AniList
+        </a>
+      )}
+    </nav>
   )
 }
 
-function UserMenuButton({ user }: { user: LoaderDataUser }) {
+function UserMenuButton({ user }: { user: UserData }) {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>()
   const [popperElement, setPopperElement] = useState<HTMLElement | null>()
 
-  const { styles, attributes, update } = usePopper(
-    referenceElement,
-    popperElement,
-    {
-      placement: "bottom-end",
-      modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
-    },
-  )
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: "bottom-end",
+    modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
+  })
 
   return (
     <Popover>
