@@ -5,14 +5,15 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev",
-    "postinstall": "remix setup node",
+    "prepare": "remix setup node && pnpm tailwind",
+    "dev": "concurrently 'remix dev' 'pnpm tailwind -- --watch'",
+    "build": "pnpm tailwind -- --minify && remix build",
     "start": "remix-serve build",
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "tailwind": "tailwindcss --config tailwind.config.cjs --output ./app/tailwind.out.css"
   },
   "dependencies": {
     "@remix-run/react": "^1.1.1",
@@ -29,6 +30,8 @@
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "autoprefixer": "^10.4.2",
+    "concurrently": "^7.0.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.5.0",
@@ -37,7 +40,9 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-unicorn": "^40.1.0",
+    "postcss": "^8.4.5",
     "prettier": "^2.5.1",
+    "tailwindcss": "^3.0.15",
     "typescript": "^4.5.4"
   },
   "engines": {
