@@ -9,7 +9,7 @@ const cookie = createCookie("session", {
 })
 
 export type Session = {
-  access_token: string
+  accessToken: string
 }
 
 export async function createAnilistSession(authCallbackUrl: string) {
@@ -38,9 +38,11 @@ export async function createAnilistSession(authCallbackUrl: string) {
     )
   }
 
-  const session: Session = await response.json()
+  const json = await response.json()
 
-  return cookie.serialize(session)
+  return cookie.serialize({
+    accessToken: json.access_token,
+  })
 }
 
 export function getSession(request: Request): Promise<Session | null> {

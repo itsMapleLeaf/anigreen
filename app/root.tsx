@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({
 
   let user: LoaderData["user"] | undefined
   if (session) {
-    const client = createAuthenticatedClient(session.access_token)
+    const client = createAuthenticatedClient(session.accessToken)
     const result = await client.query({
       query: ViewerDocument,
     })
