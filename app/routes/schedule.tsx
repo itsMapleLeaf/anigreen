@@ -1,4 +1,5 @@
-import { startOfToday } from "date-fns"
+import { startOfDay, startOfToday } from "date-fns"
+import { Fragment } from "react"
 import type { LoaderFunction, MetaFunction } from "remix"
 import { useLoaderData } from "remix"
 import { anilistClient } from "../anilist-client.server"
@@ -27,13 +28,62 @@ export const loader: LoaderFunction = async (): Promise<LoaderData> => {
 
 export default function Schedule() {
   const data = useLoaderData<LoaderData>()
+
+  const itemsByDay = new Map<number, Array<{ title: string }>>()
+  for (const schedule of data.schedule.Page?.airingSchedules ?? []) {
+    if (!schedule) continue
+    const day = startOfDay(schedule.airingAt * 1000).getTime()
+    const { title } = schedule.media ?? {}
+
+    const titleText =
+      title?.userPreferred ||
+      title?.english ||
+      title?.romaji ||
+      title?.native ||
+      "Unknown Title"
+
+    const items = mapGetWithFallback(itemsByDay, day, [])
+    items.push({ title: titleText })
+  }
+
+  const dayLists = [...itemsByDay.entries()]
+    .map(([day, items]) => ({ day, items }))
+    .sort((a, b) => a.day - b.day)
+
   return (
     <>
-      <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))]">
-        {data.schedule.Page?.airingSchedules?.map((schedule) => (
-          <li key={schedule?.id}>{schedule?.media?.title?.userPreferred}</li>
-        ))}
-      </ul>
+      {dayLists.map(({ day, items }) => (
+        <Fragment key={day}>
+          <h2 className="mb-4">
+            <div className="text-2xl font-light leading-tight">
+              {new Date(day).toLocaleDateString(undefined, { weekday: "long" })}
+            </div>
+            <div className="text-sm opacity-60 font-medium">
+              {new Date(day).toLocaleDateString(undefined, {
+                dateStyle: "long",
+              })}
+            </div>
+          </h2>
+          <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] mb-6">
+            {items.map(({ title }) => (
+              <li key={title}>{title}</li>
+            ))}
+          </ul>
+        </Fragment>
+      ))}
     </>
   )
+}
+
+function mapGetWithFallback<Key, Value>(
+  map: Map<Key, Value>,
+  key: Key,
+  fallback: Value,
+): Value {
+  let value = map.get(key)
+  if (value === undefined) {
+    value = fallback
+    map.set(key, value)
+  }
+  return value
 }
