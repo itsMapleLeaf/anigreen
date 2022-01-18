@@ -13,57 +13,35 @@ type RequestVariables<Variables> =
     ? { variables?: undefined }
     : { variables: Variables }
 
-type RequestQueueItem = {
-  options: RequestOptions<any, any>
-  resolve: (data: any) => void
-  reject: (error: unknown) => void
-}
-
-// anilist has a 90 request limit per minute
-// we'll skirt a little bit below that
-const requestDelayMs = 1000 * 60 * (1 / 85)
+// anilist has a limit of 90 requests per minute
+const maxRequestCount = 90
+const maxRequestTime = 1000 * 60
 
 class AnilistClient {
-  private requests: RequestQueueItem[] = []
-  private processing = false
+  private requestTimestamps: number[] = []
 
-  request<Result, Variables>(
+  async request<Result, Variables>(
     options: RequestOptions<Result, Variables>,
   ): Promise<Result> {
-    return new Promise((resolve, reject) => {
-      this.requests.push({
-        options: options as RequestOptions<any, any>,
-        resolve,
-        reject,
-      })
-      void this.processQueue()
-    })
-  }
-
-  private async processQueue() {
-    if (this.processing) return
-    this.processing = true
-
-    let request: RequestQueueItem | undefined
-    while ((request = this.requests.shift())) {
-      const { options, resolve, reject } = request
-      try {
-        const startTime = Date.now()
-
-        resolve(await requestGraphQL(options))
-
-        const totalTime = Date.now() - startTime
-        await setTimeout(Math.max(requestDelayMs - totalTime, 0))
-      } catch (error) {
-        reject(error)
-      }
+    if (this.requestTimestamps.length >= maxRequestCount) {
+      const lastRequestTimestamp = this.requestTimestamps[0]!
+      const timeToWait = maxRequestTime - (Date.now() - lastRequestTimestamp)
+      await setTimeout(timeToWait + 1000) // add a second as a safety buffer
+      return this.request(options)
     }
 
-    this.processing = false
+    this.requestTimestamps = [
+      ...this.requestTimestamps.slice(-maxRequestCount),
+      Date.now(),
+    ]
+
+    return requestGraphQL(options)
   }
 }
 
-async function requestGraphQL(options: RequestOptions<any, any>) {
+async function requestGraphQL<Result, Variables>(
+  options: RequestOptions<Result, Variables>,
+) {
   const { document, variables, accessToken } = options
 
   const headers: Record<string, string> = {
