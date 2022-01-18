@@ -88,7 +88,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <header className="shadow bg-slate-800 mb-4">
+        <header className="shadow mb-4 sticky top-0 bg-slate-600/25 backdrop-blur-sm">
           <div className={maxWidthContainerClass}>
             <HeaderNavigation />
           </div>
@@ -145,7 +145,7 @@ function UserMenuButton({ user }: { user: UserData }) {
     <Popover>
       <div className="relative">
         <Popover.Button
-          className="transition opacity-50 hover:opacity-100 focus:opacity-100"
+          className="transition opacity-75 hover:opacity-100 focus:opacity-100"
           ref={setReferenceElement}
         >
           <img
