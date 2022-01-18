@@ -75,6 +75,16 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap"
+          rel="stylesheet"
+        />
         <Meta />
         <Links />
       </head>
@@ -166,9 +176,7 @@ function UserMenuButton({ user }: { user: LoaderDataUser }) {
               leaveTo="transform translate-y-3 opacity-0"
             >
               <Popover.Panel className="absolute right-0 flex flex-col overflow-hidden font-medium rounded-lg shadow top-full bg-slate-50 text-slate-900 w-max">
-                <p className="px-3 py-1.5 opacity-60">
-                  Logged in as {user.name}
-                </p>
+                <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
                 <div className="h-px bg-slate-300" />
                 <Form
                   action="/logout"
@@ -178,7 +186,7 @@ function UserMenuButton({ user }: { user: LoaderDataUser }) {
                 >
                   <button
                     type="submit"
-                    className="px-3 py-1.5 transition hover:bg-emerald-300 focus:bg-emerald-300 text-left"
+                    className="px-3 py-2 transition hover:bg-emerald-200 focus:bg-emerald-200"
                   >
                     Log out
                   </button>

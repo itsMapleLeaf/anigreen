@@ -13,7 +13,7 @@
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "tailwind": "tailwindcss --config tailwind.config.cjs --output ./app/tailwind.out.css",
+    "tailwind": "tailwindcss --config tailwind.config.cjs --input ./app/tailwind.css --output ./app/tailwind.out.css",
     "graphql-codegen": "graphql-codegen --config graphql.config.yml"
   },
   "dependencies": {
