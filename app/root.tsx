@@ -12,8 +12,8 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "remix"
+import { anilistClient } from "./anilist-client.server"
 import { buttonClass, maxWidthContainerClass } from "./components"
-import { createAuthenticatedClient } from "./graphql-client.server"
 import { ViewerDocument } from "./graphql.out"
 import { raise } from "./helpers/errors"
 import { getSession } from "./session.server"
@@ -46,16 +46,14 @@ export const loader: LoaderFunction = async ({
 
   let user: UserData | undefined
   if (session) {
-    const client = createAuthenticatedClient(session.accessToken)
-
-    const result = await client
-      .query({ query: ViewerDocument })
+    const data = await anilistClient
+      .request({ document: ViewerDocument, accessToken: session.accessToken })
       .catch((error) => console.warn("Failed to fetch viewer", error))
 
-    if (result?.data.Viewer) {
+    if (data?.Viewer) {
       user = {
-        name: result.data.Viewer.name,
-        avatarUrl: result.data.Viewer.avatar?.medium,
+        name: data.Viewer.name,
+        avatarUrl: data.Viewer.avatar?.medium,
       }
     }
   }
