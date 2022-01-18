@@ -1,0 +1,8 @@
+query Viewer {
+  Viewer {
+    name
+    avatar {
+      medium
+    }
+  }
+}

@@ -5,26 +5,35 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "remix setup node && pnpm tailwind",
-    "dev": "concurrently 'remix dev' 'pnpm tailwind -- --watch'",
-    "build": "pnpm tailwind -- --minify && remix build",
+    "prepare": "remix setup node && pnpm tailwind && pnpm graphql-codegen",
+    "dev": "concurrently 'remix dev' 'pnpm tailwind -- --watch' 'pnpm graphql-codegen -- --watch'",
+    "build": "pnpm tailwind -- --minify && pnpm graphql-codegen && remix build",
     "start": "remix-serve build",
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "tailwind": "tailwindcss --config tailwind.config.cjs --output ./app/tailwind.out.css"
+    "tailwind": "tailwindcss --config tailwind.config.cjs --output ./app/tailwind.out.css",
+    "graphql-codegen": "graphql-codegen --config graphql.config.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.7",
+    "@graphql-typed-document-node/core": "^3.1.1",
     "@remix-run/react": "^1.1.1",
     "@remix-run/serve": "^1.1.1",
     "clsx": "^1.1.1",
     "dotenv": "^14.2.0",
+    "graphql": "^16.2.0",
+    "graphql-tag": "^2.12.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "^1.1.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.3.1",
+    "@graphql-codegen/typed-document-node": "^2.2.2",
+    "@graphql-codegen/typescript": "2.4.2",
+    "@graphql-codegen/typescript-operations": "2.2.2",
     "@itsmapleleaf/configs": "^1.1.2",
     "@remix-run/dev": "^1.1.1",
     "@types/node": "^17.0.9",
@@ -58,7 +67,8 @@
     "ignorePatterns": [
       "**/node_modules/**",
       "**/build/**",
-      "**/.cache/**"
+      "**/.cache/**",
+      "**/*.out.*"
     ],
     "rules": {
       "import/no-unused-modules": "off"

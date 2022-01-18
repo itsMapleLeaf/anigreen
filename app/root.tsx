@@ -10,6 +10,8 @@ import {
   useLoaderData,
 } from "remix"
 import { buttonClass, maxWidthContainerClass } from "./components"
+import { createAuthenticatedClient } from "./graphql-client.server"
+import { ViewerDocument } from "./graphql.out"
 import { raise } from "./helpers/errors"
 import { getSession } from "./session.server"
 import tailwind from "./tailwind.out.css"
@@ -24,7 +26,10 @@ export const links: LinksFunction = () => [
 ]
 
 type LoaderData = {
-  loggedIn: boolean
+  user?: {
+    name: string
+    avatarUrl?: string
+  }
   anilistClientId: string
   anilistRedirectUri: string
 }
@@ -33,8 +38,23 @@ export const loader: LoaderFunction = async ({
   request,
 }): Promise<LoaderData> => {
   const session = await getSession(request)
+
+  let user: LoaderData["user"] | undefined
+  if (session) {
+    const client = createAuthenticatedClient(session.access_token)
+    const result = await client.query({
+      query: ViewerDocument,
+    })
+    if (result.data.Viewer) {
+      user = {
+        name: result.data.Viewer.name,
+        avatarUrl: result.data.Viewer.avatar?.medium,
+      }
+    }
+  }
+
   return {
-    loggedIn: !!session,
+    user,
     anilistClientId:
       process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
     anilistRedirectUri:
@@ -70,13 +90,17 @@ export default function App() {
                 </h1>
               </a>
 
-              {data.loggedIn ? (
+              {data.user ? (
                 <Form action="/logout" method="post">
                   <button
                     type="submit"
-                    className={buttonClass({ variant: "clear" })}
+                    className="flex items-center gap-2 transition opacity-50 hover:opacity-100 focus:opacity-100"
                   >
-                    log out
+                    <img
+                      src={data.user.avatarUrl}
+                      alt={`Logged in as ${data.user.name}`}
+                      className="w-8 h-8 rounded-full"
+                    />
                   </button>
                 </Form>
               ) : (

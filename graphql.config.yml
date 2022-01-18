@@ -1,0 +1,11 @@
+overwrite: true
+schema: "https://graphql.anilist.co/"
+documents: "app/**/*.{ts,tsx,gql}"
+generates:
+  app/graphql.out.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typed-document-node"
+    config:
+      maybeValue: T | undefined
