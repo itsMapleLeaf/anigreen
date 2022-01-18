@@ -29,9 +29,11 @@ export default function Schedule() {
   const data = useLoaderData<LoaderData>()
   return (
     <>
-      <pre className="overflow-x-auto">
-        {JSON.stringify(data, undefined, 2)}
-      </pre>
+      <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))]">
+        {data.schedule.Page?.airingSchedules?.map((schedule) => (
+          <li key={schedule?.id}>{schedule?.media?.title?.userPreferred}</li>
+        ))}
+      </ul>
     </>
   )
 }
