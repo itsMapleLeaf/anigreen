@@ -1,43 +1,29 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
-import { startOfDay, startOfToday } from "date-fns"
+import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { Fragment } from "react"
-import type { LoaderFunction, MetaFunction } from "remix"
+import type { MetaFunction } from "remix"
 import { Link, useLoaderData, useNavigate } from "remix"
-import { anilistClient } from "~/anilist-client.server"
 import { buttonClass } from "~/components"
 import { DateTime } from "~/dom/date-time"
 import { useWindowEvent } from "~/dom/use-event"
-import type { ScheduleQuery } from "~/graphql.out"
-import { ScheduleDocument } from "~/graphql.out"
-import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
 import { getAppTitle } from "~/meta"
+import { loadScheduleData } from "~/schedule/data.server"
+import type { InferLoaderData } from "~/types"
 import { KeyboardKey } from "../ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle("Schedule"),
 })
 
-type LoaderData = {
-  schedule: ScheduleQuery
-}
-
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<LoaderData> => {
+export async function loader({ request }: DataFunctionArgs) {
   let page = Number(new URL(request.url).searchParams.get("page"))
   if (!Number.isFinite(page) || page < 1) {
     page = 1
   }
 
-  const schedule = await anilistClient.request({
-    document: ScheduleDocument,
-    variables: {
-      page,
-      startDate: startOfToday().getTime() / 1000,
-    },
-  })
-
-  return { schedule }
+  return {
+    schedule: await loadScheduleData(page),
+  }
 }
 
 export default function Schedule() {
@@ -50,34 +36,11 @@ export default function Schedule() {
 }
 
 function ScheduleItems() {
-  const data = useLoaderData<LoaderData>()
-
-  const itemsByDay = new Map<number, Array<{ id: number; title: string }>>()
-  for (const schedule of data.schedule.Page?.airingSchedules ?? []) {
-    if (!schedule) continue
-    const day = startOfDay(schedule.airingAt * 1000).getTime()
-    const { title } = schedule.media ?? {}
-
-    const titleText =
-      title?.userPreferred ||
-      title?.english ||
-      title?.romaji ||
-      title?.native ||
-      "Unknown Title"
-
-    mapGetWithFallback(itemsByDay, day, []).push({
-      id: schedule.id,
-      title: titleText,
-    })
-  }
-
-  const dayLists = [...itemsByDay.entries()]
-    .map(([day, items]) => ({ day, items }))
-    .sort((a, b) => a.day - b.day)
+  const { schedule } = useLoaderData<InferLoaderData<typeof loader>>()
 
   return (
     <>
-      {dayLists.map(({ day, items }) => (
+      {schedule.dayLists.map(({ day, items }) => (
         <Fragment key={day}>
           <h2 className="my-4">
             <div className="text-2xl font-light leading-tight">
@@ -88,8 +51,8 @@ function ScheduleItems() {
             </div>
           </h2>
           <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] my-6">
-            {items.map(({ id, title }) => (
-              <li key={id}>{title}</li>
+            {items.map((item) => (
+              <li key={item.id}>{item.title}</li>
             ))}
           </ul>
         </Fragment>
@@ -99,11 +62,8 @@ function ScheduleItems() {
 }
 
 function Pagination() {
-  const data = useLoaderData<LoaderData>()
-  const pageInfo = { currentPage: 1, ...data.schedule.Page?.pageInfo }
-  const previousPage =
-    pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
-  const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
+  const { schedule } = useLoaderData<InferLoaderData<typeof loader>>()
+  const { previousPage, nextPage } = schedule
 
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
