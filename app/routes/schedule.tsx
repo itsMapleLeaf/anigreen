@@ -5,11 +5,12 @@ import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
 import { buttonClass } from "~/components"
 import { DateTime } from "~/dates/date-time"
+import { getTimezone } from "~/dates/timezone-cookie.server"
 import { useWindowEvent } from "~/dom/use-event"
 import { MediaCard } from "~/media/media-card"
 import { getAppTitle } from "~/meta"
 import { useLoaderDataTyped } from "~/remix-typed"
-import { loadScheduleData } from "~/schedule/data.server"
+import { loadScheduleData } from "~/schedule/schedule-data.server"
 import { KeyboardKey } from "../ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
@@ -22,8 +23,11 @@ export async function loader({ request }: DataFunctionArgs) {
     page = 1
   }
 
+  const timezone = await getTimezone(request)
+
   return {
-    schedule: await loadScheduleData(page),
+    schedule: await loadScheduleData(page, timezone),
+    timezone,
   }
 }
 

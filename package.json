@@ -12,6 +12,7 @@
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
+    "test": "vitest",
     "typecheck": "tsc --noEmit",
     "tailwind": "tailwindcss --config tailwind.config.cjs --input ./app/tailwind.css --output ./app/tailwind.out.css",
     "graphql-codegen": "graphql-codegen --config graphql.config.yml"
@@ -25,8 +26,10 @@
     "@remix-run/react": "^1.1.1",
     "@remix-run/serve": "^1.1.1",
     "@remix-run/server-runtime": "^1.1.1",
+    "@sytexa/tzdb": "^6.44.0",
     "clsx": "^1.1.1",
     "date-fns": "^2.28.0",
+    "date-fns-tz": "^1.2.2",
     "dotenv": "^14.2.0",
     "graphql": "^16.2.0",
     "react": "^17.0.2",
@@ -59,7 +62,9 @@
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "tailwindcss": "^3.0.15",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "vite": "^2.7.13",
+    "vitest": "^0.1.23"
   },
   "engines": {
     "node": ">=14"

@@ -1,17 +1,18 @@
-import { startOfDay, startOfToday } from "date-fns"
+import { startOfDay } from "date-fns"
 import { anilistClient } from "~/anilist-client.server"
+import { startOfDayZoned } from "~/dates/start-of-day-zoned"
 import { ScheduleDocument } from "~/graphql.out"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
 import type { MediaCardProps } from "~/media/media-card"
 
 export type ScheduleData = Awaited<ReturnType<typeof loadScheduleData>>
 
-export async function loadScheduleData(page: number) {
+export async function loadScheduleData(page: number, timezone: string) {
   const data = await anilistClient.request({
     document: ScheduleDocument,
     variables: {
       page,
-      startDate: startOfToday().getTime() / 1000,
+      startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
     },
   })
 
