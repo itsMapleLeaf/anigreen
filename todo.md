@@ -13,8 +13,8 @@
   - [ ] show watched count somewhere?
 - [ ] schedule page
 - [ ] watching page
-- [ ] deal with timezone difference between server and client
-  - add a timezone input???
+- [x] deal with timezone difference between server and client
+  - just using a fixed time zone for now. a setting can come later, and/or some client-side redirect to set the timezone
 
 ## ideas
 
@@ -22,6 +22,7 @@
 - settings
   - general
     - [ ] media title format
+    - [ ] time zone
   - schedule
     - [ ] adult
     - [ ] country of origin
