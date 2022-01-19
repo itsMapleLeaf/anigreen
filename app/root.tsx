@@ -1,7 +1,8 @@
 import { Popover, Portal, Transition } from "@headlessui/react"
+import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { Fragment, useState } from "react"
 import { usePopper } from "react-popper"
-import type { LinksFunction, LoaderFunction, MetaFunction } from "remix"
+import type { LinksFunction, MetaFunction } from "remix"
 import {
   Form,
   Links,
@@ -10,8 +11,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from "remix"
+import { useLoaderDataTyped } from "~/remix-typed"
 import { anilistClient } from "./anilist-client.server"
 import { buttonClass, maxWidthContainerClass } from "./components"
 import { ViewerDocument } from "./graphql.out"
@@ -29,20 +30,12 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },
 ]
 
-type LoaderData = {
-  user?: UserData
-  anilistClientId: string
-  anilistRedirectUri: string
-}
-
 type UserData = {
   name: string
   avatarUrl?: string
 }
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<LoaderData> => {
+export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
 
   let user: UserData | undefined
@@ -109,7 +102,7 @@ export default function App() {
 }
 
 function HeaderNavigation() {
-  const data = useLoaderData<LoaderData>()
+  const data = useLoaderDataTyped<typeof loader>()
 
   const loginUrl =
     `https://anilist.co/api/v2/oauth/authorize` +

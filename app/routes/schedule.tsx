@@ -2,13 +2,13 @@ import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { Fragment } from "react"
 import type { MetaFunction } from "remix"
-import { Link, useLoaderData, useNavigate } from "remix"
+import { Link, useNavigate } from "remix"
 import { buttonClass } from "~/components"
 import { DateTime } from "~/dom/date-time"
 import { useWindowEvent } from "~/dom/use-event"
 import { getAppTitle } from "~/meta"
+import { useLoaderDataTyped } from "~/remix-typed"
 import { loadScheduleData } from "~/schedule/data.server"
-import type { InferLoaderData } from "~/types"
 import { KeyboardKey } from "../ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
@@ -36,7 +36,7 @@ export default function Schedule() {
 }
 
 function ScheduleItems() {
-  const { schedule } = useLoaderData<InferLoaderData<typeof loader>>()
+  const { schedule } = useLoaderDataTyped<typeof loader>()
 
   return (
     <>
@@ -62,7 +62,7 @@ function ScheduleItems() {
 }
 
 function Pagination() {
-  const { schedule } = useLoaderData<InferLoaderData<typeof loader>>()
+  const { schedule } = useLoaderDataTyped<typeof loader>()
   const { previousPage, nextPage } = schedule
 
   const navigate = useNavigate()
