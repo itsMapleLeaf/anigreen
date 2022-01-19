@@ -14,3 +14,4 @@
     - [ ] country of origin
     - [ ] licensed
 - [ ] search page
+- [ ] show a loading spinner in the corner while loading or navigating

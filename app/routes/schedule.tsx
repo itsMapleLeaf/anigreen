@@ -1,14 +1,16 @@
-import { Link } from ".pnpm/react-router-dom@6.2.1_react-dom@17.0.2+react@17.0.2/node_modules/react-router-dom"
+import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import { startOfDay, startOfToday } from "date-fns"
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import type { LoaderFunction, MetaFunction } from "remix"
-import { useLoaderData } from "remix"
+import { Link, useLoaderData, useNavigate } from "remix"
 import { anilistClient } from "~/anilist-client.server"
 import { buttonClass } from "~/components"
 import { DateTime } from "~/dom/date-time"
 import type { ScheduleQuery } from "~/graphql.out"
 import { ScheduleDocument } from "~/graphql.out"
+import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
 import { getAppTitle } from "~/meta"
+import { KeyboardKey } from "../ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle("Schedule"),
@@ -62,8 +64,10 @@ function ScheduleItems() {
       title?.native ||
       "Unknown Title"
 
-    const items = mapGetWithFallback(itemsByDay, day, [])
-    items.push({ id: schedule.id, title: titleText })
+    mapGetWithFallback(itemsByDay, day, []).push({
+      id: schedule.id,
+      title: titleText,
+    })
   }
 
   const dayLists = [...itemsByDay.entries()]
@@ -74,7 +78,7 @@ function ScheduleItems() {
     <>
       {dayLists.map(({ day, items }) => (
         <Fragment key={day}>
-          <h2 className="mb-4">
+          <h2 className="my-4">
             <div className="text-2xl font-light leading-tight">
               <DateTime date={day} weekday="long" />
             </div>
@@ -82,7 +86,7 @@ function ScheduleItems() {
               <DateTime date={day} dateStyle="long" />
             </div>
           </h2>
-          <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] mb-6">
+          <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] my-6">
             {items.map(({ id, title }) => (
               <li key={id}>{title}</li>
             ))}
@@ -100,6 +104,22 @@ function Pagination() {
     pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
   const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
 
+  const navigate = useNavigate()
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft" && previousPage) {
+        event.preventDefault()
+        navigate(`?page=${previousPage}`)
+      }
+      if (event.key === "ArrowRight" && nextPage) {
+        event.preventDefault()
+        navigate(`?page=${nextPage}`)
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  })
+
   return (
     <div className="flex items-center justify-center gap-4">
       {previousPage != undefined ? (
@@ -107,6 +127,9 @@ function Pagination() {
           to={`?page=${previousPage}`}
           className={buttonClass({ variant: "clear" })}
         >
+          <KeyboardKey label="Left arrow">
+            <ArrowSmLeftIcon className="w-5" />
+          </KeyboardKey>
           Previous Page
         </Link>
       ) : undefined}
@@ -115,22 +138,12 @@ function Pagination() {
           to={`?page=${nextPage}`}
           className={buttonClass({ variant: "clear" })}
         >
+          <KeyboardKey label="Right arrow">
+            <ArrowSmRightIcon className="w-5" />
+          </KeyboardKey>
           Next Page
         </Link>
       ) : undefined}
     </div>
   )
-}
-
-function mapGetWithFallback<Key, Value>(
-  map: Map<Key, Value>,
-  key: Key,
-  fallback: Value,
-): Value {
-  let value = map.get(key)
-  if (value === undefined) {
-    value = fallback
-    map.set(key, value)
-  }
-  return value
 }
