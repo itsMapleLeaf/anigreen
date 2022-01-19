@@ -13,13 +13,13 @@ import {
   ScrollRestoration,
 } from "remix"
 import { useLoaderDataTyped } from "~/remix-typed"
-import { anilistClient } from "./anilist-client.server"
-import { buttonClass, maxWidthContainerClass } from "./components"
-import { ViewerDocument } from "./graphql.out"
+import { anilistClient } from "./anilist/anilist-client.server"
+import { ViewerDocument } from "./anilist/graphql.out"
+import { getSession } from "./auth/session.server"
 import { raise } from "./helpers/errors"
 import { getAppTitle } from "./meta"
-import { getSession } from "./session.server"
-import tailwind from "./tailwind.out.css"
+import { buttonClass, maxWidthContainerClass } from "./ui/components"
+import tailwind from "./ui/tailwind.out.css"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle(),

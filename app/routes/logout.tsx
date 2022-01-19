@@ -1,6 +1,6 @@
 import type { ActionFunction } from "remix"
 import { redirect } from "remix"
-import { destroySession } from "../session.server"
+import { destroySession } from "../auth/session.server"
 
 export const action: ActionFunction = async () => {
   return redirect("/", {

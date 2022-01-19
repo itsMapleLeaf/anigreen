@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "remix"
 import { redirect } from "remix"
-import { createAnilistSession } from "../session.server"
+import { createAnilistSession } from "~/auth/session.server"
 
 export const loader: LoaderFunction = async ({ request }) => {
   return redirect("/", {

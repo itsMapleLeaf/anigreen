@@ -1,7 +1,7 @@
 import { startOfDay } from "date-fns"
-import { anilistClient } from "~/anilist-client.server"
+import { anilistClient } from "~/anilist/anilist-client.server"
+import { ScheduleDocument } from "~/anilist/graphql.out"
 import { startOfDayZoned } from "~/dates/start-of-day-zoned"
-import { ScheduleDocument } from "~/graphql.out"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
 import type { MediaCardProps } from "~/media/media-card"
 

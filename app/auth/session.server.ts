@@ -1,5 +1,5 @@
 import { createCookie } from "remix"
-import { raise } from "./helpers/errors"
+import { raise } from "~/helpers/errors"
 
 const cookie = createCookie("session", {
   secrets: [process.env.COOKIE_SECRET ?? raise("COOKIE_SECRET not set")],

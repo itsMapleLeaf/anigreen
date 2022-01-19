@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "tailwind": "tailwindcss --config tailwind.config.cjs --input ./app/tailwind.css --output ./app/tailwind.out.css",
+    "tailwind": "tailwindcss --config tailwind.config.cjs --input ./app/ui/tailwind.css --output ./app/ui/tailwind.out.css",
     "graphql-codegen": "graphql-codegen --config graphql.config.yml"
   },
   "dependencies": {
