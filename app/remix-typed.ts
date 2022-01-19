@@ -1,7 +1,7 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { json, redirect, useActionData, useLoaderData } from "remix"
 
-type MaybePromise<Value> = Value | Promise<Value>
+type MaybePromise<Value> = Value | PromiseLike<Value>
 
 type JsonValue =
   | string
