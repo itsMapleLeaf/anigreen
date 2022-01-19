@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async (): Promise<LoaderData> => {
 export default function Schedule() {
   const data = useLoaderData<LoaderData>()
 
-  const itemsByDay = new Map<number, Array<{ title: string }>>()
+  const itemsByDay = new Map<number, Array<{ id: number; title: string }>>()
   for (const schedule of data.schedule.Page?.airingSchedules ?? []) {
     if (!schedule) continue
     const day = startOfDay(schedule.airingAt * 1000).getTime()
@@ -43,7 +43,7 @@ export default function Schedule() {
       "Unknown Title"
 
     const items = mapGetWithFallback(itemsByDay, day, [])
-    items.push({ title: titleText })
+    items.push({ id: schedule.id, title: titleText })
   }
 
   const dayLists = [...itemsByDay.entries()]
@@ -65,8 +65,8 @@ export default function Schedule() {
             </div>
           </h2>
           <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] mb-6">
-            {items.map(({ title }) => (
-              <li key={title}>{title}</li>
+            {items.map(({ id, title }) => (
+              <li key={id}>{title}</li>
             ))}
           </ul>
         </Fragment>
