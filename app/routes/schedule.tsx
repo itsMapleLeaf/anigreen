@@ -1,11 +1,12 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import { startOfDay, startOfToday } from "date-fns"
-import { Fragment, useEffect } from "react"
+import { Fragment } from "react"
 import type { LoaderFunction, MetaFunction } from "remix"
 import { Link, useLoaderData, useNavigate } from "remix"
 import { anilistClient } from "~/anilist-client.server"
 import { buttonClass } from "~/components"
 import { DateTime } from "~/dom/date-time"
+import { useWindowEvent } from "~/dom/use-event"
 import type { ScheduleQuery } from "~/graphql.out"
 import { ScheduleDocument } from "~/graphql.out"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
@@ -105,19 +106,15 @@ function Pagination() {
   const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
 
   const navigate = useNavigate()
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft" && previousPage) {
-        event.preventDefault()
-        navigate(`?page=${previousPage}`)
-      }
-      if (event.key === "ArrowRight" && nextPage) {
-        event.preventDefault()
-        navigate(`?page=${nextPage}`)
-      }
+  useWindowEvent("keydown", (event) => {
+    if (event.key === "ArrowLeft" && previousPage) {
+      event.preventDefault()
+      navigate(`?page=${previousPage}`)
     }
-    document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
+    if (event.key === "ArrowRight" && nextPage) {
+      event.preventDefault()
+      navigate(`?page=${nextPage}`)
+    }
   })
 
   return (
