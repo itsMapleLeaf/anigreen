@@ -2,10 +2,11 @@ import { startOfDay, startOfToday } from "date-fns"
 import { Fragment } from "react"
 import type { LoaderFunction, MetaFunction } from "remix"
 import { useLoaderData } from "remix"
-import { anilistClient } from "../anilist-client.server"
-import type { ScheduleQuery } from "../graphql.out"
-import { ScheduleDocument } from "../graphql.out"
-import { getAppTitle } from "../meta"
+import { anilistClient } from "~/anilist-client.server"
+import { DateTime } from "~/dom/date-time"
+import type { ScheduleQuery } from "~/graphql.out"
+import { ScheduleDocument } from "~/graphql.out"
+import { getAppTitle } from "~/meta"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle("Schedule"),
@@ -55,13 +56,11 @@ export default function Schedule() {
       {dayLists.map(({ day, items }) => (
         <Fragment key={day}>
           <h2 className="mb-4">
-            <div className="text-2xl font-light leading-tight">
-              {new Date(day).toLocaleDateString(undefined, { weekday: "long" })}
+            <div className="text-2xl font-light leading-tight block">
+              <DateTime date={day} weekday="long" />
             </div>
-            <div className="text-sm opacity-60 font-medium">
-              {new Date(day).toLocaleDateString(undefined, {
-                dateStyle: "long",
-              })}
+            <div className="text-sm opacity-60 block">
+              <DateTime date={day} dateStyle="long" />
             </div>
           </h2>
           <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] mb-6">
