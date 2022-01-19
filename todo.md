@@ -13,6 +13,8 @@
   - [ ] show watched count somewhere?
 - [ ] schedule page
 - [ ] watching page
+- [ ] deal with timezone difference between server and client
+  - add a timezone input???
 
 ## ideas
 
@@ -27,3 +29,4 @@
 - [ ] search page
 - [ ] show a loading spinner in the corner while loading or navigating
 - [ ] click on a cover/banner to view the full image in a lightbox modal (or just in a new tab lol)
+- [ ] media card: show full title in tooltip
