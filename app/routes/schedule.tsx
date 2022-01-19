@@ -107,11 +107,11 @@ function Pagination() {
 
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
-    if (event.key === "ArrowLeft" && previousPage) {
+    if (event.key === "ArrowLeft" && previousPage != undefined) {
       event.preventDefault()
       navigate(`?page=${previousPage}`)
     }
-    if (event.key === "ArrowRight" && nextPage) {
+    if (event.key === "ArrowRight" && nextPage != undefined) {
       event.preventDefault()
       navigate(`?page=${nextPage}`)
     }
