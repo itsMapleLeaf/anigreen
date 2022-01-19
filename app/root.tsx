@@ -89,13 +89,15 @@ export default function App() {
       </head>
       <body>
         <div className="isolate">
-          <header className="shadow mb-6 sticky top-0 bg-slate-600/25 backdrop-blur-sm z-10">
+          <header className="shadow sticky top-0 bg-slate-600/25 backdrop-blur-sm z-10">
             <div className={maxWidthContainerClass}>
               <HeaderNavigation />
             </div>
           </header>
           <main className={maxWidthContainerClass}>
-            <Outlet />
+            <div className="py-8">
+              <Outlet />
+            </div>
           </main>
         </div>
         <ScrollRestoration />
