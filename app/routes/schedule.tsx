@@ -56,10 +56,10 @@ export default function Schedule() {
       {dayLists.map(({ day, items }) => (
         <Fragment key={day}>
           <h2 className="mb-4">
-            <div className="text-2xl font-light leading-tight block">
+            <div className="text-2xl font-light leading-tight">
               <DateTime date={day} weekday="long" />
             </div>
-            <div className="text-sm opacity-60 block">
+            <div className="text-sm opacity-60">
               <DateTime date={day} dateStyle="long" />
             </div>
           </h2>
