@@ -14,6 +14,7 @@ specifiers:
   '@remix-run/react': ^1.1.1
   '@remix-run/serve': ^1.1.1
   '@remix-run/server-runtime': ^1.1.1
+  '@tailwindcss/line-clamp': ^0.3.1
   '@types/node': ^17.0.9
   '@types/react': ^17.0.38
   '@types/react-dom': ^17.0.11
@@ -66,6 +67,7 @@ devDependencies:
   '@graphql-codegen/typescript': 2.4.2_graphql@16.2.0
   '@graphql-codegen/typescript-operations': 2.2.2_graphql@16.2.0
   '@itsmapleleaf/configs': 1.1.2
+  '@tailwindcss/line-clamp': 0.3.1_tailwindcss@3.0.15
   '@types/node': 17.0.9
   '@types/react': 17.0.38
   '@types/react-dom': 17.0.11
@@ -1394,6 +1396,14 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: false
+
+  /@tailwindcss/line-clamp/0.3.1_tailwindcss@3.0.15:
+    resolution: {integrity: sha512-pNr0T8LAc3TUx/gxCfQZRe9NB2dPEo/cedPHzUGIPxqDMhgjwNm6jYxww4W5l0zAsAddxr+XfZcqttGiFDgrGg==}
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.0.15_ef48b3b8837f8a23677bffe8f9cd866d
+    dev: true
 
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}

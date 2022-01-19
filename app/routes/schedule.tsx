@@ -6,6 +6,7 @@ import { Link, useNavigate } from "remix"
 import { buttonClass } from "~/components"
 import { DateTime } from "~/dom/date-time"
 import { useWindowEvent } from "~/dom/use-event"
+import { MediaCard } from "~/media/media-card"
 import { getAppTitle } from "~/meta"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { loadScheduleData } from "~/schedule/data.server"
@@ -50,9 +51,11 @@ function ScheduleItems() {
               <DateTime date={day} dateStyle="long" />
             </div>
           </h2>
-          <ul className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] my-6">
+          <ul className="grid gap-4 my-6 grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
             {items.map((item) => (
-              <li key={item.id}>{item.title}</li>
+              <li key={item.id}>
+                <MediaCard {...item} />
+              </li>
             ))}
           </ul>
         </Fragment>

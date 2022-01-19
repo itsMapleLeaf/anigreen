@@ -9,5 +9,8 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    // @ts-expect-error
+    require("@tailwindcss/line-clamp"),
+  ],
 }

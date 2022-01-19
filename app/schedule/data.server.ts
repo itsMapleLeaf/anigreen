@@ -2,6 +2,7 @@ import { startOfDay, startOfToday } from "date-fns"
 import { anilistClient } from "~/anilist-client.server"
 import { ScheduleDocument } from "~/graphql.out"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
+import type { MediaCardProps } from "~/media/media-card"
 
 export type ScheduleData = Awaited<ReturnType<typeof loadScheduleData>>
 
@@ -14,7 +15,7 @@ export async function loadScheduleData(page: number) {
     },
   })
 
-  const itemsByDay = new Map<number, Array<{ id: number; title: string }>>()
+  const itemsByDay = new Map<number, MediaCardProps[]>()
   for (const schedule of data.Page?.airingSchedules ?? []) {
     if (!schedule) continue
     const day = startOfDay(schedule.airingAt * 1000).getTime()
@@ -30,6 +31,12 @@ export async function loadScheduleData(page: number) {
     mapGetWithFallback(itemsByDay, day, []).push({
       id: schedule.id,
       title: titleText,
+      format: schedule.media?.format?.replace(/[^A-Za-z]+/g, " "),
+      scheduleEpisode: schedule.episode,
+      episodeCount: schedule.media?.episodes,
+      bannerImageUrl: schedule.media?.bannerImage,
+      coverImageUrl: schedule.media?.coverImage?.medium,
+      coverColor: schedule.media?.coverImage?.color,
     })
   }
 

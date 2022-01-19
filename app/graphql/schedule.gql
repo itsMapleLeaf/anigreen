@@ -15,6 +15,15 @@ query Schedule($startDate: Int!, $page: Int!) {
           english
           userPreferred
         }
+        format
+        bannerImage
+        coverImage {
+          medium
+          large
+          extraLarge
+          color
+        }
+        episodes
       }
     }
   }
