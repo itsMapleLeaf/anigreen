@@ -1,8 +1,10 @@
+import { Link } from ".pnpm/react-router-dom@6.2.1_react-dom@17.0.2+react@17.0.2/node_modules/react-router-dom"
 import { startOfDay, startOfToday } from "date-fns"
 import { Fragment } from "react"
 import type { LoaderFunction, MetaFunction } from "remix"
 import { useLoaderData } from "remix"
 import { anilistClient } from "~/anilist-client.server"
+import { buttonClass } from "~/components"
 import { DateTime } from "~/dom/date-time"
 import type { ScheduleQuery } from "~/graphql.out"
 import { ScheduleDocument } from "~/graphql.out"
@@ -16,18 +18,35 @@ type LoaderData = {
   schedule: ScheduleQuery
 }
 
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
+  let page = Number(new URL(request.url).searchParams.get("page"))
+  if (!Number.isFinite(page) || page < 1) {
+    page = 1
+  }
+
   const schedule = await anilistClient.request({
     document: ScheduleDocument,
     variables: {
-      page: 1,
+      page,
       startDate: startOfToday().getTime() / 1000,
     },
   })
+
   return { schedule }
 }
 
 export default function Schedule() {
+  return (
+    <>
+      <ScheduleItems />
+      <Pagination />
+    </>
+  )
+}
+
+function ScheduleItems() {
   const data = useLoaderData<LoaderData>()
 
   const itemsByDay = new Map<number, Array<{ id: number; title: string }>>()
@@ -71,6 +90,35 @@ export default function Schedule() {
         </Fragment>
       ))}
     </>
+  )
+}
+
+function Pagination() {
+  const data = useLoaderData<LoaderData>()
+  const pageInfo = { currentPage: 1, ...data.schedule.Page?.pageInfo }
+  const previousPage =
+    pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
+  const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
+
+  return (
+    <div className="flex items-center justify-center gap-4">
+      {previousPage != undefined ? (
+        <Link
+          to={`?page=${previousPage}`}
+          className={buttonClass({ variant: "clear" })}
+        >
+          Previous Page
+        </Link>
+      ) : undefined}
+      {nextPage != undefined ? (
+        <Link
+          to={`?page=${nextPage}`}
+          className={buttonClass({ variant: "clear" })}
+        >
+          Next Page
+        </Link>
+      ) : undefined}
+    </div>
   )
 }
 

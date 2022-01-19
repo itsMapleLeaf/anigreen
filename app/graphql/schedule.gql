@@ -1,5 +1,9 @@
 query Schedule($startDate: Int!, $page: Int!) {
   Page(page: $page, perPage: 50) {
+    pageInfo {
+      currentPage
+      hasNextPage
+    }
     airingSchedules(airingAt_greater: $startDate, sort: TIME) {
       id
       episode
