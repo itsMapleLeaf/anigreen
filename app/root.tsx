@@ -95,7 +95,7 @@ export default function App() {
             </div>
           </header>
           <main className={maxWidthContainerClass}>
-            <div className="py-8">
+            <div className="my-8">
               <Outlet />
             </div>
           </main>
