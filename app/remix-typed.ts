@@ -8,11 +8,8 @@ type JsonValue =
   | number
   | boolean
   | null
-  | { [key: string]: JsonValue }
+  | { [Key in string]?: JsonValue }
   | JsonValue[]
-  // technically undefined can't exist in json,
-  // but including this here makes things easier
-  | undefined
 
 type TypedResponse<Data extends JsonValue> = Response & { __jsonType: Data }
 
