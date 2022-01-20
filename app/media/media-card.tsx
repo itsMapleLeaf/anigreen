@@ -1,8 +1,8 @@
 import {
   BookmarkIcon,
+  ChevronDoubleRightIcon,
   LinkIcon,
   PencilAltIcon,
-  PlusIcon,
   XCircleIcon,
 } from "@heroicons/react/solid"
 import clsx from "clsx"
@@ -49,21 +49,21 @@ export function MediaCard({
         />
       </div>
       <div className="px-3 pb-3 text-sm uppercase font-medium opacity-60 leading-none flex items-center">
-        <p className="flex-1">{media.format}</p>
-        {scheduleEpisode ? (
-          <p>
-            Episode {filterJoin("/", [scheduleEpisode, media.episodeCount])}
-          </p>
-        ) : undefined}
-        {media.watchListInfo ? (
-          <p>
-            Watched{" "}
-            {filterJoin("/", [
-              media.watchListInfo.progress,
-              media.episodeCount,
-            ])}
-          </p>
-        ) : undefined}
+        <p>
+          {filterJoin(" • ", [
+            media.format,
+            scheduleEpisode &&
+              `Episode ${filterJoin("/", [
+                scheduleEpisode,
+                media.episodeCount,
+              ])}`,
+            // media.watchListInfo &&
+            //   `Watched ${filterJoin("/", [
+            //     media.watchListInfo.progress,
+            //     media.episodeCount,
+            //   ])}`,
+          ])}
+        </p>
       </div>
       <MediaCardControls media={media} />
     </div>
@@ -102,9 +102,11 @@ function MediaCardControls({ media }: { media: Media }) {
       {state.status === "onList" && (
         <>
           <EditStatusButton media={media} watchListInfo={state.watchListInfo} />
-          <button className={actionButtonClass}>
-            <PlusIcon className="w-5" />
-          </button>
+          <Tooltip text="Advance progress +1">
+            <button className={actionButtonClass}>
+              <ChevronDoubleRightIcon className="w-5" />
+            </button>
+          </Tooltip>
           <ExternalLinksButton media={media} />
         </>
       )}
@@ -142,9 +144,11 @@ function EditStatusButton({
       side="bottom"
       align="center"
       trigger={
-        <button className={actionButtonClass}>
-          <PencilAltIcon className="w-5" />
-        </button>
+        <Tooltip text="Edit">
+          <button className={actionButtonClass}>
+            <PencilAltIcon className="w-5" />
+          </button>
+        </Tooltip>
       }
       items={
         <>
@@ -175,9 +179,11 @@ function EditStatusButton({
 function ExternalLinksButton({ media }: { media: Media }) {
   // todo
   return (
-    <button className={actionButtonClass}>
-      <LinkIcon className="w-5" />
-    </button>
+    <Tooltip text="External links">
+      <button className={actionButtonClass}>
+        <LinkIcon className="w-5" />
+      </button>
+    </Tooltip>
   )
 }
 
