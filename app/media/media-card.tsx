@@ -7,11 +7,12 @@ import {
 } from "@heroicons/react/solid"
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { Form } from "remix"
+import { useFetcher } from "remix"
 import { MediaListStatus } from "~/anilist/graphql.out"
 import { useAuthContext } from "~/auth/auth-context"
 import { filterJoin } from "~/helpers/filter-join"
 import type { Media, MediaWatchListInfo } from "~/media/media"
+import { Button } from "~/ui/button"
 import { LazyImage } from "~/ui/lazy-image"
 import { Menu } from "~/ui/menu"
 import { Tooltip } from "~/ui/tooltip"
@@ -103,9 +104,9 @@ function MediaCardControls({ media }: { media: Media }) {
         <>
           <EditStatusButton media={media} watchListInfo={state.watchListInfo} />
           <Tooltip text="Advance progress +1">
-            <button className={actionButtonClass}>
+            <Button className={actionButtonClass}>
               <ChevronDoubleRightIcon className="w-5" />
-            </button>
+            </Button>
           </Tooltip>
           <ExternalLinksButton media={media} />
         </>
@@ -115,8 +116,10 @@ function MediaCardControls({ media }: { media: Media }) {
 }
 
 function AddToWatchingButton({ media }: { media: Media }) {
+  const fetcher = useFetcher()
+
   return (
-    <Form
+    <fetcher.Form
       action={`/media/${media.id}/status`}
       method="put"
       className="contents"
@@ -124,11 +127,15 @@ function AddToWatchingButton({ media }: { media: Media }) {
     >
       <input type="hidden" name="status" value={MediaListStatus.Current} />
       <Tooltip text="Add to watch list">
-        <button type="submit" className={actionButtonClass}>
+        <Button
+          type="submit"
+          className={actionButtonClass}
+          loading={!!fetcher.submission}
+        >
           <BookmarkIcon className="w-5" />
-        </button>
+        </Button>
       </Tooltip>
-    </Form>
+    </fetcher.Form>
   )
 }
 
@@ -139,20 +146,22 @@ function EditStatusButton({
   media: Media
   watchListInfo: MediaWatchListInfo
 }) {
+  const fetcher = useFetcher()
+
   return (
     <Menu
       side="bottom"
       align="center"
       trigger={
         <Tooltip text="Edit">
-          <button className={actionButtonClass}>
+          <Button className={actionButtonClass} loading={!!fetcher.submission}>
             <PencilAltIcon className="w-5" />
-          </button>
+          </Button>
         </Tooltip>
       }
       items={
         <>
-          <Form
+          <fetcher.Form
             action={`/media/${media.id}/status`}
             method="delete"
             className="contents"
@@ -164,12 +173,12 @@ function EditStatusButton({
               value={watchListInfo.mediaListId}
             />
             <Menu.Item>
-              <button type="submit" className={Menu.itemClass}>
+              <Button type="submit" className={Menu.itemClass}>
                 <XCircleIcon className="w-5" />
                 Remove
-              </button>
+              </Button>
             </Menu.Item>
-          </Form>
+          </fetcher.Form>
         </>
       }
     />
@@ -180,9 +189,9 @@ function ExternalLinksButton({ media }: { media: Media }) {
   // todo
   return (
     <Tooltip text="External links">
-      <button className={actionButtonClass}>
+      <Button className={actionButtonClass}>
         <LinkIcon className="w-5" />
-      </button>
+      </Button>
     </Tooltip>
   )
 }

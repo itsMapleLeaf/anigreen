@@ -1,17 +1,20 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import { useState } from "react"
 import type { LinksFunction, MetaFunction } from "remix"
 import {
-  Form,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useFetcher,
 } from "remix"
 import { AuthProvider } from "~/auth/auth-context"
 import { useLoaderDataTyped } from "~/remix-typed"
+import { Button } from "~/ui/button"
 import { Menu } from "~/ui/menu"
+import { PendingIcon } from "~/ui/pending-icon"
 import { anilistClient } from "./anilist/anilist-client.server"
 import { ViewerDocument } from "./anilist/graphql.out"
 import { getSession } from "./auth/session.server"
@@ -105,13 +108,6 @@ export default function App() {
 
 function HeaderNavigation() {
   const data = useLoaderDataTyped<typeof loader>()
-
-  const loginUrl =
-    `https://anilist.co/api/v2/oauth/authorize` +
-    `?client_id=${data.anilistClientId}` +
-    `&redirect_uri=${data.anilistRedirectUri}` +
-    `&response_type=code`
-
   return (
     <nav className="flex items-center justify-between h-16">
       <a href="/" title="Home" className="translate-y-[-2px]">
@@ -120,43 +116,69 @@ function HeaderNavigation() {
           <span className="text-emerald-400">green</span>
         </h1>
       </a>
-      {data.user ? (
-        <UserMenuButton user={data.user} />
-      ) : (
-        <a href={loginUrl} className={buttonClass({ variant: "clear" })}>
-          log in with AniList
-        </a>
-      )}
+      {data.user ? <UserMenuButton user={data.user} /> : <LoginButton />}
     </nav>
   )
 }
 
+function LoginButton() {
+  const data = useLoaderDataTyped<typeof loader>()
+  const [pending, setPending] = useState(false) // no form submits here, we'll just use a flag 🤪
+
+  const loginUrl =
+    `https://anilist.co/api/v2/oauth/authorize` +
+    `?client_id=${data.anilistClientId}` +
+    `&redirect_uri=${data.anilistRedirectUri}` +
+    `&response_type=code`
+
+  return pending ? (
+    <PendingIcon />
+  ) : (
+    <a
+      href={loginUrl}
+      className={buttonClass({ variant: "clear" })}
+      onClick={() => setPending(true)}
+    >
+      log in with AniList
+    </a>
+  )
+}
+
 function UserMenuButton({ user }: { user: UserData }) {
+  const fetcher = useFetcher()
   return (
     <Menu
       side="bottom"
       align="end"
       trigger={
-        <button className="transition opacity-75 hover:opacity-100 focus:opacity-100">
+        <Button
+          className="transition opacity-75 hover:opacity-100 focus:opacity-100"
+          loading={!!fetcher.submission}
+        >
           <img
             src={user.avatarUrl}
             alt={`Logged in as ${user.name}`}
             // display block adds random bottom space for some reason
             className="w-8 h-8 rounded-full inline"
           />
-        </button>
+        </Button>
       }
       items={
         <>
           <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
           <Menu.Separator />
-          <Form action="/logout" method="post" replace className="contents">
+          <fetcher.Form
+            action="/logout"
+            method="post"
+            replace
+            className="contents"
+          >
             <Menu.Item>
               <button type="submit" className={Menu.itemClass}>
                 Log out
               </button>
             </Menu.Item>
-          </Form>
+          </fetcher.Form>
         </>
       }
     />
