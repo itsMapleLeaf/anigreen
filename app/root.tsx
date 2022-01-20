@@ -12,6 +12,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "remix"
+import { AuthProvider } from "~/auth/auth-context"
 import { Transition } from "~/dom/transition"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { anilistClient } from "./anilist/anilist-client.server"
@@ -63,6 +64,7 @@ export async function loader({ request }: DataFunctionArgs) {
 }
 
 export default function App() {
+  const { user } = useLoaderDataTyped<typeof loader>()
   return (
     <html lang="en" className="bg-slate-900 text-slate-100">
       <head>
@@ -90,7 +92,9 @@ export default function App() {
           </header>
           <main className={maxWidthContainerClass}>
             <div className="my-8">
-              <Outlet />
+              <AuthProvider value={{ loggedIn: !!user }}>
+                <Outlet />
+              </AuthProvider>
             </div>
           </main>
         </div>
