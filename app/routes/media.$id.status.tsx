@@ -48,7 +48,7 @@ export async function action({ request, params }: DataFunctionArgs) {
       accessToken: session.accessToken,
     })
 
-    return redirect("/schedule", 303)
+    return new Response("", { status: 204 })
   }
 
   if (method === "delete") {
@@ -67,7 +67,7 @@ export async function action({ request, params }: DataFunctionArgs) {
       accessToken: session.accessToken,
     })
 
-    return redirect("/schedule", 303)
+    return new Response("", { status: 204 })
   }
 
   return new Response("", { status: 405 })
