@@ -1,6 +1,11 @@
 import { BookmarkIcon, LinkIcon } from "@heroicons/react/solid"
+import clsx from "clsx"
+import type { ReactNode } from "react"
+import type { AuthContextValue } from "~/auth/auth-context"
+import { useAuthContext } from "~/auth/auth-context"
 import { filterJoin } from "~/helpers/filter-join"
 import { LazyImage } from "~/ui/lazy-image"
+import { Tooltip } from "~/ui/tooltip"
 
 export type MediaCardProps = {
   id: number
@@ -13,6 +18,8 @@ export type MediaCardProps = {
   watchedEpisode?: number
   episodeCount?: number
 }
+
+const actionButtonClass = clsx`flex justify-center p-3 hover:bg-black/30 transition w-full`
 
 export function MediaCard(props: MediaCardProps) {
   return (
@@ -54,13 +61,40 @@ export function MediaCard(props: MediaCardProps) {
         ) : undefined}
       </div>
       <div className="bg-slate-800 grid grid-flow-col auto-cols-fr">
-        <button className="flex justify-center p-3 hover:bg-black/30 transition">
-          <BookmarkIcon className="w-5" />
-        </button>
-        <button className="flex justify-center p-3 hover:bg-black/30 transition">
+        <AuthRequiredWrapper tooltipText="Log in to bookmark this">
+          {(auth) => (
+            <button className={actionButtonClass} disabled={!auth.loggedIn}>
+              <BookmarkIcon className="w-5" />
+            </button>
+          )}
+        </AuthRequiredWrapper>
+        <button className={actionButtonClass}>
           <LinkIcon className="w-5" />
         </button>
       </div>
     </div>
+  )
+}
+
+function AuthRequiredWrapper({
+  tooltipText,
+  children,
+}: {
+  tooltipText: ReactNode
+  children: (auth: AuthContextValue) => ReactNode
+}) {
+  const auth = useAuthContext()
+
+  if (auth.loggedIn) {
+    return <>{children(auth)}</>
+  }
+
+  return (
+    <Tooltip text={tooltipText}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+      <div tabIndex={0}>
+        <div className="pointer-events-none opacity-25">{children(auth)}</div>
+      </div>
+    </Tooltip>
   )
 }

@@ -2,14 +2,18 @@
 
 - media cards
   - [x] design
-  - [ ] click to add bookmark
-  - edit menu when bookmarked
-    - [ ] hold
-    - [ ] drop
-    - [ ] remove
-    - [ ] rate -> shows a modal to rate the anime
-    - [ ] set progress -> shows a modal to set the progress
-  - [ ] links dropdown
+  - bookmark button
+    - [x] when logged out, show an auth required message in a modal or tooltip
+    - when logged in
+      - [ ] if not on list, show bookmark icon, add to bookmarks on click
+      - if on list, show edit menu icon which pops a menu on open
+        - [ ] hold
+        - [ ] drop
+        - [ ] remove
+        - [ ] rate -> shows a modal to rate the anime
+        - [ ] set progress -> shows a modal to set the progress
+  - [ ] links button, pops a menu on open, lists all the media external links
+  - [ ] advance progress button, only show when on list and when progress is not 100%, advance progress by 1 on click
   - [ ] show watched count somewhere?
 - [ ] schedule page
 - [ ] watching page
