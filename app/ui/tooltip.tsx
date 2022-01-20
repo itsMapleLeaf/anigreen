@@ -1,21 +1,27 @@
 import * as Tooltip from "@radix-ui/react-tooltip"
 import clsx from "clsx"
-import type { ReactNode } from "react"
-import { useState } from "react"
+import type { ComponentPropsWithoutRef, ReactNode } from "react"
+import { forwardRef, useState } from "react"
 import { Transition } from "~/dom/transition"
 
-function TooltipWrapper({
-  text,
-  children,
-}: {
-  text: ReactNode
-  children: ReactNode
-}) {
+function TooltipWrapper(
+  {
+    text,
+    children,
+    ...props
+  }: {
+    text: ReactNode
+    children: ReactNode
+  } & ComponentPropsWithoutRef<"button">,
+  ref: React.Ref<HTMLButtonElement>,
+) {
   const [visible, setVisible] = useState(false)
   return (
     <Tooltip.Provider delayDuration={300}>
       <Tooltip.Root open={visible} onOpenChange={setVisible}>
-        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
+        <Tooltip.Trigger {...props} asChild ref={ref}>
+          {children}
+        </Tooltip.Trigger>
         <Transition
           visible={visible}
           className="transition"
@@ -41,4 +47,6 @@ function TooltipWrapper({
   )
 }
 
-export { TooltipWrapper as Tooltip }
+const TooltipWrapperForwardRef = forwardRef(TooltipWrapper)
+
+export { TooltipWrapperForwardRef as Tooltip }
