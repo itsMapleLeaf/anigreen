@@ -3,22 +3,28 @@ import { anilistClient } from "~/anilist/anilist-client.server"
 import { ScheduleDocument } from "~/anilist/graphql.out"
 import { startOfDayZoned } from "~/dates/start-of-day-zoned"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
-import type { MediaCardProps } from "~/media/media-card"
+import type { Media } from "~/media/media"
 
 export type ScheduleData = Awaited<ReturnType<typeof loadScheduleData>>
 
-export async function loadScheduleData(page: number, timezone: string) {
+export async function loadScheduleData(
+  page: number,
+  timezone: string,
+  accessToken?: string,
+) {
   const data = await anilistClient.request({
     document: ScheduleDocument,
     variables: {
       page,
       startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
     },
+    accessToken,
   })
 
-  const itemsByDay = new Map<number, MediaCardProps[]>()
+  const itemsByDay = new Map<number, Media[]>()
   for (const schedule of data.Page?.airingSchedules ?? []) {
-    if (!schedule) continue
+    if (!schedule || !schedule.media) continue
+
     const day = startOfDay(schedule.airingAt * 1000).getTime()
     const { title } = schedule.media ?? {}
 
@@ -30,14 +36,15 @@ export async function loadScheduleData(page: number, timezone: string) {
       "Unknown Title"
 
     mapGetWithFallback(itemsByDay, day, []).push({
-      id: schedule.id,
+      id: schedule.media.id ?? schedule.id,
       title: titleText,
-      format: schedule.media?.format?.replace(/[^A-Za-z]+/g, " "),
+      format: schedule.media.format?.replace(/[^A-Za-z]+/g, " "),
       scheduleEpisode: schedule.episode,
-      episodeCount: schedule.media?.episodes,
-      bannerImageUrl: schedule.media?.bannerImage,
-      coverImageUrl: schedule.media?.coverImage?.medium,
-      coverColor: schedule.media?.coverImage?.color,
+      episodeCount: schedule.media.episodes,
+      bannerImageUrl: schedule.media.bannerImage,
+      coverImageUrl: schedule.media.coverImage?.medium,
+      coverColor: schedule.media.coverImage?.color,
+      watchingStatus: schedule.media.mediaListEntry?.status,
     })
   }
 

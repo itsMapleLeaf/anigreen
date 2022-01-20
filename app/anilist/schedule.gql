@@ -9,6 +9,7 @@ query Schedule($startDate: Int!, $page: Int!) {
       episode
       airingAt
       media {
+        id
         title {
           native
           romaji
@@ -24,6 +25,9 @@ query Schedule($startDate: Int!, $page: Int!) {
           color
         }
         episodes
+        mediaListEntry {
+          status
+        }
       }
     }
   }

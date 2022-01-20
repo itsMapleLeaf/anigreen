@@ -3,6 +3,7 @@ import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { Fragment } from "react"
 import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
+import { getSession } from "~/auth/session.server"
 import { DateTime } from "~/dates/date-time"
 import { getTimezone } from "~/dates/timezone-cookie.server"
 import { useWindowEvent } from "~/dom/use-event"
@@ -23,10 +24,11 @@ export async function loader({ request }: DataFunctionArgs) {
     page = 1
   }
 
+  const session = await getSession(request)
   const timezone = await getTimezone(request)
 
   return {
-    schedule: await loadScheduleData(page, timezone),
+    schedule: await loadScheduleData(page, timezone, session?.accessToken),
     timezone,
   }
 }
@@ -56,9 +58,9 @@ function ScheduleItems() {
             </div>
           </h2>
           <ul className="grid gap-4 my-6 grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
-            {items.map((item) => (
-              <li key={item.id}>
-                <MediaCard {...item} />
+            {items.map((media) => (
+              <li key={media.id}>
+                <MediaCard media={media} />
               </li>
             ))}
           </ul>

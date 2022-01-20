@@ -1,6 +1,7 @@
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core"
 import { print } from "graphql"
 import { setTimeout } from "node:timers/promises"
+import { inspect } from "node:util"
 
 type RequestOptions<Result, Variables> = {
   document: TypedDocumentNode<Result, Variables>
@@ -64,6 +65,16 @@ async function requestGraphQL<Result, Variables>(
   if (!response.ok || json.errors) {
     const message =
       json.errors?.[0]?.message || response.statusText || "Unknown error"
+
+    console.warn(
+      "errors:",
+      inspect(json.errors, { depth: Number.POSITIVE_INFINITY }),
+    )
+    console.warn("query:", print(document))
+    console.warn(
+      "variables:",
+      inspect(variables, { depth: Number.POSITIVE_INFINITY }),
+    )
 
     throw new Error(
       `Anilist request failed (status ${response.status}): ${message}`,

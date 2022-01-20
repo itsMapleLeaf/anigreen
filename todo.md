@@ -5,7 +5,7 @@
   - bookmark button
     - [x] when logged out, show an auth required message in a modal or tooltip
     - when logged in
-      - [ ] if not on list, show bookmark icon, add to bookmarks on click
+      - [x] if not on list, show bookmark icon, add to bookmarks on click
       - if on list, show edit menu icon which pops a menu on open
         - [ ] hold
         - [ ] drop
@@ -14,7 +14,8 @@
         - [ ] set progress -> shows a modal to set the progress
   - [ ] links button, pops a menu on open, lists all the media external links
   - [ ] advance progress button, only show when on list and when progress is not 100%, advance progress by 1 on click
-  - [ ] show watched count somewhere?
+  - [ ] show watched count somewhere
+  - [ ] show watching status (watching, completed, on hold, dropped)
 - [ ] schedule page
 - [ ] watching page
 - [x] deal with timezone difference between server and client
@@ -35,3 +36,4 @@
 - [ ] show a loading spinner in the corner while loading or navigating
 - [ ] click on a cover/banner to view the full image in a lightbox modal (or just in a new tab lol)
 - [ ] media card: show full title in tooltip
+- [ ] error modals
