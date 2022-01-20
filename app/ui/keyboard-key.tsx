@@ -10,14 +10,9 @@ export function KeyboardKey({
 }) {
   return (
     <Tooltip text={<>Key: {label}</>}>
-      {(tooltip) => (
-        <kbd
-          {...tooltip}
-          className="bg-emerald-600/50 border-emerald-500 border-[1px] rounded inline-block"
-        >
-          {children}
-        </kbd>
-      )}
+      <kbd className="bg-emerald-600/50 border-emerald-500 border-[1px] rounded inline-block">
+        {children}
+      </kbd>
     </Tooltip>
   )
 }

@@ -1,57 +1,44 @@
-import { Portal, Transition } from "@headlessui/react"
+import * as Tooltip from "@radix-ui/react-tooltip"
+import clsx from "clsx"
 import type { ReactNode } from "react"
 import { useState } from "react"
-import { usePopper } from "react-popper"
-import { useDelayedValue } from "~/state/use-delayed-value"
-import { useElementFocused } from "../dom/use-element-focused"
-import { useElementHovered } from "../dom/use-element-hovered"
+import { Transition } from "~/dom/transition"
 
-export function Tooltip({
+function TooltipWrapper({
   text,
   children,
 }: {
   text: ReactNode
-  children: (props: {
-    ref: (element: HTMLElement | null | undefined) => void
-    tabIndex: number
-  }) => ReactNode
+  children: ReactNode
 }) {
-  const [reference, referenceRef] = useState<HTMLElement | null>()
-  const [popper, popperRef] = useState<HTMLElement | null>()
-  const { attributes, styles } = usePopper(reference, popper, {
-    placement: "top",
-    modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
-  })
-
-  const focused = useElementFocused(reference)
-  const hovered = useElementHovered(reference)
-  const visible = focused || hovered
-  const delayedVisible = useDelayedValue(visible, visible ? 500 : 0)
-
+  const [visible, setVisible] = useState(false)
   return (
-    <>
-      {children({ ref: referenceRef, tabIndex: 0 })}
-      <Transition show={delayedVisible} className="contents">
-        <Portal>
-          <div ref={popperRef} style={styles.popper} {...attributes.popper}>
-            <Transition.Child
-              enter="transition"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
+    <Tooltip.Provider delayDuration={300}>
+      <Tooltip.Root open={visible} onOpenChange={setVisible}>
+        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
+        <Transition
+          visible={visible}
+          className="transition"
+          inClassName={clsx`opacity-100 scale-100`}
+          outClassName={clsx`opacity-0 scale-90`}
+        >
+          {(transition) => (
+            <Tooltip.Content
+              {...transition}
+              side="top"
+              sideOffset={8}
+              forceMount
             >
-              <div
-                role="tooltip"
-                className="bg-white text-slate-800 py-1 px-2 leading-tight rounded-md shadow-lg text-sm font-medium"
-              >
+              <div className="bg-white text-slate-800 py-1 px-2 leading-tight rounded-md shadow-lg text-sm font-medium">
                 {text}
               </div>
-            </Transition.Child>
-          </div>
-        </Portal>
-      </Transition>
-    </>
+              <Tooltip.Arrow className="fill-white" />
+            </Tooltip.Content>
+          )}
+        </Transition>
+      </Tooltip.Root>
+    </Tooltip.Provider>
   )
 }
+
+export { TooltipWrapper as Tooltip }
