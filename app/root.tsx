@@ -1,5 +1,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import clsx from "clsx"
+import { useState } from "react"
 import type { LinksFunction, MetaFunction } from "remix"
 import {
   Form,
@@ -10,6 +12,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "remix"
+import { Transition } from "~/dom/transition"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { anilistClient } from "./anilist/anilist-client.server"
 import { ViewerDocument } from "./anilist/graphql.out"
@@ -128,8 +131,9 @@ function HeaderNavigation() {
 }
 
 function UserMenuButton({ user }: { user: UserData }) {
+  const [visible, setVisible] = useState(false)
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root open={visible} onOpenChange={setVisible}>
       <DropdownMenu.Trigger className="transition opacity-75 hover:opacity-100 focus:opacity-100">
         <img
           src={user.avatarUrl}
@@ -138,23 +142,35 @@ function UserMenuButton({ user }: { user: UserData }) {
           className="w-8 h-8 rounded-full inline"
         />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content
-        className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-max"
-        side="bottom"
-        align="end"
-        sideOffset={16}
+      <Transition
+        visible={visible}
+        className="transition"
+        inClassName={clsx`opacity-100 translate-y-0`}
+        outClassName={clsx`opacity-0 translate-y-3`}
       >
-        <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
-        <div className="h-px bg-slate-300" />
-        <Form action="/logout" method="post" replace className="contents">
-          <button
-            type="submit"
-            className="px-3 py-2 transition hover:bg-emerald-200 focus:bg-emerald-200"
+        {(transition) => (
+          <DropdownMenu.Content
+            {...transition}
+            side="bottom"
+            align="end"
+            sideOffset={16}
+            forceMount
           >
-            Log out
-          </button>
-        </Form>
-      </DropdownMenu.Content>
+            <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-max">
+              <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
+              <div className="h-px bg-slate-300" />
+              <Form action="/logout" method="post" replace className="contents">
+                <button
+                  type="submit"
+                  className="px-3 py-2 transition hover:bg-emerald-200 focus:bg-emerald-200"
+                >
+                  Log out
+                </button>
+              </Form>
+            </div>
+          </DropdownMenu.Content>
+        )}
+      </Transition>
     </DropdownMenu.Root>
   )
 }
