@@ -4,6 +4,12 @@ mutation SetMediaListStatus($mediaId: Int!, $status: MediaListStatus!) {
   }
 }
 
+mutation DeleteMediaListEntry($id: Int!) {
+  DeleteMediaListEntry(id: $id) {
+    deleted
+  }
+}
+
 # fragment media on Media {
 #   id
 #   format

@@ -3,6 +3,7 @@ import {
   LinkIcon,
   PencilAltIcon,
   PlusIcon,
+  XCircleIcon,
 } from "@heroicons/react/solid"
 import clsx from "clsx"
 import type { ReactNode } from "react"
@@ -10,13 +11,20 @@ import { Form } from "remix"
 import { MediaListStatus } from "~/anilist/graphql.out"
 import { useAuthContext } from "~/auth/auth-context"
 import { filterJoin } from "~/helpers/filter-join"
-import type { Media } from "~/media/media"
+import type { Media, MediaWatchListInfo } from "~/media/media"
 import { LazyImage } from "~/ui/lazy-image"
+import { Menu } from "~/ui/menu"
 import { Tooltip } from "~/ui/tooltip"
 
 const actionButtonClass = clsx`flex justify-center p-3 hover:bg-black/30 transition w-full`
 
-export function MediaCard({ media }: { media: Media }) {
+export function MediaCard({
+  media,
+  scheduleEpisode,
+}: {
+  media: Media
+  scheduleEpisode: number
+}) {
   return (
     <div className="bg-slate-700 rounded-lg shadow overflow-hidden h-full flex flex-col">
       <div
@@ -42,16 +50,18 @@ export function MediaCard({ media }: { media: Media }) {
       </div>
       <div className="px-3 pb-3 text-sm uppercase font-medium opacity-60 leading-none flex items-center">
         <p className="flex-1">{media.format}</p>
-        {media.scheduleEpisode ? (
+        {scheduleEpisode ? (
           <p>
-            Episode{" "}
-            {filterJoin("/", [media.scheduleEpisode, media.episodeCount])}
+            Episode {filterJoin("/", [scheduleEpisode, media.episodeCount])}
           </p>
         ) : undefined}
-        {media.watchedEpisode ? (
+        {media.watchListInfo ? (
           <p>
             Watched{" "}
-            {filterJoin("/", [media.watchedEpisode, media.episodeCount])}
+            {filterJoin("/", [
+              media.watchListInfo.progress,
+              media.episodeCount,
+            ])}
           </p>
         ) : undefined}
       </div>
@@ -64,14 +74,14 @@ function MediaCardControls({ media }: { media: Media }) {
   const auth = useAuthContext()
 
   const state = !auth.loggedIn
-    ? "loggedOut"
-    : media.watchingStatus != undefined
-    ? "onList"
-    : "notOnList"
+    ? ({ status: "loggedOut" } as const)
+    : media.watchListInfo
+    ? ({ status: "onList", watchListInfo: media.watchListInfo } as const)
+    : ({ status: "notOnList" } as const)
 
   return (
     <div className="bg-slate-800 grid grid-flow-col auto-cols-fr">
-      {state === "loggedOut" && (
+      {state.status === "loggedOut" && (
         <>
           <AuthRequiredWrapper tooltipText="Log in to bookmark this">
             <div className={actionButtonClass}>
@@ -82,18 +92,16 @@ function MediaCardControls({ media }: { media: Media }) {
         </>
       )}
 
-      {state === "notOnList" && (
+      {state.status === "notOnList" && (
         <>
           <AddToWatchingButton media={media} />
           <ExternalLinksButton media={media} />
         </>
       )}
 
-      {state === "onList" && (
+      {state.status === "onList" && (
         <>
-          <button className={actionButtonClass}>
-            <PencilAltIcon className="w-5" />
-          </button>
+          <EditStatusButton media={media} watchListInfo={state.watchListInfo} />
           <button className={actionButtonClass}>
             <PlusIcon className="w-5" />
           </button>
@@ -119,6 +127,48 @@ function AddToWatchingButton({ media }: { media: Media }) {
         </button>
       </Tooltip>
     </Form>
+  )
+}
+
+function EditStatusButton({
+  media,
+  watchListInfo,
+}: {
+  media: Media
+  watchListInfo: MediaWatchListInfo
+}) {
+  return (
+    <Menu
+      side="bottom"
+      align="center"
+      trigger={
+        <button className={actionButtonClass}>
+          <PencilAltIcon className="w-5" />
+        </button>
+      }
+      items={
+        <>
+          <Form
+            action={`/media/${media.id}/status`}
+            method="delete"
+            className="contents"
+            replace
+          >
+            <input
+              type="hidden"
+              name="mediaListId"
+              value={watchListInfo.mediaListId}
+            />
+            <Menu.Item>
+              <button type="submit" className={Menu.itemClass}>
+                <XCircleIcon className="w-5" />
+                Remove
+              </button>
+            </Menu.Item>
+          </Form>
+        </>
+      }
+    />
   )
 }
 

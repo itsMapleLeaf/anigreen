@@ -7,6 +7,12 @@ import type { Media } from "~/media/media"
 
 export type ScheduleData = Awaited<ReturnType<typeof loadScheduleData>>
 
+export type ScheduleItem = {
+  id: number
+  media: Media
+  episode: number
+}
+
 export async function loadScheduleData(
   page: number,
   timezone: string,
@@ -21,7 +27,7 @@ export async function loadScheduleData(
     accessToken,
   })
 
-  const itemsByDay = new Map<number, Media[]>()
+  const itemsByDay = new Map<number, ScheduleItem[]>()
   for (const schedule of data.Page?.airingSchedules ?? []) {
     if (!schedule || !schedule.media) continue
 
@@ -36,15 +42,22 @@ export async function loadScheduleData(
       "Unknown Title"
 
     mapGetWithFallback(itemsByDay, day, []).push({
-      id: schedule.media.id ?? schedule.id,
-      title: titleText,
-      format: schedule.media.format?.replace(/[^A-Za-z]+/g, " "),
-      scheduleEpisode: schedule.episode,
-      episodeCount: schedule.media.episodes,
-      bannerImageUrl: schedule.media.bannerImage,
-      coverImageUrl: schedule.media.coverImage?.medium,
-      coverColor: schedule.media.coverImage?.color,
-      watchingStatus: schedule.media.mediaListEntry?.status,
+      id: schedule.id,
+      episode: schedule.episode,
+      media: {
+        id: schedule.media.id,
+        title: titleText,
+        format: schedule.media.format?.replace(/[^A-Za-z]+/g, " "),
+        episodeCount: schedule.media.episodes,
+        bannerImageUrl: schedule.media.bannerImage,
+        coverImageUrl: schedule.media.coverImage?.medium,
+        coverColor: schedule.media.coverImage?.color,
+        watchListInfo: schedule.media.mediaListEntry?.status && {
+          mediaListId: schedule.media.mediaListEntry.id,
+          status: schedule.media.mediaListEntry.status,
+          progress: schedule.media.mediaListEntry.progress ?? 0,
+        },
+      },
     })
   }
 

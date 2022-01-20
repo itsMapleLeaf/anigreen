@@ -58,9 +58,9 @@ function ScheduleItems() {
             </div>
           </h2>
           <ul className="grid gap-4 my-6 grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
-            {items.map((media) => (
-              <li key={media.id}>
-                <MediaCard media={media} />
+            {items.map((item) => (
+              <li key={item.id}>
+                <MediaCard media={item.media} scheduleEpisode={item.episode} />
               </li>
             ))}
           </ul>

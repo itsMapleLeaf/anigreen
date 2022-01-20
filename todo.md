@@ -9,7 +9,7 @@
       - if on list, show edit menu icon which pops a menu on open
         - [ ] hold
         - [ ] drop
-        - [ ] remove
+        - [x] remove
         - [ ] rate -> shows a modal to rate the anime
         - [ ] set progress -> shows a modal to set the progress
   - [ ] links button, pops a menu on open, lists all the media external links

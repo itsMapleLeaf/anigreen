@@ -8,7 +8,11 @@ export type Media = {
   coverImageUrl?: string
   coverColor?: string
   episodeCount?: number
-  scheduleEpisode?: number
-  watchedEpisode?: number
-  watchingStatus?: MediaListStatus
+  watchListInfo?: MediaWatchListInfo
+}
+
+export type MediaWatchListInfo = {
+  mediaListId: number
+  status: MediaListStatus
+  progress: number
 }

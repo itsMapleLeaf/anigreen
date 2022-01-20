@@ -26,6 +26,8 @@ query Schedule($startDate: Int!, $page: Int!) {
         }
         episodes
         mediaListEntry {
+          id
+          progress
           status
         }
       }
