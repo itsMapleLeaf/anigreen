@@ -1,7 +1,5 @@
-import { Popover, Portal, Transition } from "@headlessui/react"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import { Fragment, useState } from "react"
-import { usePopper } from "react-popper"
 import type { LinksFunction, MetaFunction } from "remix"
 import {
   Form,
@@ -130,64 +128,33 @@ function HeaderNavigation() {
 }
 
 function UserMenuButton({ user }: { user: UserData }) {
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>()
-  const [popperElement, setPopperElement] = useState<HTMLElement | null>()
-
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "bottom-end",
-    modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
-  })
-
   return (
-    <Popover>
-      <div className="relative">
-        <Popover.Button
-          className="transition opacity-75 hover:opacity-100 focus:opacity-100"
-          ref={setReferenceElement}
-        >
-          <img
-            src={user.avatarUrl}
-            alt={`Logged in as ${user.name}`}
-            // display block adds random bottom space for some reason
-            className="w-8 h-8 rounded-full inline"
-          />
-        </Popover.Button>
-        <Portal>
-          <div
-            ref={setPopperElement}
-            style={styles.popper}
-            {...attributes.popper}
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger className="transition opacity-75 hover:opacity-100 focus:opacity-100">
+        <img
+          src={user.avatarUrl}
+          alt={`Logged in as ${user.name}`}
+          // display block adds random bottom space for some reason
+          className="w-8 h-8 rounded-full inline"
+        />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content
+        className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-max"
+        side="bottom"
+        align="end"
+        sideOffset={16}
+      >
+        <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
+        <div className="h-px bg-slate-300" />
+        <Form action="/logout" method="post" replace className="contents">
+          <button
+            type="submit"
+            className="px-3 py-2 transition hover:bg-emerald-200 focus:bg-emerald-200"
           >
-            <Transition
-              as={Fragment}
-              enter="transition"
-              enterFrom="transform translate-y-3 opacity-0"
-              enterTo="transform translate-y-0 opacity-100"
-              leave="transition"
-              leaveFrom="transform translate-y-0 opacity-100"
-              leaveTo="transform translate-y-3 opacity-0"
-            >
-              <Popover.Panel className="absolute right-0 flex flex-col overflow-hidden font-medium rounded-lg shadow top-full bg-slate-50 text-slate-900 w-max">
-                <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
-                <div className="h-px bg-slate-300" />
-                <Form
-                  action="/logout"
-                  method="post"
-                  replace
-                  className="contents"
-                >
-                  <button
-                    type="submit"
-                    className="px-3 py-2 transition hover:bg-emerald-200 focus:bg-emerald-200"
-                  >
-                    Log out
-                  </button>
-                </Form>
-              </Popover.Panel>
-            </Transition>
-          </div>
-        </Portal>
-      </div>
-    </Popover>
+            Log out
+          </button>
+        </Form>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   )
 }
