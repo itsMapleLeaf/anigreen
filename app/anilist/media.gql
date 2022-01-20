@@ -1,11 +1,11 @@
-mutation SetMediaListStatus($mediaId: Int!, $status: MediaListStatus!) {
+mutation SetWatchingStatus($mediaId: Int!, $status: MediaListStatus!) {
   SaveMediaListEntry(mediaId: $mediaId, status: $status) {
     status
   }
 }
 
-mutation DeleteMediaListEntry($id: Int!) {
-  DeleteMediaListEntry(id: $id) {
+mutation DeleteFromWatching($mediaListId: Int!) {
+  DeleteMediaListEntry(id: $mediaListId) {
     deleted
   }
 }

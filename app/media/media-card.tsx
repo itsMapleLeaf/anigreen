@@ -120,11 +120,12 @@ function AddToWatchingButton({ media }: { media: Media }) {
 
   return (
     <fetcher.Form
-      action={`/media/${media.id}/status`}
+      action="/set-watching-status"
       method="put"
       className="contents"
       replace
     >
+      <input type="hidden" name="mediaId" value={media.id} />
       <input type="hidden" name="status" value={MediaListStatus.Current} />
       <Tooltip text="Add to watch list">
         <Button
@@ -162,7 +163,7 @@ function EditStatusButton({
       items={
         <>
           <fetcher.Form
-            action={`/media/${media.id}/status`}
+            action="/delete-from-watching"
             method="delete"
             className="contents"
             replace
