@@ -1,5 +1,4 @@
 import { BookmarkIcon } from "@heroicons/react/solid"
-import type { ReactNode } from "react"
 import { useAuthContext } from "~/auth/auth-context"
 import type { MediaResource } from "~/media/media"
 import { actionButtonClass } from "~/media/media-card-action-button"
@@ -22,11 +21,14 @@ export function MediaCardControls({ media }: { media: MediaResource }) {
     <div className="bg-slate-800 grid grid-flow-col auto-cols-fr">
       {state.status === "loggedOut" && (
         <>
-          <AuthRequiredWrapper tooltipText="Log in to bookmark this">
-            <div className={actionButtonClass}>
-              <BookmarkIcon className="w-5" />
+          <Tooltip text="Log in to bookmark this" side="bottom">
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+            <div tabIndex={0} className="opacity-40">
+              <div className={actionButtonClass}>
+                <BookmarkIcon className="w-5" />
+              </div>
             </div>
-          </AuthRequiredWrapper>
+          </Tooltip>
           <MediaCardLinksButton media={media} />
         </>
       )}
@@ -49,22 +51,5 @@ export function MediaCardControls({ media }: { media: MediaResource }) {
         </>
       )}
     </div>
-  )
-}
-
-function AuthRequiredWrapper({
-  tooltipText,
-  children,
-}: {
-  tooltipText: ReactNode
-  children: ReactNode
-}) {
-  return (
-    <Tooltip text={tooltipText} side="bottom">
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-      <div tabIndex={0}>
-        <div className="pointer-events-none opacity-40">{children}</div>
-      </div>
-    </Tooltip>
   )
 }
