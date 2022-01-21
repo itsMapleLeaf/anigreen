@@ -10,6 +10,7 @@ query Schedule($startDate: Int!, $page: Int!) {
       airingAt
       media {
         id
+        siteUrl
         title {
           native
           romaji

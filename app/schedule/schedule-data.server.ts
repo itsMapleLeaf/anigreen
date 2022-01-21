@@ -53,6 +53,7 @@ export async function loadScheduleData(
         bannerImageUrl: schedule.media.bannerImage,
         coverImageUrl: schedule.media.coverImage?.medium,
         coverColor: schedule.media.coverImage?.color,
+        anilistUrl: schedule.media.siteUrl,
         watchListInfo: schedule.media.mediaListEntry?.status && {
           mediaListId: schedule.media.mediaListEntry.id,
           status: schedule.media.mediaListEntry.status,

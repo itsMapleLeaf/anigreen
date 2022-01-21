@@ -1,4 +1,5 @@
 import { ExternalLinkIcon, LinkIcon } from "@heroicons/react/solid"
+import type { ReactNode } from "react"
 import type { MediaResource } from "~/media/media"
 import { MediaCardActionButton } from "~/media/media-card-action-button"
 import { Menu } from "~/ui/menu"
@@ -20,29 +21,61 @@ export function MediaCardLinksButton({ media }: { media: MediaResource }) {
           <LinkIcon className="w-5" />
         </MediaCardActionButton>
       }
-      items={media.externalLinks
-        .sort((a, b) => a.site.localeCompare(b.site))
-        .map((link) => (
-          <Menu.Item key={link.id}>
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={Menu.itemClass}
-            >
-              <ExternalLinkIcon className="w-5 -ml-1" />
-              <div className="flex flex-col">
-                <div>{link.site}</div>
-                {(nameCounts.get(link.site) ?? 0) >= 2 && (
-                  <div className="text-xs text-gray-600 leading-none">
-                    {getDomain(link.url)}
-                  </div>
-                )}
-              </div>
-            </a>
-          </Menu.Item>
-        ))}
+      items={
+        <>
+          <LinkItem
+            name="AniList"
+            url={media.anilistUrl || `https://anilist.co/anime/${media.id}`}
+            icon={anilistLogoIcon}
+          />
+          <Menu.Separator />
+          {media.externalLinks
+            .sort((a, b) => a.site.localeCompare(b.site))
+            .map((link) => (
+              <LinkItem
+                key={link.id}
+                name={link.site}
+                url={link.url}
+                icon={<ExternalLinkIcon className="w-5" />}
+                showsDomain={(nameCounts.get(link.site) ?? 0) >= 2}
+              />
+            ))}
+        </>
+      }
     />
+  )
+}
+
+function LinkItem({
+  name,
+  url,
+  icon,
+  showsDomain,
+}: {
+  name: string
+  url: string
+  icon: ReactNode
+  showsDomain?: boolean
+}) {
+  return (
+    <Menu.Item>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={Menu.itemClass}
+      >
+        {icon}
+        <div className="flex flex-col">
+          <div>{name}</div>
+          {showsDomain && (
+            <div className="text-xs text-gray-600 leading-none">
+              {getDomain(url)}
+            </div>
+          )}
+        </div>
+      </a>
+    </Menu.Item>
   )
 }
 
@@ -54,3 +87,19 @@ function getDomain(urlString: string) {
     return ""
   }
 }
+
+const anilistLogoIcon = (
+  <svg
+    className="w-5"
+    viewBox="0 0 21 15"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M4.938 0L0 14.053h3.836l.836-2.43H8.85l.817 2.43h3.817L8.565 0H4.938zm.607 8.508l1.197-3.893 1.31 3.893H5.545zM14.854 14.053h4.291c.551 0 .855-.303.855-.854v-1.88c0-.55-.304-.855-.855-.855h-5.032V.854c0-.55-.304-.854-.855-.854h-1.88c-.55 0-.855.304-.855.855v.825l4.331 12.373z"
+      fill="currentColor"
+    />
+  </svg>
+)

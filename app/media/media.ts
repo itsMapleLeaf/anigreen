@@ -8,6 +8,7 @@ export type MediaResource = {
   coverImageUrl?: string
   coverColor?: string
   episodeCount?: number
+  anilistUrl?: string
   watchListInfo?: MediaWatchListInfo
   externalLinks: MediaExternalLink[]
 }
