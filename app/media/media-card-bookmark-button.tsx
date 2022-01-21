@@ -1,11 +1,11 @@
 import { BookmarkIcon } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
 import { MediaListStatus } from "~/anilist/graphql.out"
-import type { Media } from "~/media/media"
+import type { MediaResource } from "~/media/media"
 import { MediaCardActionButton } from "~/media/media-card-action-button"
 import { SetWatchingStatusForm } from "~/media/set-watching-status-form"
 
-export function MediaCardBookmarkButton({ media }: { media: Media }) {
+export function MediaCardBookmarkButton({ media }: { media: MediaResource }) {
   const fetcher = useFetcher()
 
   return (

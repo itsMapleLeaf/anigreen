@@ -1,6 +1,6 @@
 import type { MediaListStatus } from "~/anilist/graphql.out"
 
-export type Media = {
+export type MediaResource = {
   id: number
   title: string
   format?: string

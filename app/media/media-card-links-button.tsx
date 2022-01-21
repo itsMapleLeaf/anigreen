@@ -1,8 +1,8 @@
 import { LinkIcon } from "@heroicons/react/solid"
-import type { Media } from "~/media/media"
+import type { MediaResource } from "~/media/media"
 import { MediaCardActionButton } from "~/media/media-card-action-button"
 
-export function MediaCardLinksButton({ media }: { media: Media }) {
+export function MediaCardLinksButton({ media }: { media: MediaResource }) {
   // todo
   return (
     <MediaCardActionButton tooltip="External links">

@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
 import { MediaListStatus } from "~/anilist/graphql.out"
-import type { Media, MediaWatchListInfo } from "~/media/media"
+import type { MediaResource, MediaWatchListInfo } from "~/media/media"
 import { MediaCardActionButton } from "~/media/media-card-action-button"
 import { SetWatchingStatusForm } from "~/media/set-watching-status-form"
 import { Button } from "~/ui/button"
@@ -17,7 +17,7 @@ export function MediaCardEditButton({
   media,
   watchListInfo,
 }: {
-  media: Media
+  media: MediaResource
   watchListInfo: MediaWatchListInfo
 }) {
   const fetcher = useFetcher()

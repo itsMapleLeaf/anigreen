@@ -3,13 +3,13 @@ import { anilistClient } from "~/anilist/anilist-client.server"
 import { ScheduleDocument } from "~/anilist/graphql.out"
 import { startOfDayZoned } from "~/dates/start-of-day-zoned"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
-import type { Media } from "~/media/media"
+import type { MediaResource } from "~/media/media"
 
 export type ScheduleData = Awaited<ReturnType<typeof loadScheduleData>>
 
 export type ScheduleItem = {
   id: number
-  media: Media
+  media: MediaResource
   episode: number
 }
 

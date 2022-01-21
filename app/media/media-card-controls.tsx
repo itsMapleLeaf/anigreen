@@ -1,7 +1,7 @@
 import { BookmarkIcon } from "@heroicons/react/solid"
 import type { ReactNode } from "react"
 import { useAuthContext } from "~/auth/auth-context"
-import type { Media } from "~/media/media"
+import type { MediaResource } from "~/media/media"
 import { actionButtonClass } from "~/media/media-card-action-button"
 import { MediaCardAdvanceButton } from "~/media/media-card-advance-button"
 import { MediaCardBookmarkButton } from "~/media/media-card-bookmark-button"
@@ -9,7 +9,7 @@ import { MediaCardEditButton } from "~/media/media-card-edit-button"
 import { MediaCardLinksButton } from "~/media/media-card-links-button"
 import { Tooltip } from "~/ui/tooltip"
 
-export function MediaCardControls({ media }: { media: Media }) {
+export function MediaCardControls({ media }: { media: MediaResource }) {
   const auth = useAuthContext()
 
   const state = !auth.loggedIn

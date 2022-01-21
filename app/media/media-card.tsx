@@ -1,7 +1,7 @@
 import { MediaListStatus } from "~/anilist/graphql.out"
 import { filterJoin } from "~/helpers/filter-join"
 import { infix } from "~/helpers/infix"
-import type { Media } from "~/media/media"
+import type { MediaResource } from "~/media/media"
 import { MediaCardControls } from "~/media/media-card-controls"
 import { LazyImage } from "~/ui/lazy-image"
 
@@ -9,7 +9,7 @@ export function MediaCard({
   media,
   scheduleEpisode,
 }: {
-  media: Media
+  media: MediaResource
   scheduleEpisode: number
 }) {
   return (
