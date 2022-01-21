@@ -11,7 +11,7 @@ export const MediaCardActionButton = autoRef(function MediaCardActionButton({
   ...props
 }: ButtonProps & { tooltip: ReactNode }) {
   return (
-    <Tooltip text={tooltip}>
+    <Tooltip text={tooltip} side="bottom">
       <Button
         type="submit"
         {...props}
