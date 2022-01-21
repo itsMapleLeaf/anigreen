@@ -19,7 +19,7 @@ function TooltipWrapper(
 ) {
   const [visible, setVisible] = useState(false)
   return (
-    <Tooltip.Provider delayDuration={300}>
+    <Tooltip.Provider delayDuration={700}>
       <Tooltip.Root open={visible} onOpenChange={setVisible}>
         <Tooltip.Trigger {...props} asChild ref={ref}>
           {children}

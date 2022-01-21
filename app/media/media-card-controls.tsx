@@ -60,7 +60,7 @@ function AuthRequiredWrapper({
   children: ReactNode
 }) {
   return (
-    <Tooltip text={tooltipText}>
+    <Tooltip text={tooltipText} side="bottom">
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
       <div tabIndex={0}>
         <div className="pointer-events-none opacity-40">{children}</div>
