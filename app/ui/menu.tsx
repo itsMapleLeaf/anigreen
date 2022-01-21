@@ -1,8 +1,9 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Transition } from "~/dom/transition"
+import { useWindowEvent } from "~/dom/use-event"
 
 export function Menu({
   trigger,
@@ -20,6 +21,21 @@ export function Menu({
   debugOpen?: true
 }) {
   const [visible, setVisible] = useState(false)
+
+  // by default, the menu always returns focus on closed,
+  // but we don't want to return focus when returning via the mouse,
+  // because the trigger could have like a tooltip on it or something,
+  // and that looks weird
+  // so we track whether or not the last action was a mouse click,
+  // and use that to decide whether or not to return focus
+  const lastActionRef = useRef<"pointer" | "keyboard">("pointer")
+  useWindowEvent("keydown", () => {
+    lastActionRef.current = "keyboard"
+  })
+  useWindowEvent("pointerdown", () => {
+    lastActionRef.current = "pointer"
+  })
+
   return (
     <DropdownMenu.Root open={debugOpen || visible} onOpenChange={setVisible}>
       <DropdownMenu.Trigger
@@ -42,7 +58,7 @@ export function Menu({
             sideOffset={16}
             forceMount
             onCloseAutoFocus={(event) => {
-              if (!returnFocusOnClose) event.preventDefault()
+              if (lastActionRef.current === "pointer") event.preventDefault()
             }}
           >
             <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-max">
@@ -68,3 +84,4 @@ Menu.Separator = function Separator() {
 }
 
 Menu.itemClass = clsx`px-3 py-2 transition flex gap-2 items-center hover:bg-emerald-200 focus:bg-emerald-200 focus:outline-none`
+Menu.leftIconClass = clsx`w-5 -ml-1`
