@@ -2,7 +2,8 @@ import { MenuIcon } from "@heroicons/react/outline"
 import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import { useState } from "react"
+import clsx from "clsx"
+import { useEffect, useState } from "react"
 import type { LinksFunction, MetaFunction } from "remix"
 import {
   Link,
@@ -15,6 +16,7 @@ import {
   useFetcher,
 } from "remix"
 import { AuthProvider } from "~/auth/auth-context"
+import { useWindowEvent } from "~/dom/use-event"
 import type { ActiveLinkProps } from "~/navigation/active-link"
 import { ActiveLink } from "~/navigation/active-link"
 import { useLoaderDataTyped } from "~/remix-typed"
@@ -91,11 +93,11 @@ export default function App() {
       </head>
       <body>
         <div className="isolate">
-          <header className="shadow sticky top-0 bg-slate-600/25 backdrop-blur-sm z-10">
+          <HeaderPanel>
             <div className={maxWidthContainerClass}>
               <HeaderNavigation />
             </div>
-          </header>
+          </HeaderPanel>
           <main className={maxWidthContainerClass}>
             <div className="my-8">
               <AuthProvider value={{ loggedIn: !!user }}>
@@ -109,6 +111,23 @@ export default function App() {
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
+  )
+}
+
+function HeaderPanel({ children }: { children: React.ReactNode }) {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => setScrolled(window.scrollY > 0), [])
+  useWindowEvent("scroll", () => setScrolled(window.scrollY > 0))
+
+  return (
+    <header
+      className={clsx(
+        "shadow sticky top-0 z-10 transition-colors backdrop-blur-lg",
+        scrolled ? "bg-black/60" : "bg-slate-800",
+      )}
+    >
+      {children}
+    </header>
   )
 }
 
