@@ -11,7 +11,7 @@ import { MediaCard } from "~/media/media-card"
 import { getAppTitle } from "~/meta"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { loadScheduleData } from "~/schedule/schedule-data.server"
-import { buttonClass } from "~/ui/components"
+import { clearButtonClass } from "~/ui/button-style"
 import { KeyboardKey } from "../ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
@@ -89,10 +89,7 @@ function Pagination() {
   return (
     <div className="flex items-center justify-center gap-4">
       {previousPage != undefined ? (
-        <Link
-          to={`?page=${previousPage}`}
-          className={buttonClass({ variant: "clear" })}
-        >
+        <Link to={`?page=${previousPage}`} className={clearButtonClass}>
           <KeyboardKey label="Left arrow">
             <ArrowSmLeftIcon className="w-5" />
           </KeyboardKey>
@@ -100,10 +97,7 @@ function Pagination() {
         </Link>
       ) : undefined}
       {nextPage != undefined ? (
-        <Link
-          to={`?page=${nextPage}`}
-          className={buttonClass({ variant: "clear" })}
-        >
+        <Link to={`?page=${nextPage}`} className={clearButtonClass}>
           <KeyboardKey label="Right arrow">
             <ArrowSmRightIcon className="w-5" />
           </KeyboardKey>

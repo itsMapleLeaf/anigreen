@@ -21,6 +21,11 @@ import type { ActiveLinkProps } from "~/navigation/active-link"
 import { ActiveLink } from "~/navigation/active-link"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { Button } from "~/ui/button"
+import {
+  activeClearButtonClass,
+  clearButtonClass,
+  clearIconButtonClass,
+} from "~/ui/button-style"
 import { Menu } from "~/ui/menu"
 import { PendingIcon } from "~/ui/pending-icon"
 import { anilistClient } from "./anilist/anilist-client.server"
@@ -28,7 +33,7 @@ import { ViewerDocument } from "./anilist/graphql.out"
 import { getSession } from "./auth/session.server"
 import { raise } from "./helpers/errors"
 import { getAppTitle } from "./meta"
-import { buttonClass, maxWidthContainerClass } from "./ui/components"
+import { maxWidthContainerClass } from "./ui/components"
 import tailwind from "./ui/tailwind.out.css"
 
 export const meta: MetaFunction = () => ({
@@ -141,7 +146,7 @@ function HeaderNavigation() {
           <Collapsible.Trigger
             type="button"
             title="Menu"
-            className={buttonClass({ variant: "clear", shape: "square" })}
+            className={clearIconButtonClass}
           >
             <MenuIcon className="w-6" />
           </Collapsible.Trigger>
@@ -190,8 +195,8 @@ function MainNavigationLink(props: ActiveLinkProps) {
   return (
     <ActiveLink
       {...props}
-      inactiveClassName={buttonClass({ variant: "clear" })}
-      activeClassName={buttonClass({ variant: "clearActive" })}
+      inactiveClassName={clearButtonClass}
+      activeClassName={activeClearButtonClass}
     />
   )
 }
@@ -211,7 +216,7 @@ function LoginButton() {
   ) : (
     <a
       href={loginUrl}
-      className={buttonClass({ variant: "clear" })}
+      className={clearButtonClass}
       onClick={() => setPending(true)}
     >
       log in with AniList
