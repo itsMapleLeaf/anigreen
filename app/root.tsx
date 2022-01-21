@@ -1,7 +1,11 @@
+import { MenuIcon } from "@heroicons/react/outline"
+import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
+import * as Collapsible from "@radix-ui/react-collapsible"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { useState } from "react"
 import type { LinksFunction, MetaFunction } from "remix"
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -11,6 +15,8 @@ import {
   useFetcher,
 } from "remix"
 import { AuthProvider } from "~/auth/auth-context"
+import type { ActiveLinkProps } from "~/navigation/active-link"
+import { ActiveLink } from "~/navigation/active-link"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { Button } from "~/ui/button"
 import { Menu } from "~/ui/menu"
@@ -108,16 +114,66 @@ export default function App() {
 
 function HeaderNavigation() {
   const data = useLoaderDataTyped<typeof loader>()
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false)
   return (
-    <nav className="flex items-center justify-between h-16">
-      <a href="/" title="Home" className="translate-y-[-2px]">
-        <h1 className="text-3xl font-light">
-          <span className="text-sky-400">ani</span>
-          <span className="text-emerald-400">green</span>
-        </h1>
-      </a>
-      {data.user ? <UserMenuButton user={data.user} /> : <LoginButton />}
-    </nav>
+    <Collapsible.Root open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
+      <nav className="flex items-center h-16">
+        <div className="sm:hidden mr-3">
+          <Collapsible.Trigger
+            type="button"
+            title="Menu"
+            className={buttonClass({ variant: "clear", shape: "square" })}
+          >
+            <MenuIcon className="w-6" />
+          </Collapsible.Trigger>
+        </div>
+
+        <Link to="/" title="Home" className="translate-y-[-2px]">
+          <h1 className="text-3xl font-light">
+            <span className="text-sky-400">ani</span>
+            <span className="text-emerald-400">green</span>
+          </h1>
+        </Link>
+
+        <div className="hidden sm:flex gap-8 mx-6">
+          <MainNavigationLinks />
+        </div>
+        <div className="ml-auto">
+          {data.user ? <UserMenuButton user={data.user} /> : <LoginButton />}
+        </div>
+      </nav>
+
+      <Collapsible.Content onClick={() => setCollapsibleOpen(false)}>
+        <div className="grid gap-5 pb-3 sm:hidden">
+          <MainNavigationLinks />
+        </div>
+      </Collapsible.Content>
+    </Collapsible.Root>
+  )
+}
+
+function MainNavigationLinks() {
+  return (
+    <>
+      <MainNavigationLink to="/watching">
+        <BookmarkIcon className="w-5" />
+        Watching
+      </MainNavigationLink>
+      <MainNavigationLink to="/schedule">
+        <CalendarIcon className="w-5" />
+        Schedule
+      </MainNavigationLink>
+    </>
+  )
+}
+
+function MainNavigationLink(props: ActiveLinkProps) {
+  return (
+    <ActiveLink
+      {...props}
+      inactiveClassName={buttonClass({ variant: "clear" })}
+      activeClassName={buttonClass({ variant: "clearActive" })}
+    />
   )
 }
 
