@@ -9,12 +9,14 @@ export function Menu({
   items,
   side = "bottom",
   align = "center",
+  returnFocusOnClose = true,
   debugOpen,
 }: {
   trigger: ReactNode
   items: ReactNode
   side: "left" | "right" | "top" | "bottom"
   align: "start" | "center" | "end"
+  returnFocusOnClose?: boolean
   debugOpen?: true
 }) {
   const [visible, setVisible] = useState(false)
@@ -39,6 +41,9 @@ export function Menu({
             align={align}
             sideOffset={16}
             forceMount
+            onCloseAutoFocus={(event) => {
+              if (!returnFocusOnClose) event.preventDefault()
+            }}
           >
             <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-max">
               {items}
