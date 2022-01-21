@@ -8,10 +8,12 @@ function TooltipWrapper(
   {
     text,
     children,
+    side = "top",
     ...props
   }: {
     text: ReactNode
     children: ReactNode
+    side?: "left" | "right" | "top" | "bottom"
   } & ComponentPropsWithoutRef<"button">,
   ref: React.Ref<HTMLButtonElement>,
 ) {
@@ -31,7 +33,7 @@ function TooltipWrapper(
           {(transition) => (
             <Tooltip.Content
               {...transition}
-              side="top"
+              side={side}
               sideOffset={8}
               forceMount
             >
