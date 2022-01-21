@@ -16,7 +16,7 @@
   - [ ] advance progress button
     - only show when on list and when progress is not 100%
     - advance progress by 1 on click
-  - [ ] show watched count somewhere
+  - [ ] show progress somewhere
   - [x] show watching status (watching, completed, on hold, dropped)
 - [x] schedule page
 - watching page
@@ -37,8 +37,8 @@
     - [ ] country of origin
     - [ ] licensed
 - [ ] search page
-- [ ] show a loading spinner in the corner while loading or navigating
+- [ ] show a loading spinner in a corner while loading or navigating
 - [ ] click on a cover/banner to view the full image in a lightbox modal (or just in a new tab lol)
 - [ ] media card: show full title in tooltip
 - [ ] error modals
-- [ ] make the header transparent black on scroll, solid when at top
+- [x] make the header transparent black on scroll, solid when at top
