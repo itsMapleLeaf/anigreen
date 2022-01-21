@@ -1,4 +1,4 @@
-import type { MediaListStatus } from "~/anilist/graphql.out"
+import type { MediaExternalLink, MediaListStatus } from "~/anilist/graphql.out"
 
 export type MediaResource = {
   id: number
@@ -9,6 +9,7 @@ export type MediaResource = {
   coverColor?: string
   episodeCount?: number
   watchListInfo?: MediaWatchListInfo
+  externalLinks: MediaExternalLink[]
 }
 
 export type MediaWatchListInfo = {

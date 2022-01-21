@@ -12,7 +12,7 @@
         - [x] remove
         - [ ] rate -> shows a modal to rate the anime
         - [ ] set progress -> shows a modal to set the progress
-  - [ ] links button, pops a menu on open, lists all the media external links
+  - [x] links button, pops a menu on open, lists all the media external links
   - [ ] advance progress button, only show when on list and when progress is not 100%, advance progress by 1 on click
   - [ ] show watched count somewhere
   - [x] show watching status (watching, completed, on hold, dropped)

@@ -61,7 +61,7 @@ export function Menu({
               if (lastActionRef.current === "pointer") event.preventDefault()
             }}
           >
-            <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-max">
+            <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-40">
               {items}
             </div>
           </DropdownMenu.Content>

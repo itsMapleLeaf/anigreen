@@ -2,6 +2,7 @@ import { startOfDay } from "date-fns"
 import { anilistClient } from "~/anilist/anilist-client.server"
 import { ScheduleDocument } from "~/anilist/graphql.out"
 import { startOfDayZoned } from "~/dates/start-of-day-zoned"
+import { isTruthy } from "~/helpers/is-truthy"
 import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
 import type { MediaResource } from "~/media/media"
 
@@ -57,6 +58,7 @@ export async function loadScheduleData(
           status: schedule.media.mediaListEntry.status,
           progress: schedule.media.mediaListEntry.progress ?? 0,
         },
+        externalLinks: schedule.media.externalLinks?.filter(isTruthy) ?? [],
       },
     })
   }

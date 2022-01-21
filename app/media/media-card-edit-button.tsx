@@ -26,17 +26,17 @@ export function MediaCardEditButton({
     {
       status: MediaListStatus.Current,
       text: "Watching",
-      icon: <PlayIcon className="w-5" />,
+      icon: <PlayIcon className={Menu.leftIconClass} />,
     },
     {
       status: MediaListStatus.Paused,
       text: "Hold",
-      icon: <PauseIcon className="w-5" />,
+      icon: <PauseIcon className={Menu.leftIconClass} />,
     },
     {
       status: MediaListStatus.Dropped,
       text: "Drop",
-      icon: <StopIcon className="w-5" />,
+      icon: <StopIcon className={Menu.leftIconClass} />,
     },
   ]
 
@@ -83,7 +83,7 @@ export function MediaCardEditButton({
             />
             <Menu.Item>
               <Button type="submit" className={Menu.itemClass}>
-                <XCircleIcon className="w-5" />
+                <XCircleIcon className={Menu.leftIconClass} />
                 Remove
               </Button>
             </Menu.Item>
