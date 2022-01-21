@@ -8,7 +8,7 @@ const cookie = createCookie("timezone", {
   sameSite: "lax",
 })
 
-const defaultTimezone = "America/New_York"
+const defaultTimezone = "America/Chicago"
 
 export async function getTimezone(request: Request): Promise<string> {
   const value = await cookie.parse(request.headers.get("cookie"))
