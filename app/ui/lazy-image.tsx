@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import type { ComponentPropsWithoutRef } from "react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
+import { raise } from "~/helpers/errors"
 
 export function LazyImage({
   src,
@@ -9,19 +10,20 @@ export function LazyImage({
   onLoad,
   ...props
 }: ComponentPropsWithoutRef<"img">) {
-  const [loaded, setLoaded] = useState(false)
-  const [image, imageRef] = useState<HTMLImageElement | null>()
+  const imageRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    if (!image) return
-    if (image.complete) {
-      setLoaded(true)
-    } else {
-      const handleLoad = () => setLoaded(true)
-      image.addEventListener("load", handleLoad)
-      return () => image.removeEventListener("load", handleLoad)
+    const image = imageRef.current ?? raise("image ref not assigned")
+    if (image.complete) return
+
+    image.classList.add("opacity-0")
+    const handleLoad = () => {
+      image.classList.remove("opacity-0")
+      image.classList.add("opacity-100")
     }
-  }, [image])
+    image.addEventListener("load", handleLoad)
+    return () => image.removeEventListener("load", handleLoad)
+  }, [])
 
   return (
     <img
@@ -30,11 +32,7 @@ export function LazyImage({
       ref={imageRef}
       src={src}
       alt={alt}
-      className={clsx(
-        className,
-        "transition",
-        loaded ? "opacity-100" : "opacity-0",
-      )}
+      className={clsx(className, "transition")}
     />
   )
 }
