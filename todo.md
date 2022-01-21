@@ -7,15 +7,15 @@
     - when logged in
       - [x] if not on list, show bookmark icon, add to bookmarks on click
       - if on list, show edit menu icon which pops a menu on open
-        - [ ] hold
-        - [ ] drop
+        - [x] hold
+        - [x] drop
         - [x] remove
         - [ ] rate -> shows a modal to rate the anime
         - [ ] set progress -> shows a modal to set the progress
   - [ ] links button, pops a menu on open, lists all the media external links
   - [ ] advance progress button, only show when on list and when progress is not 100%, advance progress by 1 on click
   - [ ] show watched count somewhere
-  - [ ] show watching status (watching, completed, on hold, dropped)
+  - [x] show watching status (watching, completed, on hold, dropped)
 - [ ] schedule page
 - [ ] watching page
 - [x] deal with timezone difference between server and client
@@ -37,3 +37,4 @@
 - [ ] click on a cover/banner to view the full image in a lightbox modal (or just in a new tab lol)
 - [ ] media card: show full title in tooltip
 - [ ] error modals
+- [ ] make the header transparent black on scroll, solid when at top
