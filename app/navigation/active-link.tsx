@@ -9,14 +9,20 @@ export type ActiveLinkProps = Omit<LinkProps, "to"> & {
   inactiveClassName?: string
 }
 
-export function ActiveLink(props: ActiveLinkProps) {
-  const match = useMatch(props.to)
+export function ActiveLink({
+  to,
+  activeClassName,
+  inactiveClassName,
+  ...props
+}: ActiveLinkProps) {
+  const match = useMatch(to)
   return (
     <Link
       {...props}
+      to={to}
       className={clsx(
         props.className,
-        match ? props.activeClassName : props.inactiveClassName,
+        match ? activeClassName : inactiveClassName,
       )}
     />
   )
