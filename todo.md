@@ -13,11 +13,15 @@
         - [ ] rate -> shows a modal to rate the anime
         - [ ] set progress -> shows a modal to set the progress
   - [x] links button, pops a menu on open, lists all the media external links
-  - [ ] advance progress button, only show when on list and when progress is not 100%, advance progress by 1 on click
+  - [ ] advance progress button
+    - only show when on list and when progress is not 100%
+    - advance progress by 1 on click
   - [ ] show watched count somewhere
   - [x] show watching status (watching, completed, on hold, dropped)
-- [ ] schedule page
-- [ ] watching page
+- [x] schedule page
+- watching page
+  - [ ] "In progress" section, for items that aren't completed
+  - [ ] watching items sectioned by weekday
 - [x] deal with timezone difference between server and client
   - just using a fixed time zone for now. a setting can come later, and/or some client-side redirect to set the timezone
 
