@@ -1,13 +1,19 @@
 import { useEffect } from "react"
 
+type MaybeRefObject<T> = T | { readonly current: T }
+
 export function useEvent<EventType extends Event>(
-  target: EventTarget | null | undefined,
+  targetRef: MaybeRefObject<EventTarget> | null | undefined,
   type: string,
   listener: (event: EventType) => void,
   options?: boolean | AddEventListenerOptions,
 ) {
   useEffect(() => {
-    if (!target) return
+    if (!targetRef) return
+
+    const target =
+      targetRef instanceof EventTarget ? targetRef : targetRef.current
+
     target.addEventListener(type, listener as (event: Event) => void, options)
     return () => {
       target.removeEventListener(
@@ -20,7 +26,7 @@ export function useEvent<EventType extends Event>(
 }
 
 export function useElementEvent<EventType extends keyof HTMLElementEventMap>(
-  element: HTMLElement | null | undefined,
+  element: MaybeRefObject<HTMLElement> | null | undefined,
   type: EventType,
   listener: (event: HTMLElementEventMap[EventType]) => void,
   options?: boolean | AddEventListenerOptions,
