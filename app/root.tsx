@@ -122,7 +122,9 @@ export default function App() {
 function HeaderPanel({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => setScrolled(window.scrollY > 0), [])
-  useWindowEvent("scroll", () => setScrolled(window.scrollY > 0))
+  useWindowEvent("scroll", () => setScrolled(window.scrollY > 0), {
+    passive: true,
+  })
 
   return (
     <header
