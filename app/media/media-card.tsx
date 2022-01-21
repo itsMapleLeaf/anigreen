@@ -2,16 +2,23 @@ import {
   BookmarkIcon,
   ChevronDoubleRightIcon,
   LinkIcon,
+  PauseIcon,
   PencilAltIcon,
+  PlayIcon,
+  StopIcon,
   XCircleIcon,
 } from "@heroicons/react/solid"
 import clsx from "clsx"
-import type { ReactNode } from "react"
-import { useFetcher } from "remix"
+import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
+import type { FormProps } from "remix"
+import { Form, useFetcher } from "remix"
 import { MediaListStatus } from "~/anilist/graphql.out"
 import { useAuthContext } from "~/auth/auth-context"
 import { filterJoin } from "~/helpers/filter-join"
+import { infix } from "~/helpers/infix"
 import type { Media, MediaWatchListInfo } from "~/media/media"
+import { autoRef } from "~/react/auto-ref"
+import type { ButtonProps } from "~/ui/button"
 import { Button } from "~/ui/button"
 import { LazyImage } from "~/ui/lazy-image"
 import { Menu } from "~/ui/menu"
@@ -49,26 +56,33 @@ export function MediaCard({
           className="relative w-20 h-24 rounded-md shadow object-cover -mt-20"
         />
       </div>
-      <div className="px-3 pb-3 text-sm uppercase font-medium opacity-60 leading-none flex items-center">
-        <p>
-          {filterJoin(" • ", [
-            media.format,
-            scheduleEpisode &&
-              `Episode ${filterJoin("/", [
-                scheduleEpisode,
-                media.episodeCount,
-              ])}`,
-            // media.watchListInfo &&
-            //   `Watched ${filterJoin("/", [
-            //     media.watchListInfo.progress,
-            //     media.episodeCount,
-            //   ])}`,
-          ])}
-        </p>
+      <div className="px-3 pb-3 text-sm uppercase font-medium opacity-60 leading-none flex items-center gap-1">
+        {infix(
+          [
+            <p key="format">{media.format}</p>,
+            media.watchListInfo && (
+              <StatusDisplay key="status" status={media.watchListInfo.status} />
+            ),
+            scheduleEpisode && (
+              <p key="scheduleEpisode">
+                Episode {filterJoin("/", [scheduleEpisode, media.episodeCount])}
+              </p>
+            ),
+          ].filter(Boolean),
+          (index) => (
+            <span key={`separator-${index}`}>•</span>
+          ),
+        )}
       </div>
       <MediaCardControls media={media} />
     </div>
   )
+}
+
+function StatusDisplay({ status }: { status: MediaListStatus }) {
+  if (status === MediaListStatus.Paused) return <p>Paused</p>
+  if (status === MediaListStatus.Dropped) return <p>Dropped</p>
+  return <p>Watching</p>
 }
 
 function MediaCardControls({ media }: { media: Media }) {
@@ -119,24 +133,15 @@ function AddToWatchingButton({ media }: { media: Media }) {
   const fetcher = useFetcher()
 
   return (
-    <fetcher.Form
-      action="/set-watching-status"
-      method="put"
-      className="contents"
-      replace
+    <SetWatchingStatusForm
+      as={fetcher.Form}
+      mediaId={media.id}
+      status={MediaListStatus.Current}
     >
-      <input type="hidden" name="mediaId" value={media.id} />
-      <input type="hidden" name="status" value={MediaListStatus.Current} />
-      <Tooltip text="Add to watch list">
-        <Button
-          type="submit"
-          className={actionButtonClass}
-          loading={!!fetcher.submission}
-        >
-          <BookmarkIcon className="w-5" />
-        </Button>
-      </Tooltip>
-    </fetcher.Form>
+      <ActionButton tooltip="Add to watch list" loading={!!fetcher.submission}>
+        <BookmarkIcon className="w-5" />
+      </ActionButton>
+    </SetWatchingStatusForm>
   )
 }
 
@@ -149,19 +154,54 @@ function EditStatusButton({
 }) {
   const fetcher = useFetcher()
 
+  const statusItems = [
+    {
+      status: MediaListStatus.Current,
+      text: "Watching",
+      icon: <PlayIcon className="w-5" />,
+    },
+    {
+      status: MediaListStatus.Paused,
+      text: "Hold",
+      icon: <PauseIcon className="w-5" />,
+    },
+    {
+      status: MediaListStatus.Dropped,
+      text: "Drop",
+      icon: <StopIcon className="w-5" />,
+    },
+  ]
+
   return (
     <Menu
       side="bottom"
       align="center"
+      returnFocusOnClose={false}
       trigger={
-        <Tooltip text="Edit">
-          <Button className={actionButtonClass} loading={!!fetcher.submission}>
-            <PencilAltIcon className="w-5" />
-          </Button>
-        </Tooltip>
+        <ActionButton tooltip="Edit" loading={!!fetcher.submission}>
+          <PencilAltIcon className="w-5" />
+        </ActionButton>
       }
       items={
         <>
+          {statusItems
+            .filter((item) => watchListInfo.status !== item.status)
+            .map((item) => (
+              <SetWatchingStatusForm
+                key={item.status}
+                as={fetcher.Form}
+                mediaId={media.id}
+                status={item.status}
+              >
+                <Menu.Item>
+                  <Button type="submit" className={Menu.itemClass}>
+                    {item.icon}
+                    {item.text}
+                  </Button>
+                </Menu.Item>
+              </SetWatchingStatusForm>
+            ))}
+
           <fetcher.Form
             action="/delete-from-watching"
             method="delete"
@@ -189,13 +229,52 @@ function EditStatusButton({
 function ExternalLinksButton({ media }: { media: Media }) {
   // todo
   return (
-    <Tooltip text="External links">
-      <Button className={actionButtonClass}>
-        <LinkIcon className="w-5" />
-      </Button>
-    </Tooltip>
+    <ActionButton tooltip="External links">
+      <LinkIcon className="w-5" />
+    </ActionButton>
   )
 }
+
+function SetWatchingStatusForm({
+  mediaId,
+  status,
+  children,
+  as: FormComponent = Form,
+}: {
+  mediaId: number
+  status: MediaListStatus
+  children: ReactNode
+  as: ComponentType<ComponentPropsWithoutRef<"form"> & FormProps>
+}) {
+  return (
+    <FormComponent
+      action="/set-watching-status"
+      method="put"
+      className="contents"
+      replace
+    >
+      <input type="hidden" name="mediaId" value={mediaId} />
+      <input type="hidden" name="status" value={status} />
+      {children}
+    </FormComponent>
+  )
+}
+
+const ActionButton = autoRef(function ActionButton({
+  tooltip,
+  className,
+  ...props
+}: ButtonProps & { tooltip: ReactNode }) {
+  return (
+    <Tooltip text={tooltip}>
+      <Button
+        type="submit"
+        {...props}
+        className={clsx(className, actionButtonClass)}
+      />
+    </Tooltip>
+  )
+})
 
 function AuthRequiredWrapper({
   tooltipText,
