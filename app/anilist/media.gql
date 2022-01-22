@@ -10,42 +10,33 @@ mutation DeleteFromWatching($mediaListId: Int!) {
   }
 }
 
-# fragment media on Media {
-#   id
-#   format
-#   episodes
-#   nextAiringEpisode {
-#     airingAt
-#     episode
-#   }
-#   bannerImage
-#   title {
-#     english
-#     romaji
-#     native
-#     userPreferred
-#   }
-#   coverImage {
-#     medium
-#     large
-#     extraLarge
-#     color
-#   }
-#   externalLinks {
-#     ...mediaExternalLink
-#   }
-#   isAdult
-#   isLicensed
-#   countryOfOrigin
-#   format
-#   siteUrl
-#   mediaListEntry {
-#     status
-#   }
-# }
+fragment media on Media {
+  id
+  siteUrl
+  title {
+    native
+    romaji
+    english
+    userPreferred
+  }
+  format
+  bannerImage
+  coverImage {
+    medium
+    large
+    extraLarge
+    color
+  }
+  episodes
+  externalLinks {
+    id
+    url
+    site
+  }
+}
 
-# fragment mediaExternalLink on MediaExternalLink {
-#   id
-#   url
-#   site
-# }
+fragment mediaListEntry on MediaList {
+  id
+  progress
+  status
+}

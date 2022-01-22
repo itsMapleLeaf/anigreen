@@ -9,32 +9,9 @@ query Schedule($startDate: Int!, $page: Int!) {
       episode
       airingAt
       media {
-        id
-        siteUrl
-        title {
-          native
-          romaji
-          english
-          userPreferred
-        }
-        format
-        bannerImage
-        coverImage {
-          medium
-          large
-          extraLarge
-          color
-        }
-        episodes
+        ...media
         mediaListEntry {
-          id
-          progress
-          status
-        }
-        externalLinks {
-          id
-          url
-          site
+          ...mediaListEntry
         }
       }
     }
