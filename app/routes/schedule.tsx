@@ -1,6 +1,6 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import { Fragment } from "react"
+import { Fragment, useDeferredValue } from "react"
 import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
 import { getSession } from "~/auth/session.server"
@@ -12,6 +12,7 @@ import { getAppTitle } from "~/meta"
 import { useLoaderDataTyped } from "~/remix-typed"
 import { loadScheduleData } from "~/schedule/schedule-data.server"
 import { clearButtonClass } from "~/ui/button-style"
+import { LoadingIcon } from "~/ui/loading-icon"
 import { KeyboardKey } from "../ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
@@ -43,11 +44,17 @@ export default function Schedule() {
 }
 
 function ScheduleItems() {
-  const { schedule } = useLoaderDataTyped<typeof loader>()
+  const data = useLoaderDataTyped<typeof loader>()
+  const deferredData = useDeferredValue(data)
 
   return (
     <>
-      {schedule.dayLists.map(({ day, items }) => (
+      {data !== deferredData && (
+        <div className="grid place-items-center my-4">
+          <LoadingIcon size="large" />
+        </div>
+      )}
+      {deferredData.schedule.dayLists.map(({ day, items }) => (
         <Fragment key={day}>
           <h2 className="my-4">
             <div className="text-2xl font-light leading-tight">
