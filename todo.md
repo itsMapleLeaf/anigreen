@@ -40,6 +40,7 @@
 - [ ] show a loading spinner in a corner while loading or navigating
 - [ ] click on a cover/banner to view the full image in a lightbox modal (or just in a new tab lol)
 - [ ] media card: show full title in tooltip
-- [ ] error modals
+- [ ] add route error boundary for loader errors
+- [ ] add modals for action errors
 - [x] make the header transparent black on scroll, solid when at top
 - [ ] pagination: button to go back to first page
