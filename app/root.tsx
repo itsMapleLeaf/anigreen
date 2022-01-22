@@ -27,8 +27,8 @@ import {
   clearButtonClass,
   clearIconButtonClass,
 } from "~/ui/button-style"
+import { LoadingIcon } from "~/ui/loading-icon"
 import { Menu } from "~/ui/menu"
-import { PendingIcon } from "~/ui/pending-icon"
 import { anilistClient } from "./anilist/anilist-client.server"
 import { ViewerDocument } from "./anilist/graphql.out"
 import { getSession } from "./auth/session.server"
@@ -217,7 +217,7 @@ function LoginButton() {
     `&response_type=code`
 
   return pending ? (
-    <PendingIcon />
+    <LoadingIcon />
   ) : (
     <a
       href={loginUrl}
