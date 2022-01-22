@@ -60,28 +60,46 @@ async function requestGraphQL<Result, Variables>(
     body: JSON.stringify({ query: print(document), variables }),
   })
 
+  if (!response.ok) {
+    raiseRequestError(
+      document,
+      variables,
+      response,
+      response.statusText || "Unknown error",
+    )
+  }
+
   const json = await response.json()
-
-  if (!response.ok || json.errors) {
-    const message =
-      json.errors?.[0]?.message || response.statusText || "Unknown error"
-
+  if (json.errors) {
     console.warn(
       "errors:",
       inspect(json.errors, { depth: Number.POSITIVE_INFINITY }),
     )
-    console.warn("query:", print(document))
-    console.warn(
-      "variables:",
-      inspect(variables, { depth: Number.POSITIVE_INFINITY }),
-    )
-
-    throw new Error(
-      `Anilist request failed (status ${response.status}): ${message}`,
+    raiseRequestError(
+      document,
+      variables,
+      response,
+      json.errors[0]?.message || response.statusText || "Unknown error",
     )
   }
 
   return json.data
+}
+
+function raiseRequestError(
+  document: TypedDocumentNode<any, any>,
+  variables: unknown,
+  response: Response,
+  message: string,
+): never {
+  console.warn("query:", print(document))
+  console.warn(
+    "variables:",
+    inspect(variables, { depth: Number.POSITIVE_INFINITY }),
+  )
+  throw new Error(
+    `Anilist request failed (status ${response.status}): ${message}`,
+  )
 }
 
 export const anilistClient = new AnilistClient()
