@@ -42,3 +42,4 @@
 - [ ] media card: show full title in tooltip
 - [ ] error modals
 - [x] make the header transparent black on scroll, solid when at top
+- [ ] pagination: button to go back to first page
