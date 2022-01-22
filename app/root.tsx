@@ -1,6 +1,7 @@
 import { MenuIcon } from "@heroicons/react/outline"
 import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
+import * as Tooltip from "@radix-ui/react-tooltip"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -97,20 +98,22 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <div className="isolate">
-          <HeaderPanel>
-            <div className={maxWidthContainerClass}>
-              <HeaderNavigation />
-            </div>
-          </HeaderPanel>
-          <main className={maxWidthContainerClass}>
-            <div className="my-8">
-              <AuthProvider value={{ loggedIn: !!user }}>
-                <Outlet />
-              </AuthProvider>
-            </div>
-          </main>
-        </div>
+        <Tooltip.Provider delayDuration={700}>
+          <div className="isolate">
+            <HeaderPanel>
+              <div className={maxWidthContainerClass}>
+                <HeaderNavigation />
+              </div>
+            </HeaderPanel>
+            <main className={maxWidthContainerClass}>
+              <div className="my-8">
+                <AuthProvider value={{ loggedIn: !!user }}>
+                  <Outlet />
+                </AuthProvider>
+              </div>
+            </main>
+          </div>
+        </Tooltip.Provider>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
