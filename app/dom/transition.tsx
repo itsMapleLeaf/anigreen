@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { useEffect, useReducer, useState } from "react"
+import { startTransition, useEffect, useReducer, useState } from "react"
 import { useElementEvent } from "~/dom/use-event"
 
 type TransitionStatus =
@@ -9,7 +9,7 @@ type TransitionStatus =
   | "entered"
   | "exiting"
 
-type TransitionEvent = "show" | "hide" | "animationFrame" | "transitionEnd"
+type TransitionEvent = "show" | "hide" | "mountFinished" | "transitionEnd"
 
 type TransitionMachine = {
   states: {
@@ -31,7 +31,7 @@ const transitionMachine: TransitionMachine = {
     mounted: {
       on: {
         hide: "unmounted",
-        animationFrame: "entering",
+        mountFinished: "entering",
       },
     },
     entering: {
@@ -75,8 +75,8 @@ export function Transition(props: {
   useEffect(() => {
     if (props.visible) {
       statusDispatch("show")
-      requestAnimationFrame(() => {
-        statusDispatch("animationFrame")
+      startTransition(() => {
+        statusDispatch("mountFinished")
       })
     } else {
       statusDispatch("hide")
