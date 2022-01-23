@@ -1,19 +1,30 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import { Fragment, useDeferredValue } from "react"
+import { useDeferredValue } from "react"
 import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
+import { anilistClient } from "~/anilist/anilist-client.server"
+import { ScheduleDocument } from "~/anilist/graphql.out"
 import { getSession } from "~/auth/session.server"
-import { DateTime } from "~/dates/date-time"
+import { startOfDayZoned } from "~/dates/start-of-day-zoned"
 import { getTimezone } from "~/dates/timezone-cookie.server"
 import { useWindowEvent } from "~/dom/use-event"
+import type { MediaResource } from "~/media/media"
+import { createMediaResource } from "~/media/media"
 import { MediaCard } from "~/media/media-card"
 import { getAppTitle } from "~/meta"
 import { useLoaderDataTyped } from "~/remix-typed"
-import { loadScheduleData } from "~/schedule/schedule-data.server"
 import { clearButtonClass } from "~/ui/button-style"
 import { LoadingIcon } from "~/ui/loading-icon"
+import { WeekdaySectionedList } from "~/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../ui/keyboard-key"
+
+export type ScheduleItem = {
+  id: number
+  media: MediaResource
+  airingDayMs: number
+  episode: number
+}
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle("Schedule"),
@@ -28,9 +39,43 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   const timezone = await getTimezone(request)
 
+  const data = await anilistClient.request({
+    document: ScheduleDocument,
+    variables: {
+      page,
+      startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
+    },
+    accessToken: session?.accessToken,
+  })
+
+  const scheduleItems: ScheduleItem[] = (
+    data.Page?.airingSchedules ?? []
+  ).flatMap((schedule) => {
+    if (!schedule?.media) return []
+    return {
+      id: schedule.id,
+      episode: schedule.episode,
+      airingDayMs: startOfDayZoned(
+        schedule.airingAt * 1000,
+        timezone,
+      ).getTime(),
+      media: createMediaResource(
+        schedule.media,
+        schedule.media?.mediaListEntry,
+      ),
+    }
+  })
+
+  const pageInfo = { currentPage: 1, ...data.Page?.pageInfo }
+  const previousPage =
+    pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
+  const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
+
   return {
-    schedule: await loadScheduleData(page, timezone, session?.accessToken),
+    scheduleItems,
     timezone,
+    nextPage,
+    previousPage,
   }
 }
 
@@ -54,32 +99,21 @@ function ScheduleItems() {
           <LoadingIcon size="large" />
         </div>
       )}
-      {deferredData.schedule.dayLists.map(({ day, items }) => (
-        <Fragment key={day}>
-          <h2 className="my-4">
-            <div className="text-2xl font-light leading-tight">
-              <DateTime date={day} weekday="long" />
-            </div>
-            <div className="text-sm opacity-60">
-              <DateTime date={day} dateStyle="long" />
-            </div>
-          </h2>
-          <ul className="grid gap-4 my-6 grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
-            {items.map((item) => (
-              <li key={item.id}>
-                <MediaCard media={item.media} scheduleEpisode={item.episode} />
-              </li>
-            ))}
-          </ul>
-        </Fragment>
-      ))}
+      <WeekdaySectionedList
+        items={deferredData.scheduleItems}
+        timezone={deferredData.timezone}
+        getItemDate={(item) => item.airingDayMs}
+        getItemKey={(item) => item.id}
+        renderItem={(item) => (
+          <MediaCard media={item.media} scheduleEpisode={item.episode} />
+        )}
+      />
     </>
   )
 }
 
 function Pagination() {
-  const { schedule } = useLoaderDataTyped<typeof loader>()
-  const { previousPage, nextPage } = schedule
+  const { previousPage, nextPage } = useLoaderDataTyped<typeof loader>()
 
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
