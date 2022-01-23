@@ -1,0 +1,29 @@
+query Watching($userId: Int!) {
+  MediaListCollection(
+    userId: $userId
+    type: ANIME
+    forceSingleCompletedList: true
+    status: CURRENT
+  ) {
+    lists {
+      entries {
+        ...mediaListEntry
+        media {
+          ...media
+        }
+      }
+    }
+  }
+}
+
+mutation SetWatchingStatus($mediaId: Int!, $status: MediaListStatus!) {
+  SaveMediaListEntry(mediaId: $mediaId, status: $status) {
+    status
+  }
+}
+
+mutation DeleteFromWatching($mediaListId: Int!) {
+  DeleteMediaListEntry(id: $mediaListId) {
+    deleted
+  }
+}

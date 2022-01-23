@@ -8,9 +8,11 @@ import { LazyImage } from "~/ui/lazy-image"
 export function MediaCard({
   media,
   scheduleEpisode,
+  hideWatchingStatus,
 }: {
   media: MediaResource
-  scheduleEpisode: number
+  scheduleEpisode?: number
+  hideWatchingStatus?: boolean
 }) {
   return (
     <div className="bg-slate-700 rounded-lg shadow overflow-hidden h-full flex flex-col">
@@ -25,6 +27,7 @@ export function MediaCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 opacity-40 pointer-events-none" />
       </div>
+
       <div className="p-3 flex items-end justify-between gap-4 flex-1">
         <h3 className="text-xl font-light leading-tight flex-1 line-clamp-2 self-start">
           {media.title}
@@ -35,12 +38,22 @@ export function MediaCard({
           className="relative w-20 h-24 rounded-md shadow object-cover -mt-20"
         />
       </div>
+
       <div className="px-3 pb-3 text-sm uppercase font-medium opacity-60 leading-none flex items-center gap-1">
         {infix(
           [
             <p key="format">{media.format}</p>,
-            media.watchListInfo && (
+            media.watchListInfo && !hideWatchingStatus && (
               <StatusDisplay key="status" status={media.watchListInfo.status} />
+            ),
+            media.watchListInfo?.progress && (
+              <p key="scheduleEpisode">
+                Watched{" "}
+                {filterJoin("/", [
+                  media.watchListInfo.progress,
+                  media.episodeCount,
+                ])}
+              </p>
             ),
             scheduleEpisode && (
               <p key="scheduleEpisode">
@@ -53,6 +66,7 @@ export function MediaCard({
           ),
         )}
       </div>
+
       <MediaCardControls media={media} />
     </div>
   )

@@ -1,15 +1,3 @@
-mutation SetWatchingStatus($mediaId: Int!, $status: MediaListStatus!) {
-  SaveMediaListEntry(mediaId: $mediaId, status: $status) {
-    status
-  }
-}
-
-mutation DeleteFromWatching($mediaListId: Int!) {
-  DeleteMediaListEntry(id: $mediaListId) {
-    deleted
-  }
-}
-
 fragment media on Media {
   id
   siteUrl
@@ -32,6 +20,10 @@ fragment media on Media {
     id
     url
     site
+  }
+  nextAiringEpisode {
+    episode
+    airingAt
   }
 }
 

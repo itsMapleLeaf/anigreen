@@ -16,18 +16,20 @@
   - [ ] advance progress button
     - only show when on list and when progress is not 100%
     - advance progress by 1 on click
-  - [ ] show progress somewhere
+  - [x] show progress somewhere
   - [x] show watching status (watching, completed, on hold, dropped)
 - [x] schedule page
 - watching page
   - [ ] "In progress" section, for items that aren't completed
-  - [ ] watching items sectioned by weekday
+  - [x] watching items sectioned by weekday + "not airing"
+  - [x] hide watching status - they're all "watching", so it's redundant to show it
 - [x] deal with timezone difference between server and client
   - just using a fixed time zone for now. a setting can come later, and/or some client-side redirect to set the timezone
 
 ## ideas
 
 - [ ] show a pretty banner on the user menu, like in anigreen fly
+- [ ] my list - a page which lists your full anime list
 - settings
   - general
     - [ ] media title format
@@ -44,3 +46,5 @@
 - [ ] add modals for action errors
 - [x] make the header transparent black on scroll, solid when at top
 - [ ] pagination: button to go back to first page
+- [ ] notification/toast to undo an accidental action
+- [ ] consider using text instead of tooltips for media card actions

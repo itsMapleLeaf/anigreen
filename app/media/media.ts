@@ -15,6 +15,10 @@ export type MediaResource = {
   coverColor?: string
   episodeCount?: number
   anilistUrl?: string
+  nextAiringEpisode?: {
+    episode: number
+    airingAtMs: number
+  }
   externalLinks: MediaExternalLink[]
   watchListInfo?: MediaWatchListInfo
 }
@@ -48,6 +52,10 @@ export function createMediaResource(
     coverColor: mediaData.coverImage?.color,
     anilistUrl: mediaData.siteUrl,
     externalLinks: mediaData.externalLinks?.filter(isTruthy) ?? [],
+    nextAiringEpisode: mediaData.nextAiringEpisode && {
+      episode: mediaData.nextAiringEpisode.episode,
+      airingAtMs: mediaData.nextAiringEpisode.airingAt * 1000,
+    },
     watchListInfo: mediaListData?.status && {
       mediaListId: mediaListData.id,
       status: mediaListData.status,
