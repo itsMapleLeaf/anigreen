@@ -45,8 +45,11 @@ export async function createAnilistSession(authCallbackUrl: string) {
   })
 }
 
-export function getSession(request: Request): Promise<Session | null> {
-  return cookie.parse(request.headers.get("cookie"))
+export async function getSession(
+  request: Request,
+): Promise<Session | undefined> {
+  const session = await cookie.parse(request.headers.get("cookie"))
+  return session ?? undefined
 }
 
 export function destroySession() {
