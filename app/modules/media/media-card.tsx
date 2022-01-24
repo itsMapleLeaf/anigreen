@@ -9,10 +9,12 @@ export function MediaCard({
   media,
   scheduleEpisode,
   hideWatchingStatus,
+  hideProgress,
 }: {
   media: AnilistMedia
   scheduleEpisode?: number
   hideWatchingStatus?: boolean
+  hideProgress?: boolean
 }) {
   return (
     <div className="bg-slate-700 rounded-lg shadow overflow-hidden h-full flex flex-col">
@@ -49,7 +51,7 @@ export function MediaCard({
                 status={media.watchListEntry.status}
               />
             ),
-            media.watchListEntry?.progress && (
+            media.watchListEntry?.progress && !hideProgress && (
               <p key="scheduleEpisode">
                 Watched{" "}
                 {filterJoin("/", [

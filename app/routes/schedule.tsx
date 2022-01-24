@@ -64,7 +64,11 @@ function ScheduleItems() {
         getItemDate={(item) => item.airingDayMs}
         getItemKey={(item) => item.id}
         renderItem={(item) => (
-          <MediaCard media={item.media} scheduleEpisode={item.episode} />
+          <MediaCard
+            media={item.media}
+            scheduleEpisode={item.episode}
+            hideProgress
+          />
         )}
       />
     </>
