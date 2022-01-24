@@ -20,7 +20,8 @@
   - [x] show watching status (watching, completed, on hold, dropped)
 - [x] schedule page
 - watching page
-  - [ ] "In progress" section, for items that aren't completed
+  - [ ] recently aired section
+  - [x] "In progress" section, for items that aren't completed
   - [x] watching items sectioned by weekday + "not airing"
   - [x] hide watching status - they're all "watching", so it's redundant to show it
 - [x] deal with timezone difference between server and client
