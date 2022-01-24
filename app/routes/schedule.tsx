@@ -1,6 +1,5 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import { useDeferredValue } from "react"
 import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
 import { loadSchedule } from "~/modules/anilist/schedule"
@@ -11,7 +10,6 @@ import { MediaCard } from "~/modules/media/media-card"
 import { getAppTitle } from "~/modules/meta"
 import { useLoaderDataTyped } from "~/modules/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
-import { LoadingIcon } from "~/modules/ui/loading-icon"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"
 
@@ -49,29 +47,20 @@ export default function Schedule() {
 
 function ScheduleItems() {
   const data = useLoaderDataTyped<typeof loader>()
-  const deferredData = useDeferredValue(data)
-
   return (
-    <>
-      {data !== deferredData && (
-        <div className="grid place-items-center my-4">
-          <LoadingIcon size="large" />
-        </div>
+    <WeekdaySectionedList
+      items={data.schedule.items}
+      timezone={data.timezone}
+      getItemDate={(item) => item.airingDayMs}
+      getItemKey={(item) => item.id}
+      renderItem={(item) => (
+        <MediaCard
+          media={item.media}
+          scheduleEpisode={item.episode}
+          hideProgress
+        />
       )}
-      <WeekdaySectionedList
-        items={deferredData.schedule.items}
-        timezone={deferredData.timezone}
-        getItemDate={(item) => item.airingDayMs}
-        getItemKey={(item) => item.id}
-        renderItem={(item) => (
-          <MediaCard
-            media={item.media}
-            scheduleEpisode={item.episode}
-            hideProgress
-          />
-        )}
-      />
-    </>
+    />
   )
 }
 

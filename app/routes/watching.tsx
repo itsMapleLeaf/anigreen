@@ -28,10 +28,9 @@ export async function loader({ request }: DataFunctionArgs) {
 
 export default function WatchingPage() {
   const data = useLoaderDataTyped<typeof loader>()
-
   return (
     <>
-      <GridSection title="In progress" subtitle="Catch up on the leftovers">
+      <GridSection title="In progress" subtitle="Catch up on some leftovers">
         {data.watchingItems.filter(isInProgress).map((media) => (
           <MediaCard key={media.id} media={media} hideWatchingStatus />
         ))}
