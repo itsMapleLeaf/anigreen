@@ -31,6 +31,7 @@ import { LoadingIcon } from "~/ui/loading-icon"
 import { Menu } from "~/ui/menu"
 import { anilistClient } from "./anilist/anilist-client.server"
 import { ViewerDocument } from "./anilist/graphql.out"
+import type { Session } from "./auth/session.server"
 import { getSession } from "./auth/session.server"
 import { raise } from "./helpers/errors"
 import { getAppTitle } from "./meta"
@@ -53,20 +54,7 @@ type UserData = {
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
-
-  let user: UserData | undefined
-  if (session) {
-    const data = await anilistClient
-      .request({ document: ViewerDocument, accessToken: session.accessToken })
-      .catch((error) => console.warn("Failed to fetch viewer", error))
-
-    if (data?.Viewer) {
-      user = {
-        name: data.Viewer.name,
-        avatarUrl: data.Viewer.avatar?.medium,
-      }
-    }
-  }
+  const user = session && (await loadUser(session))
 
   return {
     user,
@@ -74,6 +62,18 @@ export async function loader({ request }: DataFunctionArgs) {
       process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
     anilistRedirectUri:
       process.env.ANILIST_REDIRECT_URI ?? raise("ANILIST_REDIRECT_URI not set"),
+  }
+}
+
+async function loadUser(session: Session): Promise<UserData | undefined> {
+  const data = await anilistClient
+    .request({ document: ViewerDocument, accessToken: session.accessToken })
+    .catch((error) => console.warn("Failed to fetch viewer", error))
+  if (!data?.Viewer) return
+
+  return {
+    name: data.Viewer.name,
+    avatarUrl: data.Viewer.avatar?.medium,
   }
 }
 
