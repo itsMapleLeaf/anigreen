@@ -1,10 +1,10 @@
 import { ExternalLinkIcon, LinkIcon } from "@heroicons/react/solid"
 import type { ReactNode } from "react"
-import type { MediaResource } from "~/media/media"
-import { MediaCardActionButton } from "~/media/media-card-action-button"
-import { Menu } from "~/ui/menu"
+import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
+import { Menu } from "~/modules/ui/menu"
+import type { AnilistMedia } from "./media-data"
 
-export function MediaCardLinksButton({ media }: { media: MediaResource }) {
+export function MediaCardLinksButton({ media }: { media: AnilistMedia }) {
   // duplicate names (those with count 2+) should show their domain
   const nameCounts = new Map<string, number>()
   for (const link of media.externalLinks) {

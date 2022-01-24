@@ -1,5 +1,5 @@
 import { ChevronDoubleRightIcon } from "@heroicons/react/solid"
-import { MediaCardActionButton } from "~/media/media-card-action-button"
+import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 
 export function MediaCardAdvanceButton() {
   return (

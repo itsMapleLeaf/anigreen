@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react"
-import { raise } from "~/helpers/errors"
+import { raise } from "~/modules/common/errors"
 
 export type AuthContextValue = {
   loggedIn: boolean

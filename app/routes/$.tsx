@@ -1,4 +1,4 @@
-import { getAppTitle } from "~/meta"
+import { getAppTitle } from "~/modules/meta"
 
 export const meta = () => ({
   title: getAppTitle("Page not found"),

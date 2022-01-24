@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "tailwind": "tailwindcss --config tailwind.config.cjs --input ./app/ui/tailwind.css --output ./app/ui/tailwind.out.css",
+    "tailwind": "tailwindcss --config tailwind.config.cjs --input ./app/modules/ui/tailwind.css --output ./app/modules/ui/tailwind.out.css",
     "graphql-codegen": "graphql-codegen --config graphql.config.yml"
   },
   "dependencies": {
@@ -64,6 +64,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-unicorn": "^40.1.0",
+    "node-fetch": "^3.2.0",
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "tailwindcss": "^3.0.15",

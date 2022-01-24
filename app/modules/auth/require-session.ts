@@ -1,6 +1,6 @@
 import { json } from "remix"
-import { getSession } from "~/auth/session.server"
-import { raise } from "~/helpers/errors"
+import { getSession } from "~/modules/auth/session.server"
+import { raise } from "~/modules/common/errors"
 
 export async function requireSession(request: Request) {
   return (

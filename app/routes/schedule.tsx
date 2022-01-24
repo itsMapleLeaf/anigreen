@@ -3,28 +3,17 @@ import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { useDeferredValue } from "react"
 import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
-import { anilistClient } from "~/anilist/anilist-client.server"
-import { ScheduleDocument } from "~/anilist/graphql.out"
-import { getSession } from "~/auth/session.server"
-import { startOfDayZoned } from "~/dates/start-of-day-zoned"
-import { getTimezone } from "~/dates/timezone-cookie.server"
-import { useWindowEvent } from "~/dom/use-event"
-import type { MediaResource } from "~/media/media"
-import { createMediaResource } from "~/media/media"
-import { MediaCard } from "~/media/media-card"
-import { getAppTitle } from "~/meta"
-import { useLoaderDataTyped } from "~/remix-typed"
-import { clearButtonClass } from "~/ui/button-style"
-import { LoadingIcon } from "~/ui/loading-icon"
-import { WeekdaySectionedList } from "~/ui/weekday-sectioned-list"
-import { KeyboardKey } from "../ui/keyboard-key"
-
-export type ScheduleItem = {
-  id: number
-  media: MediaResource
-  airingDayMs: number
-  episode: number
-}
+import { loadSchedule } from "~/modules/anilist/schedule"
+import { getSession } from "~/modules/auth/session.server"
+import { getTimezone } from "~/modules/dates/timezone-cookie.server"
+import { useWindowEvent } from "~/modules/dom/use-event"
+import { MediaCard } from "~/modules/media/media-card"
+import { getAppTitle } from "~/modules/meta"
+import { useLoaderDataTyped } from "~/modules/remix-typed"
+import { clearButtonClass } from "~/modules/ui/button-style"
+import { LoadingIcon } from "~/modules/ui/loading-icon"
+import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
+import { KeyboardKey } from "../modules/ui/keyboard-key"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle("Schedule"),
@@ -39,43 +28,13 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   const timezone = await getTimezone(request)
 
-  const data = await anilistClient.request({
-    document: ScheduleDocument,
-    variables: {
-      page,
-      startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
-    },
-    accessToken: session?.accessToken,
-  })
-
-  const scheduleItems: ScheduleItem[] = (
-    data.Page?.airingSchedules ?? []
-  ).flatMap((schedule) => {
-    if (!schedule?.media) return []
-    return {
-      id: schedule.id,
-      episode: schedule.episode,
-      airingDayMs: startOfDayZoned(
-        schedule.airingAt * 1000,
-        timezone,
-      ).getTime(),
-      media: createMediaResource(
-        schedule.media,
-        schedule.media?.mediaListEntry,
-      ),
-    }
-  })
-
-  const pageInfo = { currentPage: 1, ...data.Page?.pageInfo }
-  const previousPage =
-    pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
-  const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
-
   return {
-    scheduleItems,
     timezone,
-    nextPage,
-    previousPage,
+    schedule: await loadSchedule({
+      page,
+      timezone,
+      accessToken: session?.accessToken,
+    }),
   }
 }
 
@@ -100,7 +59,7 @@ function ScheduleItems() {
         </div>
       )}
       <WeekdaySectionedList
-        items={deferredData.scheduleItems}
+        items={deferredData.schedule.items}
         timezone={deferredData.timezone}
         getItemDate={(item) => item.airingDayMs}
         getItemKey={(item) => item.id}
@@ -113,32 +72,35 @@ function ScheduleItems() {
 }
 
 function Pagination() {
-  const { previousPage, nextPage } = useLoaderDataTyped<typeof loader>()
+  const { schedule } = useLoaderDataTyped<typeof loader>()
 
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
-    if (event.key === "ArrowLeft" && previousPage != undefined) {
+    if (event.key === "ArrowLeft" && schedule.previousPage != undefined) {
       event.preventDefault()
-      navigate(`?page=${previousPage}`)
+      navigate(`?page=${schedule.previousPage}`)
     }
-    if (event.key === "ArrowRight" && nextPage != undefined) {
+    if (event.key === "ArrowRight" && schedule.nextPage != undefined) {
       event.preventDefault()
-      navigate(`?page=${nextPage}`)
+      navigate(`?page=${schedule.nextPage}`)
     }
   })
 
   return (
     <div className="flex items-center justify-center gap-4">
-      {previousPage != undefined ? (
-        <Link to={`?page=${previousPage}`} className={clearButtonClass}>
+      {schedule.previousPage != undefined ? (
+        <Link
+          to={`?page=${schedule.previousPage}`}
+          className={clearButtonClass}
+        >
           <KeyboardKey label="Left arrow">
             <ArrowSmLeftIcon className="w-5" />
           </KeyboardKey>
           Previous Page
         </Link>
       ) : undefined}
-      {nextPage != undefined ? (
-        <Link to={`?page=${nextPage}`} className={clearButtonClass}>
+      {schedule.nextPage != undefined ? (
+        <Link to={`?page=${schedule.nextPage}`} className={clearButtonClass}>
           <KeyboardKey label="Right arrow">
             <ArrowSmRightIcon className="w-5" />
           </KeyboardKey>

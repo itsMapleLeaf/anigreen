@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { startTransition, useEffect, useReducer, useState } from "react"
-import { useElementEvent } from "~/dom/use-event"
+import { useElementEvent } from "~/modules/dom/use-event"
 
 type TransitionStatus =
   | "unmounted"

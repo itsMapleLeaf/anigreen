@@ -1,7 +1,7 @@
 import type { Key, ReactNode } from "react"
-import { DateTime } from "~/dates/date-time"
-import { startOfDayZoned } from "~/dates/start-of-day-zoned"
-import { mapGetWithFallback } from "~/helpers/map-get-with-fallback"
+import { mapGetWithFallback } from "~/modules/common/map-get-with-fallback"
+import { DateTime } from "~/modules/dates/date-time"
+import { startOfDayZoned } from "~/modules/dates/start-of-day-zoned"
 import { GridSection } from "./grid-section"
 
 export function WeekdaySectionedList<T>({

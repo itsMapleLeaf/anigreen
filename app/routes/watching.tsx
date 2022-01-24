@@ -1,16 +1,18 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import {} from "remix"
-import { anilistClient } from "~/anilist/anilist-client.server"
-import { ViewerDocument, WatchingDocument } from "~/anilist/graphql.out"
-import { getSession } from "~/auth/session.server"
-import { getTimezone } from "~/dates/timezone-cookie.server"
-import { promiseAllObject } from "~/helpers/promise-all-object"
-import type { MediaResource } from "~/media/media"
-import { createMediaResource } from "~/media/media"
-import { MediaCard } from "~/media/media-card"
-import { responseTyped, useLoaderDataTyped } from "~/remix-typed"
-import { GridSection } from "~/ui/grid-section"
-import { WeekdaySectionedList } from "~/ui/weekday-sectioned-list"
+import { getSession } from "~/modules/auth/session.server"
+import { promiseAllObject } from "~/modules/common/promise-all-object"
+import { getTimezone } from "~/modules/dates/timezone-cookie.server"
+import { MediaCard } from "~/modules/media/media-card"
+import type { AnilistMedia } from "~/modules/media/media-data"
+import { loadCurrentMedia } from "~/modules/media/media-data"
+import { getAppTitle } from "~/modules/meta"
+import { responseTyped, useLoaderDataTyped } from "~/modules/remix-typed"
+import { GridSection } from "~/modules/ui/grid-section"
+import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
+
+export const meta = () => ({
+  title: getAppTitle("Watching"),
+})
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
@@ -18,34 +20,10 @@ export async function loader({ request }: DataFunctionArgs) {
     throw responseTyped("", { status: 401, statusText: "not logged in" })
   }
 
-  const viewer = await anilistClient.request({
-    document: ViewerDocument,
-    accessToken: session.accessToken,
-  })
-
-  const userId = viewer.Viewer?.id
-  if (!userId) {
-    throw responseTyped("", { status: 500, statusText: "user id not found" })
-  }
-
-  const results = await promiseAllObject({
+  return promiseAllObject({
     timezone: getTimezone(request),
-    watching: anilistClient.request({
-      document: WatchingDocument,
-      variables: { userId },
-      accessToken: session.accessToken,
-    }),
+    watchingItems: loadCurrentMedia(session.accessToken),
   })
-
-  return {
-    timezone: results.timezone,
-    watchingItems:
-      results.watching.MediaListCollection?.lists
-        ?.flatMap((list) => list?.entries ?? [])
-        .flatMap((entry) =>
-          entry?.media ? createMediaResource(entry.media, entry) : [],
-        ) ?? [],
-  }
 }
 
 export default function WatchingPage() {
@@ -69,11 +47,11 @@ export default function WatchingPage() {
   )
 }
 
-function isInProgress(media: MediaResource) {
+function isInProgress(media: AnilistMedia) {
   // if it's endless, it's always in progress (conan pls)
   if (media.episodeCount == undefined) return true
 
-  const progress = media.watchListInfo?.progress ?? 0
+  const progress = media.watchListEntry?.progress ?? 0
 
   const currentEpisode = media.nextAiringEpisode
     ? media.nextAiringEpisode.episode - 1

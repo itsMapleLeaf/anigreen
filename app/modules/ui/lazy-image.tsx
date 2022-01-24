@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import type { ComponentPropsWithoutRef } from "react"
 import { useEffect, useRef } from "react"
-import { raise } from "~/helpers/errors"
+import { raise } from "~/modules/common/errors"
 
 export function LazyImage({
   src,

@@ -1,16 +1,16 @@
-import { MediaListStatus } from "~/anilist/graphql.out"
-import { filterJoin } from "~/helpers/filter-join"
-import { infix } from "~/helpers/infix"
-import type { MediaResource } from "~/media/media"
-import { MediaCardControls } from "~/media/media-card-controls"
-import { LazyImage } from "~/ui/lazy-image"
+import { MediaListStatus } from "~/modules/anilist/graphql"
+import { filterJoin } from "~/modules/common/filter-join"
+import { infix } from "~/modules/common/infix"
+import { MediaCardControls } from "~/modules/media/media-card-controls"
+import { LazyImage } from "~/modules/ui/lazy-image"
+import type { AnilistMedia } from "./media-data"
 
 export function MediaCard({
   media,
   scheduleEpisode,
   hideWatchingStatus,
 }: {
-  media: MediaResource
+  media: AnilistMedia
   scheduleEpisode?: number
   hideWatchingStatus?: boolean
 }) {
@@ -43,14 +43,17 @@ export function MediaCard({
         {infix(
           [
             <p key="format">{media.format}</p>,
-            media.watchListInfo && !hideWatchingStatus && (
-              <StatusDisplay key="status" status={media.watchListInfo.status} />
+            media.watchListEntry && !hideWatchingStatus && (
+              <StatusDisplay
+                key="status"
+                status={media.watchListEntry.status}
+              />
             ),
-            media.watchListInfo?.progress && (
+            media.watchListEntry?.progress && (
               <p key="scheduleEpisode">
                 Watched{" "}
                 {filterJoin("/", [
-                  media.watchListInfo.progress,
+                  media.watchListEntry.progress,
                   media.episodeCount,
                 ])}
               </p>

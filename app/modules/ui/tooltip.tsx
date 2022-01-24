@@ -2,7 +2,7 @@ import * as Tooltip from "@radix-ui/react-tooltip"
 import clsx from "clsx"
 import type { ComponentPropsWithoutRef, ReactNode } from "react"
 import { forwardRef, useState } from "react"
-import { Transition } from "~/dom/transition"
+import { Transition } from "~/modules/dom/transition"
 
 function TooltipWrapper(
   {

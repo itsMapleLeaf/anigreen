@@ -16,27 +16,25 @@ import {
   ScrollRestoration,
   useFetcher,
 } from "remix"
-import { AuthProvider } from "~/auth/auth-context"
-import { useWindowEvent } from "~/dom/use-event"
-import type { ActiveLinkProps } from "~/navigation/active-link"
-import { ActiveLink } from "~/navigation/active-link"
-import { useLoaderDataTyped } from "~/remix-typed"
-import { Button } from "~/ui/button"
+import { AuthProvider } from "~/modules/auth/auth-context"
+import { useWindowEvent } from "~/modules/dom/use-event"
+import type { ActiveLinkProps } from "~/modules/navigation/active-link"
+import { ActiveLink } from "~/modules/navigation/active-link"
+import { useLoaderDataTyped } from "~/modules/remix-typed"
+import { Button } from "~/modules/ui/button"
 import {
   activeClearButtonClass,
   clearButtonClass,
   clearIconButtonClass,
-} from "~/ui/button-style"
-import { LoadingIcon } from "~/ui/loading-icon"
-import { Menu } from "~/ui/menu"
-import { anilistClient } from "./anilist/anilist-client.server"
-import { ViewerDocument } from "./anilist/graphql.out"
-import type { Session } from "./auth/session.server"
-import { getSession } from "./auth/session.server"
-import { raise } from "./helpers/errors"
-import { getAppTitle } from "./meta"
-import { maxWidthContainerClass } from "./ui/components"
-import tailwind from "./ui/tailwind.out.css"
+} from "~/modules/ui/button-style"
+import { LoadingIcon } from "~/modules/ui/loading-icon"
+import { Menu } from "~/modules/ui/menu"
+import { loadViewerUser } from "./modules/anilist/user"
+import { getSession } from "./modules/auth/session.server"
+import { raise } from "./modules/common/errors"
+import { getAppTitle } from "./modules/meta"
+import { maxWidthContainerClass } from "./modules/ui/components"
+import tailwind from "./modules/ui/tailwind.out.css"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle(),
@@ -54,7 +52,7 @@ type UserData = {
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
-  const user = session && (await loadUser(session))
+  const user = session && (await loadViewerUser(session.accessToken))
 
   return {
     user,
@@ -62,18 +60,6 @@ export async function loader({ request }: DataFunctionArgs) {
       process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
     anilistRedirectUri:
       process.env.ANILIST_REDIRECT_URI ?? raise("ANILIST_REDIRECT_URI not set"),
-  }
-}
-
-async function loadUser(session: Session): Promise<UserData | undefined> {
-  const data = await anilistClient
-    .request({ document: ViewerDocument, accessToken: session.accessToken })
-    .catch((error) => console.warn("Failed to fetch viewer", error))
-  if (!data?.Viewer) return
-
-  return {
-    name: data.Viewer.name,
-    avatarUrl: data.Viewer.avatar?.medium,
   }
 }
 

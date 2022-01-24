@@ -2,7 +2,7 @@ overwrite: true
 schema: "https://graphql.anilist.co/"
 documents: "app/**/*.{ts,tsx,gql}"
 generates:
-  app/anilist/graphql.out.ts:
+  app/modules/anilist/graphql.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

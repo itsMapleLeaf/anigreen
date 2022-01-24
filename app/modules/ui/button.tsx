@@ -1,6 +1,6 @@
 import type { ComponentPropsWithRef } from "react"
-import { autoRef } from "~/react/auto-ref"
-import { LoadingIcon } from "~/ui/loading-icon"
+import { autoRef } from "~/modules/react/auto-ref"
+import { LoadingIcon } from "~/modules/ui/loading-icon"
 
 export type ButtonProps = ComponentPropsWithRef<"button"> & {
   loading?: boolean

@@ -1,9 +1,9 @@
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { autoRef } from "~/react/auto-ref"
-import type { ButtonProps } from "~/ui/button"
-import { Button } from "~/ui/button"
-import { Tooltip } from "~/ui/tooltip"
+import { autoRef } from "~/modules/react/auto-ref"
+import type { ButtonProps } from "~/modules/ui/button"
+import { Button } from "~/modules/ui/button"
+import { Tooltip } from "~/modules/ui/tooltip"
 
 export const MediaCardActionButton = autoRef(function MediaCardActionButton({
   tooltip,

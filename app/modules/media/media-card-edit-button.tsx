@@ -6,19 +6,19 @@ import {
   XCircleIcon,
 } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
-import { MediaListStatus } from "~/anilist/graphql.out"
-import type { MediaResource, MediaWatchListInfo } from "~/media/media"
-import { MediaCardActionButton } from "~/media/media-card-action-button"
-import { SetWatchingStatusForm } from "~/media/set-watching-status-form"
-import { Button } from "~/ui/button"
-import { Menu } from "~/ui/menu"
+import { MediaListStatus } from "~/modules/anilist/graphql"
+import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
+import { SetWatchingStatusForm } from "~/modules/media/set-watching-status-form"
+import { Button } from "~/modules/ui/button"
+import { Menu } from "~/modules/ui/menu"
+import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
 export function MediaCardEditButton({
   media,
   watchListInfo,
 }: {
-  media: MediaResource
-  watchListInfo: MediaWatchListInfo
+  media: AnilistMedia
+  watchListInfo: AnilistMediaListEntry
 }) {
   const fetcher = useFetcher()
 

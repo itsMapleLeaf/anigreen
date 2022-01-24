@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
 import type { FormProps } from "remix"
 import { Form } from "remix"
-import type { MediaListStatus } from "~/anilist/graphql.out"
+import type { MediaListStatus } from "~/modules/anilist/graphql"
 
 export function SetWatchingStatusForm({
   mediaId,

@@ -2,8 +2,8 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import clsx from "clsx"
 import type { ReactNode } from "react"
 import { useRef, useState } from "react"
-import { Transition } from "~/dom/transition"
-import { useWindowEvent } from "~/dom/use-event"
+import { Transition } from "~/modules/dom/transition"
+import { useWindowEvent } from "~/modules/dom/use-event"
 
 export function Menu({
   trigger,
