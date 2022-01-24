@@ -54,7 +54,7 @@ export function MediaCard({
                 Watched{" "}
                 {filterJoin("/", [
                   media.watchListEntry.progress,
-                  media.episodeCount,
+                  media.currentEpisode,
                 ])}
               </p>
             ),

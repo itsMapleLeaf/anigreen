@@ -40,7 +40,7 @@ export default function WatchingPage() {
         items={data.watchingItems}
         timezone={data.timezone}
         getItemKey={(media) => media.id}
-        getItemDate={(media) => media.nextAiringEpisode?.airingAtMs}
+        getItemDate={(media) => media.nextEpisodeAiringTime}
         renderItem={(media) => <MediaCard media={media} hideWatchingStatus />}
       />
     </>
@@ -48,14 +48,8 @@ export default function WatchingPage() {
 }
 
 function isInProgress(media: AnilistMedia) {
-  // if it's endless, it's always in progress (conan pls)
-  if (media.episodeCount == undefined) return true
-
-  const progress = media.watchListEntry?.progress ?? 0
-
-  const currentEpisode = media.nextAiringEpisode
-    ? media.nextAiringEpisode.episode - 1
-    : media.episodeCount
-
-  return progress < currentEpisode
+  return (
+    media.currentEpisode == undefined || // if it's endless, it's always in progress (conan pls)
+    (media.watchListEntry?.progress ?? 0) < media.currentEpisode
+  )
 }

@@ -22,10 +22,8 @@ export type AnilistMedia = {
   coverColor?: string
   episodeCount?: number
   anilistUrl?: string
-  nextAiringEpisode?: {
-    episode: number
-    airingAtMs: number
-  }
+  currentEpisode?: number
+  nextEpisodeAiringTime?: number
   externalLinks: MediaExternalLink[]
   watchListEntry?: AnilistMediaListEntry
 }
@@ -59,10 +57,12 @@ export function extractMediaData(
     coverColor: media.coverImage?.color,
     anilistUrl: media.siteUrl,
     externalLinks: media.externalLinks?.filter(isTruthy) ?? [],
-    nextAiringEpisode: media.nextAiringEpisode && {
-      episode: media.nextAiringEpisode.episode,
-      airingAtMs: media.nextAiringEpisode.airingAt * 1000,
-    },
+    currentEpisode: media.nextAiringEpisode
+      ? media.nextAiringEpisode.episode - 1
+      : media.episodes,
+    nextEpisodeAiringTime: media.nextAiringEpisode
+      ? media.nextAiringEpisode.airingAt * 1000
+      : undefined,
     watchListEntry: mediaListEntry?.status && {
       mediaListId: mediaListEntry.id,
       status: mediaListEntry.status,
