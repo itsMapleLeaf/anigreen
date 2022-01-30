@@ -2,7 +2,7 @@ import { BookmarkIcon } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
 import { MediaListStatus } from "~/modules/anilist/graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
-import { SetWatchingStatusForm } from "~/modules/media/set-watching-status-form"
+import { SetWatchingStatusForm } from "~/routes/set-watching-status"
 import type { AnilistMedia } from "./media-data"
 
 export function MediaCardBookmarkButton({ media }: { media: AnilistMedia }) {

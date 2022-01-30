@@ -16,12 +16,6 @@ query Watching($userId: Int!) {
   }
 }
 
-mutation SetWatchingStatus($mediaId: Int!, $status: MediaListStatus!) {
-  SaveMediaListEntry(mediaId: $mediaId, status: $status) {
-    status
-  }
-}
-
 mutation DeleteFromWatching($mediaListId: Int!) {
   DeleteMediaListEntry(id: $mediaListId) {
     deleted

@@ -6,7 +6,6 @@ import type {
 } from "~/modules/anilist/graphql"
 import {
   DeleteFromWatchingDocument,
-  SetWatchingStatusDocument,
   WatchingDocument,
 } from "~/modules/anilist/graphql"
 import { loadViewerUser } from "~/modules/anilist/user"
@@ -91,21 +90,6 @@ export async function loadCurrentMedia(
   }
 
   return items
-}
-
-export async function setMediaListEntryStatus({
-  accessToken,
-  ...variables
-}: {
-  accessToken: string
-  mediaId: number
-  status: MediaListStatus
-}) {
-  await anilistRequest({
-    document: SetWatchingStatusDocument,
-    variables,
-    accessToken,
-  })
 }
 
 export async function deleteMediaListEntry({

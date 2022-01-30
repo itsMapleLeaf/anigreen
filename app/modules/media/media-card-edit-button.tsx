@@ -8,9 +8,9 @@ import {
 import { useFetcher } from "remix"
 import { MediaListStatus } from "~/modules/anilist/graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
-import { SetWatchingStatusForm } from "~/modules/media/set-watching-status-form"
 import { Button } from "~/modules/ui/button"
 import { Menu } from "~/modules/ui/menu"
+import { SetWatchingStatusForm } from "~/routes/set-watching-status"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
 export function MediaCardEditButton({
@@ -38,7 +38,7 @@ export function MediaCardEditButton({
       text: "Drop",
       icon: <StopIcon className={Menu.leftIconClass} />,
     },
-  ]
+  ] as const
 
   return (
     <Menu

@@ -38,6 +38,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.3.0
   eslint-plugin-unicorn: ^40.1.0
   graphql: ^16.2.0
+  graphql-tag: ^2.12.6
   node-fetch: ^3.2.0
   postcss: ^8.4.5
   prettier: ^2.5.1
@@ -70,6 +71,7 @@ dependencies:
   date-fns-tz: 1.2.2_date-fns@2.28.0
   dotenv: 14.2.0
   graphql: 16.2.0
+  graphql-tag: 2.12.6_graphql@16.2.0
   react: 18.0.0-rc.0
   react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
   react-popper: 2.2.5_1294749af9bd9192dc615c20cf5f75e1
@@ -4903,7 +4905,6 @@ packages:
     dependencies:
       graphql: 16.2.0
       tslib: 2.3.1
-    dev: true
 
   /graphql-ws/5.5.5_graphql@16.2.0:
     resolution: {integrity: sha512-hvyIS71vs4Tu/yUYHPvGXsTgo0t3arU820+lT5VjZS2go0ewp2LqyCgxEN56CzOG7Iys52eRhHBiD1gGRdiQtw==}
@@ -8473,7 +8474,6 @@ packages:
 
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
-    dev: true
 
   /tsutils/3.21.0_typescript@4.5.5:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
