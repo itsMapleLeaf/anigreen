@@ -12,7 +12,6 @@ import { MediaListStatus } from "~/modules/anilist/graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
 import { parsePositiveInteger } from "~/modules/common/parse-positive-integer"
-import { requireValidBody } from "~/modules/network/require-valid-body"
 
 const bodySchema = z.object({
   mediaId: z.string().transform(parsePositiveInteger),
@@ -27,7 +26,7 @@ type Body = z.output<typeof bodySchema>
 
 export async function action({ request }: DataFunctionArgs) {
   const session = await requireSession(request)
-  const body = await requireValidBody(request, bodySchema)
+  const body = bodySchema.parse(Object.fromEntries(await request.formData()))
 
   await anilistRequest<
     SetWatchingStatusMutation,
