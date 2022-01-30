@@ -12,7 +12,7 @@ export function SetWatchingStatusForm({
   mediaId: number
   status: MediaListStatus
   children: ReactNode
-  as: ComponentType<ComponentPropsWithoutRef<"form"> & FormProps>
+  as?: ComponentType<ComponentPropsWithoutRef<"form"> & FormProps>
 }) {
   return (
     <FormComponent
