@@ -23,7 +23,7 @@
     "vitest-watch": "vitest",
     "vitest-run": "vitest --no-watch",
     "cypress-open": "cypress open",
-    "cypress-run": "wait-on tcp:localhost:3000 && cypress run"
+    "cypress-run": "wait-on tcp:localhost:3000 && cypress run --quiet"
   },
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.1.1",
