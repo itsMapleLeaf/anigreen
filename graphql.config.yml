@@ -1,8 +1,8 @@
 overwrite: true
 schema: "https://graphql.anilist.co/"
+documents: "app/**/*.{ts,tsx}"
 generates:
   app/generated/anilist-graphql.ts:
-    documents: "app/**/*.{ts,tsx}"
     plugins:
       - "typescript"
       - "typescript-operations"
