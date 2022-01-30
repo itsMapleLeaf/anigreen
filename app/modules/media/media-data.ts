@@ -49,7 +49,7 @@ export function extractMediaData(
     format: media.format?.replace(/[^A-Za-z]+/g, " "),
     episodeCount: media.episodes,
     bannerImageUrl: media.bannerImage,
-    coverImageUrl: media.coverImage?.medium,
+    coverImageUrl: media.coverImage?.large,
     coverColor: media.coverImage?.color,
     anilistUrl: media.siteUrl,
     externalLinks: media.externalLinks?.filter(isTruthy) ?? [],
