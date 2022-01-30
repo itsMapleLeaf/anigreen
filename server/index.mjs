@@ -17,13 +17,13 @@ const console = pino()
 const app = express()
 app.use(compression())
 
-app.use(pinoHttp({ logger: console }))
-
 // You may want to be more aggressive with this caching
 app.use(express.static("public", { maxAge: "1h" }))
 
 // Remix fingerprints its assets so we can cache forever
 app.use(express.static("public/build", { immutable: true, maxAge: "1y" }))
+
+app.use(pinoHttp({ logger: console }))
 
 if (mode === "production") {
   app.use(createRequestHandler({ build: require("./build") }))
