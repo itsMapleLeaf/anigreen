@@ -7,5 +7,5 @@
       "~/*": ["./app/*"]
     }
   },
-  "exclude": ["**/node_modules/**", "**/build/**", "**/.cache/**"]
+  "exclude": ["**/node_modules/**", "**/build/**", "**/.cache/**", "cypress"]
 }

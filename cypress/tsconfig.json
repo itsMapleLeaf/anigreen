@@ -1,0 +1,7 @@
+{
+  "extends": "@itsmapleleaf/configs/tsconfig.base",
+  "compilerOptions": {
+    "module": "commonjs",
+    "types": ["cypress"]
+  }
+}

@@ -6,3 +6,5 @@ node_modules
 .env
 .vscode
 *.out.*
+cypress/videos
+cypress/screenshots
