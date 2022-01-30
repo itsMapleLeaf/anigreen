@@ -10,6 +10,7 @@ import { MediaListStatus } from "~/modules/anilist/graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 import { Button } from "~/modules/ui/button"
 import { Menu } from "~/modules/ui/menu"
+import { DeleteFromWatchingForm } from "~/routes/delete-from-watching"
 import { SetWatchingStatusForm } from "~/routes/set-watching-status"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
@@ -70,24 +71,17 @@ export function MediaCardEditButton({
               </SetWatchingStatusForm>
             ))}
 
-          <fetcher.Form
-            action="/delete-from-watching"
-            method="delete"
-            className="contents"
-            replace
+          <DeleteFromWatchingForm
+            as={fetcher.Form}
+            mediaListId={watchListInfo.mediaListId}
           >
-            <input
-              type="hidden"
-              name="mediaListId"
-              value={watchListInfo.mediaListId}
-            />
             <Menu.Item>
               <Button type="submit" className={Menu.itemClass}>
                 <XCircleIcon className={Menu.leftIconClass} />
                 Remove
               </Button>
             </Menu.Item>
-          </fetcher.Form>
+          </DeleteFromWatchingForm>
         </>
       }
     />

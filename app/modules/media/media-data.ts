@@ -4,10 +4,7 @@ import type {
   MediaListEntryFragment,
   MediaListStatus,
 } from "~/modules/anilist/graphql"
-import {
-  DeleteFromWatchingDocument,
-  WatchingDocument,
-} from "~/modules/anilist/graphql"
+import { WatchingDocument } from "~/modules/anilist/graphql"
 import { loadViewerUser } from "~/modules/anilist/user"
 import { isTruthy } from "~/modules/common/is-truthy"
 import { anilistRequest } from "../anilist/request.server"
@@ -90,18 +87,4 @@ export async function loadCurrentMedia(
   }
 
   return items
-}
-
-export async function deleteMediaListEntry({
-  accessToken,
-  ...variables
-}: {
-  accessToken: string
-  mediaListId: number
-}) {
-  await anilistRequest({
-    document: DeleteFromWatchingDocument,
-    variables,
-    accessToken,
-  })
 }

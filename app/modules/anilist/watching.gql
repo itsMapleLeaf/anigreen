@@ -15,9 +15,3 @@ query Watching($userId: Int!) {
     }
   }
 }
-
-mutation DeleteFromWatching($mediaListId: Int!) {
-  DeleteMediaListEntry(id: $mediaListId) {
-    deleted
-  }
-}

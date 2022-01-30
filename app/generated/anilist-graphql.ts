@@ -4593,6 +4593,13 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type DeleteFromWatchingMutationVariables = Exact<{
+  mediaListId: Scalars['Int'];
+}>;
+
+
+export type DeleteFromWatchingMutation = { __typename?: 'Mutation', DeleteMediaListEntry?: { __typename?: 'Deleted', deleted?: boolean | undefined } | undefined };
+
 export type SetWatchingStatusMutationVariables = Exact<{
   mediaId: Scalars['Int'];
   status: MediaListStatus;
