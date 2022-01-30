@@ -26,6 +26,8 @@
   - [x] hide watching status - they're all "watching", so it's redundant to show it
 - [x] deal with timezone difference between server and client
   - just using a fixed time zone for now. a setting can come later, and/or some client-side redirect to set the timezone
+- [ ] make a new logo/favicon in figma
+  - the a and g in light font on top of a blue-gray rounded square
 
 ## ideas
 
