@@ -46,7 +46,10 @@ export function MediaCardControls({ media }: { media: AnilistMedia }) {
             media={media}
             watchListInfo={state.watchListInfo}
           />
-          <MediaCardAdvanceButton />
+          <MediaCardAdvanceButton
+            media={media}
+            mediaListEntry={state.watchListInfo}
+          />
           <MediaCardLinksButton media={media} />
         </>
       )}

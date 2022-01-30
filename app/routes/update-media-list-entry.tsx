@@ -5,36 +5,46 @@ import type { FormProps } from "remix"
 import { Form } from "remix"
 import { z } from "zod"
 import type {
-  SetWatchingStatusMutation,
-  SetWatchingStatusMutationVariables,
+  UpdateMediaListEntryMutation,
+  UpdateMediaListEntryMutationVariables,
 } from "~/generated/anilist-graphql"
 import { MediaListStatus } from "~/modules/anilist/graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
 import { parsePositiveInteger } from "~/modules/common/parse-positive-integer"
 
+type Body = z.output<typeof bodySchema>
 const bodySchema = z.object({
   mediaId: z.string().transform(parsePositiveInteger),
-  status: z.union([
-    z.literal(MediaListStatus.Current),
-    z.literal(MediaListStatus.Paused),
-    z.literal(MediaListStatus.Dropped),
-  ]),
+  status: z
+    .union([
+      z.literal(MediaListStatus.Current),
+      z.literal(MediaListStatus.Paused),
+      z.literal(MediaListStatus.Dropped),
+    ])
+    .optional(),
+  progress: z.string().transform(parsePositiveInteger).optional(),
 })
-
-type Body = z.output<typeof bodySchema>
 
 export async function action({ request }: DataFunctionArgs) {
   const session = await requireSession(request)
   const body = bodySchema.parse(Object.fromEntries(await request.formData()))
 
   await anilistRequest<
-    SetWatchingStatusMutation,
-    SetWatchingStatusMutationVariables
+    UpdateMediaListEntryMutation,
+    UpdateMediaListEntryMutationVariables
   >({
     document: gql`
-      mutation SetWatchingStatus($mediaId: Int!, $status: MediaListStatus!) {
-        SaveMediaListEntry(mediaId: $mediaId, status: $status) {
+      mutation UpdateMediaListEntry(
+        $mediaId: Int!
+        $status: MediaListStatus
+        $progress: Int
+      ) {
+        SaveMediaListEntry(
+          mediaId: $mediaId
+          status: $status
+          progress: $progress
+        ) {
           status
         }
       }
@@ -46,24 +56,24 @@ export async function action({ request }: DataFunctionArgs) {
   return {}
 }
 
-export function SetWatchingStatusForm({
-  mediaId,
-  status,
+export function UpdateMediaListEntryForm({
   children,
   as: FormComponent = Form,
+  ...inputs
 }: Body & {
   as?: ComponentType<ComponentPropsWithoutRef<"form"> & FormProps>
   children: ReactNode
 }) {
   return (
     <FormComponent
-      action="/set-watching-status"
+      action="/update-media-list-entry"
       method="put"
       className="contents"
       replace
     >
-      <input type="hidden" name="mediaId" value={mediaId} />
-      <input type="hidden" name="status" value={status} />
+      {Object.entries(inputs).map(([key, value]) => (
+        <input type="hidden" name={key} value={value} key={key} />
+      ))}
       {children}
     </FormComponent>
   )

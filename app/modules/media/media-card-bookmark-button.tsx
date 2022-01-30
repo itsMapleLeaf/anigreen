@@ -2,14 +2,14 @@ import { BookmarkIcon } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
 import { MediaListStatus } from "~/modules/anilist/graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
-import { SetWatchingStatusForm } from "~/routes/set-watching-status"
+import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"
 import type { AnilistMedia } from "./media-data"
 
 export function MediaCardBookmarkButton({ media }: { media: AnilistMedia }) {
   const fetcher = useFetcher()
 
   return (
-    <SetWatchingStatusForm
+    <UpdateMediaListEntryForm
       as={fetcher.Form}
       mediaId={media.id}
       status={MediaListStatus.Current}
@@ -20,6 +20,6 @@ export function MediaCardBookmarkButton({ media }: { media: AnilistMedia }) {
       >
         <BookmarkIcon className="w-5" />
       </MediaCardActionButton>
-    </SetWatchingStatusForm>
+    </UpdateMediaListEntryForm>
   )
 }

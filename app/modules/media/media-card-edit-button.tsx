@@ -11,7 +11,7 @@ import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 import { Button } from "~/modules/ui/button"
 import { Menu } from "~/modules/ui/menu"
 import { DeleteFromWatchingForm } from "~/routes/delete-from-watching"
-import { SetWatchingStatusForm } from "~/routes/set-watching-status"
+import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
 export function MediaCardEditButton({
@@ -56,7 +56,7 @@ export function MediaCardEditButton({
           {statusItems
             .filter((item) => watchListInfo.status !== item.status)
             .map((item) => (
-              <SetWatchingStatusForm
+              <UpdateMediaListEntryForm
                 key={item.status}
                 as={fetcher.Form}
                 mediaId={media.id}
@@ -68,7 +68,7 @@ export function MediaCardEditButton({
                     {item.text}
                   </Button>
                 </Menu.Item>
-              </SetWatchingStatusForm>
+              </UpdateMediaListEntryForm>
             ))}
 
           <DeleteFromWatchingForm

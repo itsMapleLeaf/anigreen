@@ -13,7 +13,7 @@
         - [ ] rate -> shows a modal to rate the anime
         - [ ] set progress -> shows a modal to set the progress
   - [x] links button, pops a menu on open, lists all the media external links
-  - [ ] advance progress button
+  - [x] advance progress button
     - only show when on list and when progress is not 100%
     - advance progress by 1 on click
   - [x] show progress somewhere

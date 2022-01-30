@@ -4600,10 +4600,11 @@ export type DeleteFromWatchingMutationVariables = Exact<{
 
 export type DeleteFromWatchingMutation = { __typename?: 'Mutation', DeleteMediaListEntry?: { __typename?: 'Deleted', deleted?: boolean | undefined } | undefined };
 
-export type SetWatchingStatusMutationVariables = Exact<{
+export type UpdateMediaListEntryMutationVariables = Exact<{
   mediaId: Scalars['Int'];
-  status: MediaListStatus;
+  status?: InputMaybe<MediaListStatus>;
+  progress?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type SetWatchingStatusMutation = { __typename?: 'Mutation', SaveMediaListEntry?: { __typename?: 'MediaList', status?: MediaListStatus | undefined } | undefined };
+export type UpdateMediaListEntryMutation = { __typename?: 'Mutation', SaveMediaListEntry?: { __typename?: 'MediaList', status?: MediaListStatus | undefined } | undefined };
