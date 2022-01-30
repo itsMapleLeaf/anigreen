@@ -6,5 +6,13 @@ export function setupTwind() {
   setup({
     ...tailwindConfig,
     presets: [presetLineClamp()],
+    preflight: {
+      "@layer base": {
+        button: {
+          textAlign: "left",
+          fontWeight: "inherit",
+        },
+      },
+    },
   })
 }
