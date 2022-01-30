@@ -21,7 +21,7 @@ export function LazyImage({
           }
           image.addEventListener("load", handleLoad, { once: true })
         }}
-        className="transition-opacity w-full h-full"
+        className="transition-opacity w-full h-full object-cover"
         src={src}
         alt={alt}
       />
