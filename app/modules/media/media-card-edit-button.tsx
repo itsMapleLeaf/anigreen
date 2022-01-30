@@ -6,7 +6,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
-import { MediaListStatus } from "~/modules/anilist/graphql"
+import { MediaListStatus } from "~/generated/anilist-graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 import { Button } from "~/modules/ui/button"
 import { Menu } from "~/modules/ui/menu"

@@ -1,16 +1,6 @@
 overwrite: true
 schema: "https://graphql.anilist.co/"
 generates:
-  app/modules/anilist/graphql.ts:
-    documents: "app/**/*.gql"
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typed-document-node"
-    config:
-      declarationKind: "type"
-      maybeValue: T | undefined
-      useTypeImports: true
   app/generated/anilist-graphql.ts:
     documents: "app/**/*.{ts,tsx}"
     plugins:

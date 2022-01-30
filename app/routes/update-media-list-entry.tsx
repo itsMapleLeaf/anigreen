@@ -8,7 +8,7 @@ import type {
   UpdateMediaListEntryMutation,
   UpdateMediaListEntryMutationVariables,
 } from "~/generated/anilist-graphql"
-import { MediaListStatus } from "~/modules/anilist/graphql"
+import { MediaListStatus } from "~/generated/anilist-graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
 import { parsePositiveInteger } from "~/modules/common/parse-positive-integer"

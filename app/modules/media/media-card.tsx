@@ -1,4 +1,4 @@
-import { MediaListStatus } from "~/modules/anilist/graphql"
+import { MediaListStatus } from "~/generated/anilist-graphql"
 import { filterJoin } from "~/modules/common/filter-join"
 import { infix } from "~/modules/common/infix"
 import { MediaCardControls } from "~/modules/media/media-card-controls"

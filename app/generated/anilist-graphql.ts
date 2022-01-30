@@ -4593,12 +4593,29 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ViewerQuery = { __typename?: 'Query', Viewer?: { __typename?: 'User', id: number, name: string, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined } | undefined };
+
+export type MediaFragment = { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined };
+
+export type MediaListEntryFragment = { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined };
+
 export type DeleteFromWatchingMutationVariables = Exact<{
   mediaListId: Scalars['Int'];
 }>;
 
 
 export type DeleteFromWatchingMutation = { __typename?: 'Mutation', DeleteMediaListEntry?: { __typename?: 'Deleted', deleted?: boolean | undefined } | undefined };
+
+export type ScheduleQueryVariables = Exact<{
+  startDate: Scalars['Int'];
+  page: Scalars['Int'];
+}>;
+
+
+export type ScheduleQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined, airingSchedules?: Array<{ __typename?: 'AiringSchedule', id: number, episode: number, airingAt: number, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined };
 
 export type UpdateMediaListEntryMutationVariables = Exact<{
   mediaId: Scalars['Int'];
@@ -4608,3 +4625,18 @@ export type UpdateMediaListEntryMutationVariables = Exact<{
 
 
 export type UpdateMediaListEntryMutation = { __typename?: 'Mutation', SaveMediaListEntry?: { __typename?: 'MediaList', status?: MediaListStatus | undefined } | undefined };
+
+export type WatchingQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type WatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };
+
+export type RecentlyAiredQueryVariables = Exact<{
+  startDate: Scalars['Int'];
+  endDate: Scalars['Int'];
+}>;
+
+
+export type RecentlyAiredQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', airingSchedules?: Array<{ __typename?: 'AiringSchedule', media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined, pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined } | undefined };

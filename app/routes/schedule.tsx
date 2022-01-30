@@ -1,17 +1,109 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import gql from "graphql-tag"
 import type { MetaFunction } from "remix"
 import { Link, useNavigate } from "remix"
-import { loadSchedule } from "~/modules/anilist/schedule"
+import type {
+  ScheduleQuery,
+  ScheduleQueryVariables,
+} from "~/generated/anilist-graphql"
+import { anilistRequest } from "~/modules/anilist/request.server"
 import { getSession } from "~/modules/auth/session.server"
+import { startOfDayZoned } from "~/modules/dates/start-of-day-zoned"
 import { getTimezone } from "~/modules/dates/timezone-cookie.server"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import { MediaCard } from "~/modules/media/media-card"
+import type { AnilistMedia } from "~/modules/media/media-data"
+import {
+  extractMediaData,
+  mediaFragment,
+  mediaListEntryFragment,
+} from "~/modules/media/media-data"
 import { getAppTitle } from "~/modules/meta"
 import { useLoaderDataTyped } from "~/modules/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"
+
+type ScheduleData = {
+  items: ScheduleItem[]
+  nextPage?: number
+  previousPage?: number
+}
+
+type ScheduleItem = {
+  id: number
+  media: AnilistMedia
+  airingDayMs: number
+  episode: number
+}
+
+async function loadSchedule({
+  accessToken,
+  page,
+  timezone,
+}: {
+  accessToken?: string
+  page: number
+  timezone: string
+}): Promise<ScheduleData> {
+  const data = await anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
+    document: gql`
+      query Schedule($startDate: Int!, $page: Int!) {
+        Page(page: $page, perPage: 50) {
+          pageInfo {
+            currentPage
+            hasNextPage
+          }
+          airingSchedules(airingAt_greater: $startDate, sort: TIME) {
+            id
+            episode
+            airingAt
+            media {
+              ...media
+              mediaListEntry {
+                ...mediaListEntry
+              }
+            }
+          }
+        }
+      }
+      ${mediaFragment}
+      ${mediaListEntryFragment}
+    `,
+    variables: {
+      page,
+      startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
+    },
+    accessToken,
+  })
+
+  const items: ScheduleItem[] = (data.Page?.airingSchedules ?? []).flatMap(
+    (schedule) => {
+      if (!schedule?.media) return []
+      return {
+        id: schedule.id,
+        episode: schedule.episode,
+        airingDayMs: startOfDayZoned(
+          schedule.airingAt * 1000,
+          timezone,
+        ).getTime(),
+        media: extractMediaData(schedule.media, schedule.media?.mediaListEntry),
+      }
+    },
+  )
+
+  const pageInfo = { currentPage: 1, ...data.Page?.pageInfo }
+  const previousPage =
+    pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
+  const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
+
+  return {
+    items,
+    nextPage,
+    previousPage,
+  }
+}
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle("Schedule"),

@@ -1,13 +1,11 @@
+import gql from "graphql-tag"
 import type {
   MediaExternalLink,
   MediaFragment,
   MediaListEntryFragment,
   MediaListStatus,
-} from "~/modules/anilist/graphql"
-import { WatchingDocument } from "~/modules/anilist/graphql"
-import { loadViewerUser } from "~/modules/anilist/user"
+} from "~/generated/anilist-graphql"
 import { isTruthy } from "~/modules/common/is-truthy"
-import { anilistRequest } from "../anilist/request.server"
 
 export type AnilistMedia = {
   id: number
@@ -29,6 +27,45 @@ export type AnilistMediaListEntry = {
   status: MediaListStatus
   progress: number
 }
+
+export const mediaFragment = gql`
+  fragment media on Media {
+    id
+    siteUrl
+    title {
+      native
+      romaji
+      english
+      userPreferred
+    }
+    format
+    bannerImage
+    coverImage {
+      medium
+      large
+      extraLarge
+      color
+    }
+    episodes
+    externalLinks {
+      id
+      url
+      site
+    }
+    nextAiringEpisode {
+      episode
+      airingAt
+    }
+  }
+`
+
+export const mediaListEntryFragment = gql`
+  fragment mediaListEntry on MediaList {
+    id
+    status
+    progress
+  }
+`
 
 export function extractMediaData(
   media: MediaFragment,
@@ -65,26 +102,4 @@ export function extractMediaData(
       progress: mediaListEntry.progress ?? 0,
     },
   }
-}
-
-export async function loadCurrentMedia(
-  accessToken: string,
-): Promise<AnilistMedia[]> {
-  const user = await loadViewerUser(accessToken)
-
-  const data = await anilistRequest({
-    document: WatchingDocument,
-    variables: { userId: user.id },
-    accessToken,
-  })
-
-  const items: AnilistMedia[] = []
-  for (const list of data.MediaListCollection?.lists ?? []) {
-    for (const entry of list?.entries ?? []) {
-      if (!entry?.media) continue
-      items.push(extractMediaData(entry.media, entry))
-    }
-  }
-
-  return items
 }
