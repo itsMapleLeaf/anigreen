@@ -2,13 +2,11 @@ lockfileVersion: 5.3
 
 specifiers:
   '@graphql-codegen/cli': 2.4.0
-  '@graphql-codegen/typed-document-node': ^2.2.2
   '@graphql-codegen/typescript': 2.4.2
   '@graphql-codegen/typescript-operations': 2.2.2
   '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^1.0.5
   '@itsmapleleaf/configs': ^1.1.2
-  '@popperjs/core': ^2.11.2
   '@radix-ui/react-collapsible': ^0.1.5
   '@radix-ui/react-dropdown-menu': ^0.1.4
   '@radix-ui/react-tooltip': ^0.1.6
@@ -16,7 +14,6 @@ specifiers:
   '@remix-run/react': ^1.1.3
   '@remix-run/serve': ^1.1.3
   '@remix-run/server-runtime': ^1.1.3
-  '@sytexa/tzdb': ^6.44.0
   '@twind/preset-line-clamp': ^1.0.0-next.28
   '@twind/tailwind': ^1.0.0-next.28
   '@types/node': ^17.0.13
@@ -38,24 +35,20 @@ specifiers:
   eslint-plugin-unicorn: ^40.1.0
   graphql: ^16.3.0
   graphql-tag: ^2.12.6
-  node-fetch: ^3.2.0
   prettier: ^2.5.1
   react: ^18.0.0-rc.0
   react-dom: ^18.0.0-rc.0
-  react-popper: ^2.2.5
   react-router: ^6.2.1
   react-router-dom: ^6.2.1
   remix: ^1.1.3
   twind: ^1.0.0-next.28
   typescript: ^4.5.5
-  vite: ^2.7.13
   vitest: ^0.2.5
   zod: ^3.11.6
 
 dependencies:
   '@graphql-typed-document-node/core': 3.1.1_graphql@16.3.0
   '@heroicons/react': 1.0.5_react@18.0.0-rc.0
-  '@popperjs/core': 2.11.2
   '@radix-ui/react-collapsible': 0.1.5_react@18.0.0-rc.0
   '@radix-ui/react-dropdown-menu': 0.1.4_2f50eb45a1501445764b3dbbd8573d7c
   '@radix-ui/react-tooltip': 0.1.6_757a802188413a36d4f24237d13b8e90
@@ -63,7 +56,6 @@ dependencies:
   '@remix-run/react': 1.1.3_757a802188413a36d4f24237d13b8e90
   '@remix-run/serve': 1.1.3_757a802188413a36d4f24237d13b8e90
   '@remix-run/server-runtime': 1.1.3_757a802188413a36d4f24237d13b8e90
-  '@sytexa/tzdb': 6.44.0
   '@twind/preset-line-clamp': 1.0.0-next.28_43c48a36ff5c244ce5674e13919a6b76
   '@twind/tailwind': 1.0.0-next.28_43c48a36ff5c244ce5674e13919a6b76
   date-fns: 2.28.0
@@ -73,7 +65,6 @@ dependencies:
   graphql-tag: 2.12.6_graphql@16.3.0
   react: 18.0.0-rc.0
   react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
-  react-popper: 2.2.5_1294749af9bd9192dc615c20cf5f75e1
   react-router: 6.2.1_react@18.0.0-rc.0
   react-router-dom: 6.2.1_757a802188413a36d4f24237d13b8e90
   remix: 1.1.3
@@ -82,7 +73,6 @@ dependencies:
 
 devDependencies:
   '@graphql-codegen/cli': 2.4.0_d51dde2d821e7db3f9ff9bb6a61d1875
-  '@graphql-codegen/typed-document-node': 2.2.2_graphql@16.3.0
   '@graphql-codegen/typescript': 2.4.2_graphql@16.3.0
   '@graphql-codegen/typescript-operations': 2.2.2_graphql@16.3.0
   '@itsmapleleaf/configs': 1.1.2
@@ -100,10 +90,8 @@ devDependencies:
   eslint-plugin-react: 7.28.0_eslint@8.8.0
   eslint-plugin-react-hooks: 4.3.0_eslint@8.8.0
   eslint-plugin-unicorn: 40.1.0_eslint@8.8.0
-  node-fetch: 3.2.0
   prettier: 2.5.1
   typescript: 4.5.5
-  vite: 2.7.13
   vitest: 0.2.5
 
 packages:
@@ -798,22 +786,6 @@ packages:
       tslib: 2.3.1
     dev: true
 
-  /@graphql-codegen/typed-document-node/2.2.2_graphql@16.3.0:
-    resolution: {integrity: sha512-FOqXcH8mL91Wjvh57VzayjP1WSFPNOii6P4BqJ42j88wsVV7RpO/eQoQjQX1ltAjHGSny8UZJDKA/8It5QaboQ==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 2.3.2_graphql@16.3.0
-      '@graphql-codegen/visitor-plugin-common': 2.5.2_graphql@16.3.0
-      auto-bind: 4.0.0
-      change-case-all: 1.0.14
-      graphql: 16.3.0
-      tslib: 2.3.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: true
-
   /@graphql-codegen/typescript-operations/2.2.2_graphql@16.3.0:
     resolution: {integrity: sha512-J50AuTA37RYv67hP2oHbfr3iGxexTCoadQsbr5pEUGucrIupCA0hLEJH2W+9/h6YNh0UlZT3kRTJp81ARoAjOA==}
     peerDependencies:
@@ -1256,10 +1228,6 @@ packages:
     dependencies:
       mkdirp: 1.0.4
       rimraf: 3.0.2
-    dev: false
-
-  /@popperjs/core/2.11.2:
-    resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
     dev: false
 
   /@radix-ui/popper/0.1.0:
@@ -1768,10 +1736,6 @@ packages:
 
   /@swc/helpers/0.3.2:
     resolution: {integrity: sha512-qEru2uaH1vKZNCZR4rFCUZaflsBP7IWiGcIoQe22qi5tm+HEG/yPdhSba+ZCNTWk2xyYpx/nEFkncDY3orEx3w==}
-    dev: false
-
-  /@sytexa/tzdb/6.44.0:
-    resolution: {integrity: sha512-1WQ8naoiFM4/gSNqxiFyDRFHfg31m4/iw2HnZHRYfs43SVnyljAhb7J4JRpG0w6tssIBmgKdDXxHUWgEEk8jSw==}
     dev: false
 
   /@szmarczak/http-timer/1.1.2:
@@ -3262,11 +3226,6 @@ packages:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
 
-  /data-uri-to-buffer/4.0.0:
-    resolution: {integrity: sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==}
-    engines: {node: '>= 12'}
-    dev: true
-
   /dataloader/2.0.0:
     resolution: {integrity: sha512-YzhyDAwA4TaQIhM5go+vCLmU0UikghC/t9DTQYZR2M/UvZ1MdOhPezSDZcjj9uqQJOMqjLcpWtyW2iNINdlatQ==}
     dev: true
@@ -4452,14 +4411,6 @@ packages:
       - encoding
     dev: true
 
-  /fetch-blob/3.1.4:
-    resolution: {integrity: sha512-Eq5Xv5+VlSrYWEqKrusxY1C3Hm/hjeAsCGVG3ft7pZahlUAChpGZT/Ms1WmSLnEAisEXszjzu/s+ce6HZB2VHA==}
-    engines: {node: ^12.20 || >= 14.13}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.2.0
-    dev: true
-
   /figures/1.7.0:
     resolution: {integrity: sha1-y+Hjr/zxzUS4DK3+0o3Hk6lwHS4=}
     engines: {node: '>=0.10.0'}
@@ -4590,13 +4541,6 @@ packages:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.1
-    dev: true
-
-  /formdata-polyfill/4.0.10:
-    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
-    engines: {node: '>=12.20.0'}
-    dependencies:
-      fetch-blob: 3.1.4
     dev: true
 
   /forwarded/0.2.0:
@@ -6633,15 +6577,6 @@ packages:
     dependencies:
       whatwg-url: 5.0.0
 
-  /node-fetch/3.2.0:
-    resolution: {integrity: sha512-8xeimMwMItMw8hRrOl3C9/xzU49HV/yE6ORew/l+dxWimO5A4Ra8ld2rerlJvc/O7et5Z1zrWsPX43v1QBjCxw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      data-uri-to-buffer: 4.0.0
-      fetch-blob: 3.1.4
-      formdata-polyfill: 4.0.10
-    dev: true
-
   /node-int64/0.4.0:
     resolution: {integrity: sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=}
     dev: true
@@ -7281,25 +7216,9 @@ packages:
       scheduler: 0.21.0-rc.0-next-fe905f152-20220107
     dev: false
 
-  /react-fast-compare/3.2.0:
-    resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
-    dev: false
-
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
-
-  /react-popper/2.2.5_1294749af9bd9192dc615c20cf5f75e1:
-    resolution: {integrity: sha512-kxGkS80eQGtLl18+uig1UIf9MKixFSyPxglsgLBxlYnyDf65BiY9B3nZSc6C9XUNDgStROB0fMQlTEz1KxGddw==}
-    peerDependencies:
-      '@popperjs/core': ^2.0.0
-      react: ^16.8.0 || ^17
-    dependencies:
-      '@popperjs/core': 2.11.2
-      react: 18.0.0-rc.0
-      react-fast-compare: 3.2.0
-      warning: 4.0.3
-    dev: false
 
   /react-remove-scroll-bar/2.2.0_2fa291bfae6e56080648438396754a97:
     resolution: {integrity: sha512-UU9ZBP1wdMR8qoUs7owiVcpaPwsQxUDC2lypP6mmixaGlARZa7ZIBx1jcuObLdhMOvCsnZcvetOho0wzPa9PYg==}
@@ -8769,12 +8688,6 @@ packages:
       - sass
       - stylus
     dev: true
-
-  /warning/4.0.3:
-    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
-    dependencies:
-      loose-envify: 1.4.0
-    dev: false
 
   /wcwidth/1.0.1:
     resolution: {integrity: sha1-8LDc+RW8X/FSivrbLA4XtTLaL+g=}
