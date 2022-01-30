@@ -1,20 +1,20 @@
 {
-	"$schema": "https://json.schemastore.org/web-manifest-combined",
-	"name": "anigreen",
-	"description": "a cute and sleek extension to anilist ✨",
-	"display": "standalone",
-	"background_color": "#111827",
-	"theme_color": "#047857",
-	"icons": [
-		{
-			"sizes": "192x192",
-			"src": "/android-chrome-192x192.png",
-			"type": "image/png"
-		},
-		{
-			"sizes": "512x512",
-			"src": "/android-chrome-512x512.png",
-			"type": "image/png"
-		}
-	]
+  "$schema": "https://json.schemastore.org/web-manifest-combined",
+  "name": "anigreen",
+  "description": "a cute and sleek extension to anilist ✨",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#047857",
+  "icons": [
+    {
+      "sizes": "192x192",
+      "src": "/android-chrome-192x192.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "/android-chrome-512x512.png",
+      "type": "image/png"
+    }
+  ]
 }
