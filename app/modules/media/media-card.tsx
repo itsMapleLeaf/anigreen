@@ -25,7 +25,7 @@ export function MediaCard({
         <LazyImage
           src={media.bannerImageUrl}
           alt=""
-          className="absolute w-full h-full inset-0 object-cover brightness-50"
+          className="absolute inset-0 brightness-50"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 opacity-40 pointer-events-none" />
       </div>
@@ -37,7 +37,7 @@ export function MediaCard({
         <LazyImage
           src={media.coverImageUrl}
           alt=""
-          className="relative w-20 h-24 rounded-md shadow object-cover -mt-20"
+          className="relative w-20 h-24 rounded-md shadow -mt-20 overflow-hidden"
         />
       </div>
 
