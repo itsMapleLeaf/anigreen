@@ -1,8 +1,7 @@
 node_modules
 
-/.cache
-/build
-/public/build
+.cache
+build
 .env
 .vscode
 *.out.*
