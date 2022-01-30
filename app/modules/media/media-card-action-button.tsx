@@ -1,5 +1,5 @@
-import clsx from "clsx"
 import type { ReactNode } from "react"
+import { cx } from "twind"
 import { autoRef } from "~/modules/react/auto-ref"
 import type { ButtonProps } from "~/modules/ui/button"
 import { Button } from "~/modules/ui/button"
@@ -15,10 +15,10 @@ export const MediaCardActionButton = autoRef(function MediaCardActionButton({
       <Button
         type="submit"
         {...props}
-        className={clsx(className, actionButtonClass)}
+        className={cx(className, actionButtonClass)}
       />
     </Tooltip>
   )
 })
 
-export const actionButtonClass = clsx`flex justify-center p-3 hover:bg-black/30 transition w-full`
+export const actionButtonClass = cx`flex justify-center p-3 hover:bg-black/30 transition w-full`

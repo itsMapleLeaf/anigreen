@@ -1,5 +1,5 @@
-import clsx from "clsx"
 import { startTransition, useEffect, useReducer, useState } from "react"
+import { cx } from "twind"
 import { useElementEvent } from "~/modules/dom/use-event"
 
 type TransitionStatus =
@@ -95,7 +95,7 @@ export function Transition(props: {
   return (
     <>
       {props.children({
-        className: clsx(
+        className: cx(
           props.className,
           (status === "entering" || status === "entered") && props.inClassName,
           (status === "mounted" || status === "exiting") && props.outClassName,

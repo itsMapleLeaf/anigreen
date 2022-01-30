@@ -1,3 +1,3 @@
-import clsx from "clsx"
+import { cx } from "twind"
 
-export const maxWidthContainerClass = clsx`w-full max-w-screen-lg px-4 mx-auto`
+export const maxWidthContainerClass = cx`w-full max-w-screen-lg px-4 mx-auto`

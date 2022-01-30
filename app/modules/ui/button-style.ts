@@ -1,25 +1,25 @@
-import clsx from "clsx"
+import { cx } from "twind"
 
-const baseButtonClass = clsx`font-medium rounded-md transition flex flex-row items-center gap-2`
+const baseButtonClass = cx`font-medium rounded-md transition flex flex-row items-center gap-2`
 
-export const solidButtonClass = clsx(
+export const solidButtonClass = cx(
   baseButtonClass,
-  clsx`bg-emerald-700 text-emerald-100 hover:translate-y-[-2px] hover:shadow hover:bg-emerald-800`,
+  cx`bg-emerald-700 text-emerald-100 hover:translate-y-[-2px] hover:shadow hover:bg-emerald-800`,
 )
 
-const baseClearButtonClass = clsx(
+const baseClearButtonClass = cx(
   baseButtonClass,
-  clsx`opacity-50 hover:bg-black/50 hover:opacity-100`,
+  cx`opacity-50 hover:bg-black/50 hover:opacity-100`,
 )
 
-export const clearButtonClass = clsx(
+export const clearButtonClass = cx(
   baseClearButtonClass,
-  clsx`px-3 py-2 -mx-3 -my-2`,
+  cx`px-3 py-2 -mx-3 -my-2`,
 )
 
-export const clearIconButtonClass = clsx(baseClearButtonClass, clsx`p-2 -m-2`)
+export const clearIconButtonClass = cx(baseClearButtonClass, cx`p-2 -m-2`)
 
-export const activeClearButtonClass = clsx(
+export const activeClearButtonClass = cx(
   baseButtonClass,
-  clsx`bg-black/50 text-emerald-400 px-3 py-2 -mx-3 -my-2`,
+  cx`bg-black/50 text-emerald-400 px-3 py-2 -mx-3 -my-2`,
 )

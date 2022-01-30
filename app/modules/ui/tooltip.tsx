@@ -1,7 +1,7 @@
 import * as Tooltip from "@radix-ui/react-tooltip"
-import clsx from "clsx"
 import type { ComponentPropsWithoutRef, ReactNode } from "react"
 import { forwardRef, useState } from "react"
+import { cx } from "twind"
 import { Transition } from "~/modules/dom/transition"
 
 function TooltipWrapper(
@@ -26,8 +26,8 @@ function TooltipWrapper(
       <Transition
         visible={visible}
         className="transition"
-        inClassName={clsx`opacity-100 scale-100`}
-        outClassName={clsx`opacity-0 scale-90`}
+        inClassName={cx`opacity-100 scale-100`}
+        outClassName={cx`opacity-0 scale-90`}
       >
         {(transition) => (
           <Tooltip.Content

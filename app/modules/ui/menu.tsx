@@ -1,7 +1,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import clsx from "clsx"
 import type { ReactNode } from "react"
 import { useRef, useState } from "react"
+import { cx } from "twind"
 import { Transition } from "~/modules/dom/transition"
 import { useWindowEvent } from "~/modules/dom/use-event"
 
@@ -47,8 +47,8 @@ export function Menu({
       <Transition
         visible={visible}
         className="transition"
-        inClassName={clsx`opacity-100 translate-y-0`}
-        outClassName={clsx`opacity-0 translate-y-3`}
+        inClassName={cx`opacity-100 translate-y-0`}
+        outClassName={cx`opacity-0 translate-y-3`}
       >
         {(transition) => (
           <DropdownMenu.Content
@@ -83,5 +83,5 @@ Menu.Separator = function Separator() {
   return <DropdownMenu.Separator className="h-px bg-slate-300" />
 }
 
-Menu.itemClass = clsx`px-3 py-2 transition flex gap-2 items-center hover:bg-emerald-200 focus:bg-emerald-200 focus:outline-none`
-Menu.leftIconClass = clsx`w-5 -ml-1`
+Menu.itemClass = cx`px-3 py-2 transition flex gap-2 items-center hover:bg-emerald-200 focus:bg-emerald-200 focus:outline-none`
+Menu.leftIconClass = cx`w-5 -ml-1`

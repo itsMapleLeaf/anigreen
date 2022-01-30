@@ -3,9 +3,8 @@ import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import clsx from "clsx"
 import { useEffect, useState } from "react"
-import type { LinksFunction, MetaFunction } from "remix"
+import type { MetaFunction } from "remix"
 import {
   Link,
   Links,
@@ -16,6 +15,7 @@ import {
   ScrollRestoration,
   useFetcher,
 } from "remix"
+import { cx } from "twind"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
@@ -34,16 +34,11 @@ import { getSession } from "./modules/auth/session.server"
 import { raise } from "./modules/common/errors"
 import { getAppTitle } from "./modules/meta"
 import { maxWidthContainerClass } from "./modules/ui/components"
-import tailwind from "./modules/ui/tailwind.out.css"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle(),
   description: "your week in anime 🌠",
 })
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: tailwind },
-]
 
 type UserData = {
   name: string
@@ -117,7 +112,7 @@ function HeaderPanel({ children }: { children: React.ReactNode }) {
 
   return (
     <header
-      className={clsx(
+      className={cx(
         "shadow sticky top-0 z-10 transition-colors backdrop-blur-lg",
         scrolled ? "bg-black/60" : "bg-slate-800",
       )}
