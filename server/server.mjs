@@ -23,8 +23,6 @@ app.use(express.static("public", { maxAge: "1h" }))
 // Remix fingerprints its assets so we can cache forever
 app.use(express.static("public/build", { immutable: true, maxAge: "1y" }))
 
-app.use(pinoHttp({ logger: console }))
-
 if (mode === "production") {
   app.use(createRequestHandler({ build: require("./build") }))
 } else {
@@ -35,10 +33,32 @@ if (mode === "production") {
   })
 }
 
-const port = process.env.PORT || 3000
-app.listen(port, () => {
-  console.info(`Express server listening on http://localhost:${port}`)
-})
+/** @returns {Promise<{url:string,stop:()=>void}>} */
+export function startServer({ logging = false } = {}) {
+  if (logging) {
+    app.use(pinoHttp({ logger: console }))
+  }
+  return new Promise((resolve, reject) => {
+    const port = process.env.PORT || 3000
+
+    const server = app.listen(port, () => {
+      const url = `http://localhost:${port}`
+
+      resolve({
+        url,
+        stop: () => {
+          server.close()
+        },
+      })
+
+      if (logging) {
+        console.info(`Express server listening on ${url}`)
+      }
+    })
+
+    app.on("error", reject)
+  })
+}
 
 function purgeRequireCache() {
   // purge require cache on requests for "server side HMR" this won't let
