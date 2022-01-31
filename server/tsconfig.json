@@ -1,7 +1,0 @@
-{
-  "extends": "@itsmapleleaf/configs/tsconfig.base",
-  "compilerOptions": {
-    "module": "esnext"
-  },
-  "include": [".", "../types"]
-}

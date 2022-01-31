@@ -14,7 +14,7 @@
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --project cypress/tsconfig.json --noEmit",
     "remix-watch": "remix watch",
     "serve-dev": "cross-env NODE_ENV=development node server/index.mjs | pino-colada --color",
     "serve-prod": "cross-env NODE_ENV=production node server/index.mjs | pino-colada --color",
@@ -106,12 +106,6 @@
         "files": "cypress/**",
         "parserOptions": {
           "project": "./cypress/tsconfig.json"
-        }
-      },
-      {
-        "files": "server/**",
-        "parserOptions": {
-          "project": "./server/tsconfig.json"
         }
       }
     ]
