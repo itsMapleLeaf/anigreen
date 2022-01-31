@@ -19,7 +19,7 @@
     "serve": "node server/main.mjs | pino-colada --color",
     "serve-dev": "cross-env NODE_ENV=development pnpm run serve",
     "serve-prod": "cross-env NODE_ENV=production pnpm run serve",
-    "graphql": "graphql-codegen --config graphql.config.yml",
+    "graphql": "graphql-codegen --config graphql.config.json",
     "graphql-watch": "pnpm graphql -- --watch",
     "vitest-watch": "vitest",
     "vitest-run": "vitest --no-watch",

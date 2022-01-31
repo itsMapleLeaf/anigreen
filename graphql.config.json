@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/graphql-config@4.1.0/config-schema.json",
+  "overwrite": true,
+  "schema": "https://graphql.anilist.co/",
+  "documents": "app/**/*.{ts,tsx}",
+  "generates": {
+    "app/generated/anilist-graphql.ts": {
+      "plugins": ["typescript", "typescript-operations"],
+      "config": {
+        "declarationKind": "type",
+        "maybeValue": "T | undefined",
+        "useTypeImports": true
+      }
+    }
+  }
+}
