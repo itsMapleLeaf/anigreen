@@ -1,4 +1,3 @@
-// @ts-check
 import { createRequestHandler } from "@remix-run/express"
 import compression from "compression"
 import express from "express"
