@@ -48,8 +48,8 @@ specifiers:
   pino-colada: ^2.2.2
   pino-http: ^6.6.0
   prettier: ^2.5.1
-  react: ^18.0.0-rc.0-next-fe905f152-20220107
-  react-dom: ^18.0.0-rc.0-next-fe905f152-20220107
+  react: ^18.0.0-rc.0
+  react-dom: ^18.0.0-rc.0
   react-router: ^6.2.1
   react-router-dom: ^6.2.1
   remix: ^1.1.3
