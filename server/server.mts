@@ -22,21 +22,26 @@ app.use(express.static("public", { maxAge: "1h" }))
 // Remix fingerprints its assets so we can cache forever
 app.use(express.static("public/build", { immutable: true, maxAge: "1y" }))
 
-if (mode === "production") {
-  app.use(createRequestHandler({ build: require("./build") }))
-} else {
-  app.use((request, response, next) => {
-    purgeRequireCache()
-    const handler = createRequestHandler({ build: require("./build"), mode })
-    return handler(request, response, next)
-  })
+export type ServerHandle = {
+  url: string
+  stop: () => void
 }
 
-/** @returns {Promise<{url:string,stop:()=>void}>} */
-export function startServer({ logging = false } = {}) {
+export function startServer({ logging = false } = {}): Promise<ServerHandle> {
+  if (mode === "production") {
+    app.use(createRequestHandler({ build: require("./build") }))
+  } else {
+    app.use((request, response, next) => {
+      purgeRequireCache()
+      const handler = createRequestHandler({ build: require("./build"), mode })
+      return handler(request, response, next)
+    })
+  }
+
   if (logging) {
     app.use(pinoHttp({ logger: console }))
   }
+
   return new Promise((resolve, reject) => {
     const port = process.env.PORT || 3000
 
