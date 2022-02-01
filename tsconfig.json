@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "checkJs": false,
+    "resolveJsonModule": true,
     "paths": {
       "~/*": ["./app/*"]
     }
