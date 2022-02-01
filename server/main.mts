@@ -1,4 +1,4 @@
-import { anilistApiMockServer } from "../test/anilist-api-mock-server.mjs"
+import { anilistApiMockServer } from "./anilist-api-mock-server.mjs"
 import { startServer } from "./server.mjs"
 
 if (process.env.NODE_ENV === "test") {
