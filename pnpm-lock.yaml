@@ -4,7 +4,6 @@ specifiers:
   '@graphql-codegen/cli': 2.4.0
   '@graphql-codegen/typescript': 2.4.2
   '@graphql-codegen/typescript-operations': 2.2.2
-  '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^1.0.5
   '@itsmapleleaf/configs': ^1.1.2
   '@radix-ui/react-collapsible': ^0.1.5
@@ -60,7 +59,6 @@ specifiers:
   zod: ^3.11.6
 
 dependencies:
-  '@graphql-typed-document-node/core': 3.1.1_graphql@16.3.0
   '@heroicons/react': 1.0.5_e32785dbcafa2fde92a71a8f50f52ce6
   '@radix-ui/react-collapsible': 0.1.5_e32785dbcafa2fde92a71a8f50f52ce6
   '@radix-ui/react-dropdown-menu': 0.1.4_2015e99e0861be5b69e7384491253bf3
@@ -1178,14 +1176,6 @@ packages:
       tslib: 2.3.1
       value-or-promise: 1.0.11
     dev: true
-
-  /@graphql-typed-document-node/core/3.1.1_graphql@16.3.0:
-    resolution: {integrity: sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      graphql: 16.3.0
-    dev: false
 
   /@hapi/hoek/9.2.1:
     resolution: {integrity: sha512-gfta+H8aziZsm8pZa0vj04KO6biEiisppNgA1kbJvFrrWu9Vm7eaUEy76DIxsuTaWvti5fkJVhllWc6ZTE+Mdw==}

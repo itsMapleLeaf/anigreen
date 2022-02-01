@@ -1,10 +1,12 @@
-import type { TypedDocumentNode } from "@graphql-typed-document-node/core"
+import type { DocumentNode } from "graphql"
 import { print } from "graphql"
 import { setTimeout } from "node:timers/promises"
 import { inspect } from "node:util"
 
-type RequestOptions<Result, Variables> = {
-  document: TypedDocumentNode<Result, Variables>
+type AnyRecord = { [key: string]: unknown }
+
+type RequestOptions<Variables extends AnyRecord> = {
+  document: DocumentNode
   accessToken?: string
 } & RequestVariables<Variables>
 
@@ -14,9 +16,10 @@ type RequestVariables<Variables> =
     ? { variables?: undefined }
     : { variables: Variables }
 
-export async function anilistRequest<Result, Variables>(
-  options: RequestOptions<Result, Variables>,
-): Promise<Result> {
+export async function anilistRequest<
+  Result extends AnyRecord,
+  Variables extends AnyRecord,
+>(options: RequestOptions<Variables>): Promise<Result> {
   const { document, variables, accessToken } = options
 
   const headers: Record<string, string> = {
@@ -69,7 +72,7 @@ export async function anilistRequest<Result, Variables>(
 }
 
 function raiseRequestError(
-  document: TypedDocumentNode<any, any>,
+  document: DocumentNode,
   variables: unknown,
   response: Response,
   message: string,
