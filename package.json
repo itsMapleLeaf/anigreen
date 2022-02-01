@@ -63,6 +63,7 @@
     "@graphql-codegen/cli": "2.4.0",
     "@graphql-codegen/typescript": "2.4.2",
     "@graphql-codegen/typescript-operations": "2.2.2",
+    "@testing-library/cypress": "^8.0.2",
     "@types/compression": "^1.7.2",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.14",
