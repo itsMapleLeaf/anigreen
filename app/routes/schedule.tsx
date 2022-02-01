@@ -177,6 +177,7 @@ function Pagination() {
         <Link
           to={`?page=${schedule.previousPage}`}
           className={clearButtonClass}
+          data-testid="schedule-pagination-previous"
         >
           <KeyboardKey label="Left arrow">
             <ArrowSmLeftIcon className="w-5" />
@@ -185,7 +186,11 @@ function Pagination() {
         </Link>
       ) : undefined}
       {schedule.nextPage != undefined ? (
-        <Link to={`?page=${schedule.nextPage}`} className={clearButtonClass}>
+        <Link
+          to={`?page=${schedule.nextPage}`}
+          className={clearButtonClass}
+          data-testid="schedule-pagination-next"
+        >
           <KeyboardKey label="Right arrow">
             <ArrowSmRightIcon className="w-5" />
           </KeyboardKey>
