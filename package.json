@@ -24,7 +24,7 @@
     "vitest-watch": "vitest",
     "vitest-run": "vitest --no-watch",
     "cypress-open": "cypress open",
-    "cypress-run": "wait-on http-get://localhost:3000 && cypress run"
+    "cypress-run": "wait-on --timeout 4000 http-get://localhost:3000 && cypress run"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.5",
