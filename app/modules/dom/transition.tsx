@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { cx } from "twind"
 import { useElementEvent } from "~/modules/dom/use-event"
 
@@ -75,13 +75,16 @@ export function Transition(props: {
   useEffect(() => {
     if (props.visible) {
       statusDispatch("show")
-      startTransition(() => {
-        statusDispatch("mountFinished")
-      })
     } else {
       statusDispatch("hide")
     }
   }, [props.visible])
+
+  useEffect(() => {
+    if (status === "mounted") {
+      statusDispatch("mountFinished")
+    }
+  }, [status])
 
   const [element, elementRef] = useState<HTMLElement | null>()
   useElementEvent(element, "transitionend", () => {
