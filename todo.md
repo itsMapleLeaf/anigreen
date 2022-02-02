@@ -51,3 +51,5 @@
 - [ ] pagination: button to go back to first page
 - [ ] notification/toast to undo an accidental action
 - [ ] consider using text instead of tooltips for media card actions
+- [ ] schedule infinite scrolling
+  - this has an official example we can follow now
