@@ -20,7 +20,7 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppTitle } from "~/modules/meta"
-import { useLoaderDataTyped } from "~/modules/remix-typed"
+import { useLoaderDataTyped } from "~/modules/remix-typed/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"

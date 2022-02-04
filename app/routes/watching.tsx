@@ -17,7 +17,10 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppTitle } from "~/modules/meta"
-import { responseTyped, useLoaderDataTyped } from "~/modules/remix-typed"
+import {
+  responseTyped,
+  useLoaderDataTyped,
+} from "~/modules/remix-typed/remix-typed"
 import { GridSection } from "~/modules/ui/grid-section"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 

@@ -1,9 +1,9 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import { json, redirect, useActionData, useLoaderData } from "remix"
 
-type MaybePromise<Value> = Value | PromiseLike<Value>
+export type MaybePromise<Value> = Value | PromiseLike<Value>
 
-type JsonValue =
+export type JsonValue =
   | string
   | number
   | boolean
@@ -13,7 +13,9 @@ type JsonValue =
   // undefined technically can't exist in json, but having it here makes things easier
   | undefined
 
-type TypedResponse<Data extends JsonValue> = Response & { __jsonType: Data }
+export type TypedResponse<Data extends JsonValue> = Omit<Response, "json"> & {
+  json(): Promise<Data>
+}
 
 // prettier-ignore
 type LoaderFunctionTyped<Data extends JsonValue> = (args: DataFunctionArgs) =>

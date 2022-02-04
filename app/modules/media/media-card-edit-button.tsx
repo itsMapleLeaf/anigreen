@@ -6,12 +6,11 @@ import {
   XCircleIcon,
 } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
+import { TypedForm } from "~/form"
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 import { Button } from "~/modules/ui/button"
 import { Menu } from "~/modules/ui/menu"
-import { DeleteFromWatchingForm } from "~/routes/delete-from-watching"
-import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
 export function MediaCardEditButton({
@@ -56,11 +55,11 @@ export function MediaCardEditButton({
           {statusItems
             .filter((item) => watchListInfo.status !== item.status)
             .map((item) => (
-              <UpdateMediaListEntryForm
+              <TypedForm
                 key={item.status}
                 as={fetcher.Form}
-                mediaId={media.id}
-                status={item.status}
+                action="updateMediaListEntry"
+                data={{ mediaId: media.id, status: item.status }}
               >
                 <Menu.Item>
                   <Button type="submit" className={Menu.itemClass}>
@@ -68,12 +67,13 @@ export function MediaCardEditButton({
                     {item.text}
                   </Button>
                 </Menu.Item>
-              </UpdateMediaListEntryForm>
+              </TypedForm>
             ))}
 
-          <DeleteFromWatchingForm
+          <TypedForm
             as={fetcher.Form}
-            mediaListId={watchListInfo.mediaListId}
+            action="deleteFromWatching"
+            data={{ mediaListId: watchListInfo.mediaListId }}
           >
             <Menu.Item>
               <Button type="submit" className={Menu.itemClass}>
@@ -81,7 +81,7 @@ export function MediaCardEditButton({
                 Remove
               </Button>
             </Menu.Item>
-          </DeleteFromWatchingForm>
+          </TypedForm>
         </>
       }
     />
