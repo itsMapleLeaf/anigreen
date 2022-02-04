@@ -15,12 +15,12 @@ import {
   ScrollRestoration,
   useFetcher,
 } from "remix"
+import { useLoaderDataTyped } from "remix-typed"
 import { cx } from "twind"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
 import { ActiveLink } from "~/modules/navigation/active-link"
-import { useLoaderDataTyped } from "~/modules/remix-typed/remix-typed"
 import { Button } from "~/modules/ui/button"
 import {
   activeClearButtonClass,

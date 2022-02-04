@@ -53,6 +53,7 @@ specifiers:
   react-router: ^6.2.1
   react-router-dom: ^6.2.1
   remix: ^1.1.3
+  remix-typed: ^0.1.2
   twind: ^1.0.0-next.32
   typescript: ^4.5.5
   vitest: ^0.2.5
@@ -89,6 +90,7 @@ dependencies:
   react-router: 6.2.1_react@17.0.2
   react-router-dom: 6.2.1_react-dom@17.0.2+react@17.0.2
   remix: 1.1.3
+  remix-typed: 0.1.2_b54a2955443b5b76df2f8ed5cd4bc2dc
   twind: 1.0.0-next.32_typescript@4.5.5
   zod: 3.11.6
 
@@ -2150,7 +2152,6 @@ packages:
 
   /@types/prop-types/15.7.4:
     resolution: {integrity: sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==}
-    dev: true
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
@@ -2164,7 +2165,6 @@ packages:
     resolution: {integrity: sha512-f96K3k+24RaLGVu/Y2Ng3e1EbZ8/cVJvypZWd7cy0ofCBaf2lcM46xNhycMZ2xGwbBjRql7hOlZ+e2WlJ5MH3Q==}
     dependencies:
       '@types/react': 17.0.38
-    dev: true
 
   /@types/react/17.0.38:
     resolution: {integrity: sha512-SI92X1IA+FMnP3qM5m4QReluXzhcmovhZnLNm3pyeQlooi02qI7sLiepEYqT678uNiyc25XfCqxREFpy3W7YhQ==}
@@ -2172,7 +2172,6 @@ packages:
       '@types/prop-types': 15.7.4
       '@types/scheduler': 0.16.2
       csstype: 3.0.10
-    dev: true
 
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
@@ -2182,7 +2181,6 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: true
 
   /@types/serve-static/1.13.10:
     resolution: {integrity: sha512-nCkHGI4w7ZgAdNkrEu0bv+4xNV/XDqW+DydknebMOQwkpDGx8G+HTlj7R7ABI8i8nKxVw0wtKPi1D+lPOkh4YQ==}
@@ -8610,6 +8608,23 @@ packages:
   /remedial/1.0.8:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
     dev: true
+
+  /remix-typed/0.1.2_b54a2955443b5b76df2f8ed5cd4bc2dc:
+    resolution: {integrity: sha512-lt3qhfgVsNHGpskIG8qzq0Xles1fn/ULMKdzLXWK+CuWzfEAGffLGYrYFtz8sHd+/p2JfD1etUNMVLebCkNgvA==}
+    peerDependencies:
+      '@remix-run/react': ^1.1.3
+      '@remix-run/server-runtime': ^1.1.3
+      react: ^17.0.2
+      react-dom: ^17.0.2
+    dependencies:
+      '@remix-run/react': 1.1.3_react-dom@17.0.2+react@17.0.2
+      '@remix-run/server-runtime': 1.1.3_react-dom@17.0.2+react@17.0.2
+      '@types/react': 17.0.38
+      '@types/react-dom': 17.0.11
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      zod: 3.11.6
+    dev: false
 
   /remix/1.1.3:
     resolution: {integrity: sha512-rhXWJwBlZwAR/DmE7Jw1jwcm3r6I2v4G+TD6pinNmUb1P522tvFAqsMXO/VB25ozK/8/9gOkd67CiRJVQ9wgiw==}

@@ -1,4 +1,5 @@
 import gql from "graphql-tag"
+import { defineTypedAction } from "remix-typed"
 import { z } from "zod"
 import type {
   UpdateMediaListEntryMutation,
@@ -7,7 +8,6 @@ import type {
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
-import { defineTypedAction } from "~/modules/remix-typed/remix-typed-action"
 
 export const updateMediaListEntry = defineTypedAction({
   schema: z.object({

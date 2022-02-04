@@ -1,5 +1,6 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import gql from "graphql-tag"
+import { responseTyped, useLoaderDataTyped } from "remix-typed"
 import type {
   WatchingQuery,
   WatchingQueryVariables,
@@ -17,10 +18,6 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppTitle } from "~/modules/meta"
-import {
-  responseTyped,
-  useLoaderDataTyped,
-} from "~/modules/remix-typed/remix-typed"
 import { GridSection } from "~/modules/ui/grid-section"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 
