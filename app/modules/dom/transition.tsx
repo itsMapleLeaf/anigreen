@@ -1,3 +1,4 @@
+import type { ReactElement } from "react"
 import { useEffect, useReducer, useState } from "react"
 import { cx } from "twind"
 import { useElementEvent } from "~/modules/dom/use-event"
@@ -57,34 +58,43 @@ const transitionMachine: TransitionMachine = {
 const transitionReducer = (status: TransitionStatus, action: TransitionEvent) =>
   transitionMachine.states[status]?.on[action] ?? status
 
-export function Transition(props: {
+type TransitionRenderProps = {
+  className: string
+  ref: (node: HTMLElement | null | undefined) => void
+}
+
+type TransitionRenderFunction = (
+  props: TransitionRenderProps,
+) => React.ReactNode
+
+export function Transition({
+  visible,
+  className,
+  inClassName,
+  outClassName,
+  children,
+}: {
   visible: boolean
   className: string
   inClassName: string
   outClassName: string
-  children: (props: {
-    className: string
-    ref: (node: HTMLElement | null | undefined) => void
-  }) => React.ReactNode
+  children: ReactElement | TransitionRenderFunction
 }) {
   const [status, statusDispatch] = useReducer(
     transitionReducer,
-    props.visible ? "entered" : "unmounted",
+    visible ? "entered" : "unmounted",
   )
 
   useEffect(() => {
-    if (props.visible) {
+    if (visible) {
       statusDispatch("show")
+
+      // this extra timeout should help ensure the screen has painted before starting the transition
+      setTimeout(() => statusDispatch("mountFinished"))
     } else {
       statusDispatch("hide")
     }
-  }, [props.visible])
-
-  useEffect(() => {
-    if (status === "mounted") {
-      statusDispatch("mountFinished")
-    }
-  }, [status])
+  }, [visible])
 
   const [element, elementRef] = useState<HTMLElement | null>()
   useElementEvent(element, "transitionend", () => {
@@ -95,16 +105,18 @@ export function Transition(props: {
     return <></>
   }
 
-  return (
-    <>
-      {props.children({
-        className: cx(
-          props.className,
-          (status === "entering" || status === "entered") && props.inClassName,
-          (status === "mounted" || status === "exiting") && props.outClassName,
-        ),
-        ref: elementRef,
-      })}
-    </>
-  )
+  const transitionedElementProps: TransitionRenderProps = {
+    className: cx(
+      className,
+      (status === "entering" || status === "entered") && inClassName,
+      (status === "mounted" || status === "exiting") && outClassName,
+    ),
+    ref: elementRef,
+  }
+
+  if (typeof children !== "function") {
+    return <div {...transitionedElementProps}>{children}</div>
+  }
+
+  return <>{children(transitionedElementProps)}</>
 }
