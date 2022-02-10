@@ -3,7 +3,7 @@ import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { MetaFunction } from "remix"
 import {
   Link,
@@ -60,6 +60,9 @@ export async function loader({ request }: DataFunctionArgs) {
 
 export default function App() {
   const { user } = useLoaderDataTyped<typeof loader>()
+
+  const authProviderValue = useMemo(() => ({ loggedIn: !!user }), [user])
+
   return (
     <html lang="en" className="bg-slate-900 text-slate-100">
       <head>
@@ -88,7 +91,7 @@ export default function App() {
             </HeaderPanel>
             <main className={maxWidthContainerClass}>
               <div className="my-8">
-                <AuthProvider value={{ loggedIn: !!user }}>
+                <AuthProvider value={authProviderValue}>
                   <Outlet />
                 </AuthProvider>
               </div>

@@ -1,7 +1,9 @@
 import type { Key, ReactNode } from "react"
+import { useMemo } from "react"
 import { mapGetWithFallback } from "~/modules/common/map-get-with-fallback"
 import { DateTime } from "~/modules/dates/date-time"
 import { startOfDayZoned } from "~/modules/dates/start-of-day-zoned"
+import { useLatestRef } from "../react/use-latest-ref"
 import { GridSection } from "./grid-section"
 
 export function WeekdaySectionedList<T>({
@@ -17,22 +19,28 @@ export function WeekdaySectionedList<T>({
   getItemKey: (item: T) => Key
   renderItem: (item: T) => ReactNode
 }) {
-  const listsByDay = new Map<number, T[]>()
-  const notAiring: T[] = []
-  for (const item of items) {
-    const date = getItemDate(item)
+  const getItemDateRef = useLatestRef(getItemDate)
 
-    if (date === undefined) {
-      notAiring.push(item)
-      continue
+  const { listsByDay, notAiring } = useMemo(() => {
+    const listsByDay = new Map<number, T[]>()
+    const notAiring: T[] = []
+    for (const item of items) {
+      const date = getItemDateRef.current(item)
+
+      if (date === undefined) {
+        notAiring.push(item)
+        continue
+      }
+
+      mapGetWithFallback(
+        listsByDay,
+        startOfDayZoned(date, timezone).getTime(),
+        [],
+      ).push(item)
     }
 
-    mapGetWithFallback(
-      listsByDay,
-      startOfDayZoned(date, timezone).getTime(),
-      [],
-    ).push(item)
-  }
+    return { listsByDay, notAiring }
+  }, [items, getItemDateRef, timezone])
 
   return (
     <>

@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { filterJoin } from "~/modules/common/filter-join"
 import { infix } from "~/modules/common/infix"
@@ -5,7 +6,7 @@ import { MediaCardControls } from "~/modules/media/media-card-controls"
 import { LazyImage } from "~/modules/ui/lazy-image"
 import type { AnilistMedia } from "./media-data"
 
-export function MediaCard({
+export const MediaCard = memo(function MediaCard({
   media,
   scheduleEpisode,
   hideWatchingStatus,
@@ -75,7 +76,7 @@ export function MediaCard({
       <MediaCardControls media={media} />
     </div>
   )
-}
+})
 
 function StatusDisplay({ status }: { status: MediaListStatus }) {
   if (status === MediaListStatus.Paused) return <p>Paused</p>
