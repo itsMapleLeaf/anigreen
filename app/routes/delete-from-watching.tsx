@@ -48,7 +48,12 @@ export function DeleteFromWatchingForm({
   as?: ComponentType<ComponentPropsWithoutRef<"form"> & FormProps>
 }) {
   return (
-    <FormComponent action="/delete-from-watching" method="post" replace>
+    <FormComponent
+      action="/delete-from-watching"
+      method="post"
+      replace
+      className="contents"
+    >
       <input type="hidden" name="mediaListId" value={mediaListId} />
       {children}
     </FormComponent>

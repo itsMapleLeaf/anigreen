@@ -67,7 +67,12 @@ export function UpdateMediaListEntryForm({
   as?: ComponentType<ComponentPropsWithoutRef<"form"> & FormProps>
 }) {
   return (
-    <FormComponent action="/update-media-list-entry" method="post" replace>
+    <FormComponent
+      action="/update-media-list-entry"
+      method="post"
+      replace
+      className="contents"
+    >
       {Object.entries(data).map(([name, value]) => (
         <input key={name} type="hidden" name={name} value={value} />
       ))}
