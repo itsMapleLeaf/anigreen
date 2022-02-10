@@ -31,6 +31,7 @@ beforeEach(async () => {
   page = await browser.newPage()
 })
 afterAll(async () => {
+  await page.screenshot({ fullPage: true, path: "artifacts/screenshot.png" })
   await browser.close()
 })
 
