@@ -27,7 +27,10 @@ export type ServerHandle = {
   stop: () => void
 }
 
-export function startServer({ logging = false } = {}): Promise<ServerHandle> {
+export function startServer({
+  logging = false,
+  port = Number(process.env.PORT) || 3000,
+} = {}): Promise<ServerHandle> {
   if (mode === "production") {
     app.use(createRequestHandler({ build: require("./build") }))
   } else {
@@ -43,8 +46,6 @@ export function startServer({ logging = false } = {}): Promise<ServerHandle> {
   }
 
   return new Promise((resolve, reject) => {
-    const port = process.env.PORT || 3000
-
     const server = app.listen(port, () => {
       const url = `http://localhost:${port}`
 

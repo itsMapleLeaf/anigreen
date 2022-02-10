@@ -1,7 +1,5 @@
 FROM node:lts-slim
 
-ENV CYPRESS_INSTALL_BINARY=0
-
 WORKDIR /app
 
 COPY / ./

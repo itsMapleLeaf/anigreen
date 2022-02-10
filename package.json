@@ -8,23 +8,18 @@
     "prepare": "remix setup node",
     "dev": "run-p --race --print-label remix-watch serve-dev graphql-watch",
     "build": "pnpm graphql && remix build",
-    "test-dev": "bash scripts/test-dev.sh",
-    "test": "bash scripts/test.sh",
+    "test": "cross-env NODE_OPTIONS=--no-warnings vitest",
     "start": "pnpm serve-prod",
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit && tsc --project cypress/tsconfig.json --noEmit",
+    "typecheck": "tsc --noEmit",
     "remix-watch": "remix watch",
     "serve": "esmo server/main.mts | pino-colada --color",
     "serve-dev": "cross-env NODE_ENV=development pnpm run serve",
     "serve-prod": "cross-env NODE_ENV=production pnpm run serve",
     "graphql": "graphql-codegen --config graphql.config.json",
-    "graphql-watch": "pnpm graphql -- --watch",
-    "vitest-watch": "vitest",
-    "vitest-run": "vitest --no-watch",
-    "cypress-open": "cypress open",
-    "cypress-run": "wait-on --timeout 4000 http-get://localhost:3000 && cypress run"
+    "graphql-watch": "pnpm graphql -- --watch"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.5",
@@ -40,7 +35,6 @@
     "@twind/preset-line-clamp": "^1.0.0-next.32",
     "@twind/tailwind": "^1.0.0-next.32",
     "compression": "^1.7.4",
-    "cross-env": "^7.0.3",
     "date-fns": "^2.28.0",
     "date-fns-tz": "^1.2.2",
     "dotenv": "^14.3.2",
@@ -64,7 +58,7 @@
     "@graphql-codegen/cli": "2.4.0",
     "@graphql-codegen/typescript": "2.4.2",
     "@graphql-codegen/typescript-operations": "2.2.2",
-    "@testing-library/cypress": "^8.0.2",
+    "@playwright/test": "^1.18.1",
     "@types/compression": "^1.7.2",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.14",
@@ -72,7 +66,7 @@
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
-    "cypress": "^9.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.5.0",
@@ -83,8 +77,10 @@
     "eslint-plugin-unicorn": "^40.1.0",
     "msw": "^0.36.8",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.18.1",
     "prettier": "^2.5.1",
     "typescript": "^4.5.5",
+    "vite": "^2.8.0",
     "vitest": "^0.2.5",
     "wait-on": "^6.0.0"
   },
@@ -105,15 +101,7 @@
     ],
     "rules": {
       "import/no-unused-modules": "off"
-    },
-    "overrides": [
-      {
-        "files": "cypress/**",
-        "parserOptions": {
-          "project": "./cypress/tsconfig.json"
-        }
-      }
-    ]
+    }
   },
   "prettier": "@itsmapleleaf/configs/prettier"
 }
