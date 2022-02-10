@@ -1,24 +1,24 @@
 import { expect } from "@playwright/test"
 import type { ChromiumBrowser, Page } from "playwright"
 import { chromium } from "playwright"
-import { afterAll, afterEach, beforeEach, describe, it } from "vitest"
+import { afterAll, beforeAll, beforeEach, describe, it } from "vitest"
 import type { ServerHandle } from "../server/server.mjs"
 import { startServer } from "../server/server.mjs"
 import { anilistApiMockServer } from "./anilist-api-mock-server.mjs"
 import schedule from "./fixtures/schedule.json"
 
 let server: ServerHandle
-let mockServer = false
-beforeEach(async () => {
-  if (!mockServer) {
-    anilistApiMockServer.listen()
-    mockServer = true
-  }
-
+beforeAll(async () => {
   server = await startServer({ port: 8888 })
 })
-afterEach(() => {
+afterAll(() => {
   server.stop()
+})
+
+beforeAll(() => {
+  anilistApiMockServer.listen()
+})
+afterAll(() => {
   anilistApiMockServer.close()
 })
 
