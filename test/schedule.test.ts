@@ -26,7 +26,7 @@ let browser: ChromiumBrowser
 let page: Page
 beforeEach(async () => {
   browser ??= await chromium.launch({
-    headless: false,
+    headless: process.env.CI !== undefined,
   })
   page = await browser.newPage()
 })
