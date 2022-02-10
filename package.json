@@ -8,7 +8,7 @@
     "prepare": "remix setup node",
     "dev": "run-p --race --print-label remix-watch serve-dev graphql-watch",
     "build": "pnpm graphql && remix build",
-    "test": "remix build && cross-env NODE_OPTIONS=--no-warnings vitest",
+    "test": "bash test.sh",
     "start": "pnpm serve-prod",
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
