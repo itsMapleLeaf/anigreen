@@ -1,7 +1,7 @@
 import { ChevronDoubleRightIcon } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
-import { TypedForm } from "~/form"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
+import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
 export function MediaCardAdvanceButton({
@@ -23,9 +23,8 @@ export function MediaCardAdvanceButton({
   }
 
   return (
-    <TypedForm
+    <UpdateMediaListEntryForm
       as={fetcher.Form}
-      action="updateMediaListEntry"
       data={{ mediaId: media.id, progress: mediaListEntry.progress + 1 }}
     >
       <MediaCardActionButton
@@ -35,6 +34,6 @@ export function MediaCardAdvanceButton({
       >
         <ChevronDoubleRightIcon className="w-5" />
       </MediaCardActionButton>
-    </TypedForm>
+    </UpdateMediaListEntryForm>
   )
 }

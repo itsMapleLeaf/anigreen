@@ -6,11 +6,12 @@ import {
   XCircleIcon,
 } from "@heroicons/react/solid"
 import { useFetcher } from "remix"
-import { TypedForm } from "~/form"
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 import { Button } from "~/modules/ui/button"
 import { Menu } from "~/modules/ui/menu"
+import { DeleteFromWatchingForm } from "~/routes/delete-from-watching"
+import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 
 export function MediaCardEditButton({
@@ -55,10 +56,9 @@ export function MediaCardEditButton({
           {statusItems
             .filter((item) => watchListInfo.status !== item.status)
             .map((item) => (
-              <TypedForm
+              <UpdateMediaListEntryForm
                 key={item.status}
                 as={fetcher.Form}
-                action="updateMediaListEntry"
                 data={{ mediaId: media.id, status: item.status }}
               >
                 <Menu.Item>
@@ -67,13 +67,12 @@ export function MediaCardEditButton({
                     {item.text}
                   </Button>
                 </Menu.Item>
-              </TypedForm>
+              </UpdateMediaListEntryForm>
             ))}
 
-          <TypedForm
+          <DeleteFromWatchingForm
             as={fetcher.Form}
-            action="deleteFromWatching"
-            data={{ mediaListId: watchListInfo.mediaListId }}
+            mediaListId={watchListInfo.mediaListId}
           >
             <Menu.Item>
               <Button type="submit" className={Menu.itemClass}>
@@ -81,7 +80,7 @@ export function MediaCardEditButton({
                 Remove
               </Button>
             </Menu.Item>
-          </TypedForm>
+          </DeleteFromWatchingForm>
         </>
       }
     />
