@@ -1,6 +1,6 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import gql from "graphql-tag"
-import { responseTyped, useLoaderDataTyped } from "remix-typed"
+import { useLoaderDataTyped } from "remix-typed"
 import type {
   WatchingQuery,
   WatchingQueryVariables,
@@ -19,6 +19,7 @@ import {
 } from "~/modules/media/media-data"
 import { getAppTitle } from "~/modules/meta"
 import { GridSection } from "~/modules/ui/grid-section"
+import { SystemMessage } from "~/modules/ui/system-message"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 
 export const meta = () => ({
@@ -94,10 +95,11 @@ async function loadRecentlyAiredItems() {
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   if (!session) {
-    throw responseTyped("", { status: 401, statusText: "not logged in" })
+    return { loggedIn: false as const }
   }
 
   return promiseAllObject({
+    loggedIn: true as const,
     timezone: getTimezone(request),
     watchingItems: loadInProgressItems(session.accessToken),
   })
@@ -105,6 +107,15 @@ export async function loader({ request }: DataFunctionArgs) {
 
 export default function WatchingPage() {
   const data = useLoaderDataTyped<typeof loader>()
+
+  if (!data.loggedIn) {
+    return (
+      <SystemMessage>
+        <p>you need to be logged in to see this page, sorry!</p>
+      </SystemMessage>
+    )
+  }
+
   return (
     <>
       <GridSection title="In progress" subtitle="Catch up on some leftovers">

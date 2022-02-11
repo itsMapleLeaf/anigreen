@@ -3,8 +3,9 @@ import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import type { ReactNode } from "react"
 import { useEffect, useMemo, useState } from "react"
-import type { MetaFunction } from "remix"
+import type { ErrorBoundaryComponent, MetaFunction } from "remix"
 import {
   Link,
   Links,
@@ -26,6 +27,7 @@ import {
   activeClearButtonClass,
   clearButtonClass,
   clearIconButtonClass,
+  solidButtonClass,
 } from "~/modules/ui/button-style"
 import { LoadingIcon } from "~/modules/ui/loading-icon"
 import { Menu } from "~/modules/ui/menu"
@@ -34,6 +36,7 @@ import { getSession } from "./modules/auth/session.server"
 import { raise } from "./modules/common/errors"
 import { getAppTitle } from "./modules/meta"
 import { maxWidthContainerClass } from "./modules/ui/components"
+import { SystemMessage } from "./modules/ui/system-message"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle(),
@@ -60,9 +63,58 @@ export async function loader({ request }: DataFunctionArgs) {
 
 export default function App() {
   const { user } = useLoaderDataTyped<typeof loader>()
-
   const authProviderValue = useMemo(() => ({ loggedIn: !!user }), [user])
 
+  return (
+    <Document>
+      <Tooltip.Provider delayDuration={700}>
+        <div className="isolate">
+          <Header
+            authAction={user ? <UserMenuButton user={user} /> : <LoginButton />}
+          />
+          <main className={maxWidthContainerClass}>
+            <div className="my-8">
+              <AuthProvider value={authProviderValue}>
+                <Outlet />
+              </AuthProvider>
+            </div>
+          </main>
+        </div>
+      </Tooltip.Provider>
+    </Document>
+  )
+}
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return (
+    <Document>
+      <div className="isolate">
+        <Header />
+        <main className={maxWidthContainerClass}>
+          <div className="my-8">
+            <SystemMessage>
+              <div className="grid gap-4">
+                <p className="mb-4">{"something wrong wrong :("}</p>
+                <pre className="bg-black/50 p-4 rounded-lg overflow-x-auto">
+                  {error?.stack || error?.message || String(error)}
+                </pre>
+                <Link
+                  to="/"
+                  reloadDocument
+                  className={cx(solidButtonClass, "justify-self-start")}
+                >
+                  Return to safety
+                </Link>
+              </div>
+            </SystemMessage>
+          </div>
+        </main>
+      </div>
+    </Document>
+  )
+}
+
+function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="bg-slate-900 text-slate-100">
       <head>
@@ -83,27 +135,62 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Tooltip.Provider delayDuration={700}>
-          <div className="isolate">
-            <HeaderPanel>
-              <div className={maxWidthContainerClass}>
-                <HeaderNavigation />
-              </div>
-            </HeaderPanel>
-            <main className={maxWidthContainerClass}>
-              <div className="my-8">
-                <AuthProvider value={authProviderValue}>
-                  <Outlet />
-                </AuthProvider>
-              </div>
-            </main>
-          </div>
-        </Tooltip.Provider>
+        {children}
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
+  )
+}
+
+function Header({ authAction }: { authAction?: ReactNode }) {
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false)
+  return (
+    <HeaderPanel>
+      <div className={maxWidthContainerClass}>
+        <Collapsible.Root
+          asChild
+          open={collapsibleOpen}
+          onOpenChange={setCollapsibleOpen}
+        >
+          <nav className="py-2 grid gap-2">
+            <div className="flex items-center">
+              <div className="sm:hidden mr-3">
+                <Collapsible.Trigger
+                  type="button"
+                  title="Menu"
+                  className={clearIconButtonClass}
+                >
+                  <MenuIcon className="w-6" />
+                </Collapsible.Trigger>
+              </div>
+
+              <Link to="/" title="Home" className="translate-y-[-2px]">
+                <h1 className="text-3xl font-light">
+                  <span className="text-sky-400">ani</span>
+                  <span className="text-emerald-400">green</span>
+                </h1>
+              </Link>
+
+              <div className="hidden sm:flex gap-2 mx-6">
+                <MainNavigationLinks />
+              </div>
+              <div className="ml-auto">{authAction}</div>
+            </div>
+
+            <Collapsible.Content
+              asChild
+              onClick={() => setCollapsibleOpen(false)}
+            >
+              <div className="grid gap-2 sm:hidden">
+                <MainNavigationLinks />
+              </div>
+            </Collapsible.Content>
+          </nav>
+        </Collapsible.Root>
+      </div>
+    </HeaderPanel>
   )
 }
 
@@ -123,52 +210,6 @@ function HeaderPanel({ children }: { children: React.ReactNode }) {
     >
       {children}
     </header>
-  )
-}
-
-function HeaderNavigation() {
-  const data = useLoaderDataTyped<typeof loader>()
-  const [collapsibleOpen, setCollapsibleOpen] = useState(false)
-  return (
-    <Collapsible.Root
-      asChild
-      open={collapsibleOpen}
-      onOpenChange={setCollapsibleOpen}
-    >
-      <nav className="py-2 grid gap-2">
-        <div className="flex items-center">
-          <div className="sm:hidden mr-3">
-            <Collapsible.Trigger
-              type="button"
-              title="Menu"
-              className={clearIconButtonClass}
-            >
-              <MenuIcon className="w-6" />
-            </Collapsible.Trigger>
-          </div>
-
-          <Link to="/" title="Home" className="translate-y-[-2px]">
-            <h1 className="text-3xl font-light">
-              <span className="text-sky-400">ani</span>
-              <span className="text-emerald-400">green</span>
-            </h1>
-          </Link>
-
-          <div className="hidden sm:flex gap-2 mx-6">
-            <MainNavigationLinks />
-          </div>
-          <div className="ml-auto">
-            {data.user ? <UserMenuButton user={data.user} /> : <LoginButton />}
-          </div>
-        </div>
-
-        <Collapsible.Content asChild onClick={() => setCollapsibleOpen(false)}>
-          <div className="grid gap-2 sm:hidden">
-            <MainNavigationLinks />
-          </div>
-        </Collapsible.Content>
-      </nav>
-    </Collapsible.Root>
   )
 }
 
