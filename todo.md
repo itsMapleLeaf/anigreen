@@ -6,12 +6,12 @@
     - [x] when logged out, show an auth required message in a modal or tooltip
     - when logged in
       - [x] if not on list, show bookmark icon, add to bookmarks on click
-      - if on list, show edit menu icon which pops a menu on open
+      - if on list, show edit menu icon to show a popover
         - [x] hold
         - [x] drop
         - [x] remove
-        - [ ] rate -> shows a modal to rate the anime
-        - [ ] set progress -> shows a modal to set the progress
+        - [ ] rate
+        - [ ] set progress -> + and - buttons with an input
   - [x] links button, pops a menu on open, lists all the media external links
   - [x] advance progress button
     - only show when on list and when progress is not 100%
