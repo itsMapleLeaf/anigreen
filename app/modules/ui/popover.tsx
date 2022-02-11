@@ -21,11 +21,13 @@ const exit: Target = {
 export function Popover({
   trigger,
   children,
+  initialOpen,
 }: {
   trigger: ReactElement
   children: ReactNode
+  initialOpen?: boolean
 }) {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(initialOpen ?? false)
 
   return (
     <Root open={visible} onOpenChange={setVisible}>
