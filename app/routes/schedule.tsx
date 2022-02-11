@@ -50,7 +50,7 @@ async function loadSchedule({
   const data = await anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
     document: gql`
       query Schedule($startDate: Int!, $page: Int!) {
-        Page(page: $page, perPage: 50) {
+        Page(page: $page, perPage: 30) {
           pageInfo {
             currentPage
             hasNextPage
