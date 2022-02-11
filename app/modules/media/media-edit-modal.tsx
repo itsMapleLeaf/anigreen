@@ -73,7 +73,10 @@ export function MediaEditModal({
 
   return (
     <Modal open={open} onOpenChange={setOpen} trigger={children}>
-      <ModalHeader>{`Editing "${media.title}"`}</ModalHeader>
+      <ModalHeader>
+        <div className="text-base font-normal opacity-50">Edit media entry</div>
+        <div>{media.title}</div>
+      </ModalHeader>
       <fetcher.Form action="/update-media-list-entry" method="post" replace>
         <input type="hidden" name="mediaId" value={media.id} />
 
