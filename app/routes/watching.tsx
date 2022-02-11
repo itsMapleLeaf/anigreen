@@ -68,30 +68,6 @@ async function loadInProgressItems(
   return items
 }
 
-async function loadRecentlyAiredItems() {
-  const query = gql`
-    query RecentlyAired($startDate: Int!, $endDate: Int!) {
-      Page(perPage: 50) {
-        airingSchedules(
-          airingAt_greater: $startDate
-          airingAt_lesser: $endDate
-        ) {
-          media {
-            ...media
-            mediaListEntry {
-              ...mediaListEntry
-            }
-          }
-        }
-        pageInfo {
-          currentPage
-          hasNextPage
-        }
-      }
-    }
-  `
-}
-
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   if (!session) {
