@@ -54,3 +54,10 @@
 - [ ] consider using text instead of tooltips for media card actions
 - [ ] schedule infinite scrolling
   - this has an official example we can follow now
+  - probably needs perf optimization???
+- [ ] add max value on progress and score inputs
+- [ ] handle "completed" status properly
+  - "completed" means when mediaListEntry.progress === media.episodeCount
+  - show "completed" on media cards
+  - disable the status input on the edit modal, send completed status on submit
+- [ ] use apollo client for fetch parallelization and caching
