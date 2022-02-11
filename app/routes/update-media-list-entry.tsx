@@ -11,12 +11,12 @@ import type {
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
-import { parsePositiveInteger } from "~/modules/common/parse-positive-integer"
+import { parseUnsignedInteger } from "~/modules/common/parse-unsigned-integer"
 
-const positiveInteger = () => z.string().transform(parsePositiveInteger)
+const stringAsUnsignedInteger = () => z.string().transform(parseUnsignedInteger)
 
 const bodySchema = z.object({
-  mediaId: positiveInteger(),
+  mediaId: stringAsUnsignedInteger(),
   status: z
     .union([
       z.literal(MediaListStatus.Current),
@@ -24,15 +24,21 @@ const bodySchema = z.object({
       z.literal(MediaListStatus.Dropped),
     ])
     .optional(),
-  progress: positiveInteger().optional(),
-  score: positiveInteger().optional(),
+  progress: stringAsUnsignedInteger().optional(),
+  score: z.string().optional(),
 })
 
 export async function action({ request }: DataFunctionArgs) {
   const session = await requireSession(request)
+
   const variables = bodySchema.parse(
     Object.fromEntries(await request.formData()),
   )
+
+  let score: number | undefined = Number(variables.score)
+  if (Number.isNaN(score)) {
+    score = undefined
+  }
 
   await anilistRequest<
     UpdateMediaListEntryMutation,
@@ -56,10 +62,7 @@ export async function action({ request }: DataFunctionArgs) {
       }
     `,
     accessToken: session.accessToken,
-    variables: {
-      ...variables,
-      score: variables.score == undefined ? undefined : variables.score * 10,
-    },
+    variables: { ...variables, score },
   })
 
   return {}

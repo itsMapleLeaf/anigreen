@@ -10,10 +10,10 @@ import type {
 } from "~/generated/anilist-graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
-import { parsePositiveInteger } from "~/modules/common/parse-positive-integer"
+import { parseUnsignedInteger } from "~/modules/common/parse-unsigned-integer"
 
 const bodySchema = z.object({
-  mediaListId: z.string().transform(parsePositiveInteger),
+  mediaListId: z.string().transform(parseUnsignedInteger),
 })
 
 export async function action({ request }: DataFunctionArgs) {
