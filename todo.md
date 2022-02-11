@@ -60,4 +60,4 @@
   - "completed" means when mediaListEntry.progress === media.episodeCount
   - show "completed" on media cards
   - disable the status input on the edit modal, send completed status on submit
-- [ ] use apollo client for fetch parallelization and caching
+- [ ] ~~use apollo client for fetch parallelization and caching~~ apollo doesn't return response headers, need that to account for rate limiting
