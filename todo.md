@@ -30,6 +30,8 @@
 
 ## ideas
 
+- [x] show a loading spinner in a corner while loading or navigating
+- [x] make the header transparent black on scroll, solid when at top
 - [ ] currently, the arrow keys for pagination prevent using the arrow keys for other things, like radio inputs. need to figure something out for this
 - [ ] recently aired section on watching
 - [ ] show a pretty banner on the user menu, like in anigreen fly
@@ -43,12 +45,10 @@
     - [ ] country of origin
     - [ ] licensed
 - [ ] search page
-- [ ] show a loading spinner in a corner while loading or navigating
 - [ ] click on a cover/banner to view the full image in a lightbox modal (or just in a new tab lol)
 - [ ] media card: show full title in tooltip
 - [ ] add route error boundary for loader errors
 - [ ] add modals for action errors
-- [x] make the header transparent black on scroll, solid when at top
 - [ ] pagination: button to go back to first page
 - [ ] notification/toast to undo an accidental action
 - [ ] consider using text instead of tooltips for media card actions

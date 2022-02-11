@@ -15,6 +15,7 @@ import {
   Scripts,
   ScrollRestoration,
   useFetcher,
+  useTransition,
 } from "remix"
 import { useLoaderDataTyped } from "remix-typed"
 import { cx, install } from "twind"
@@ -64,6 +65,7 @@ export async function loader({ request }: DataFunctionArgs) {
 
 export default function App() {
   const { user } = useLoaderDataTyped<typeof loader>()
+  const transition = useTransition()
   const authProviderValue = useMemo(() => ({ loggedIn: !!user }), [user])
 
   return (
@@ -82,6 +84,14 @@ export default function App() {
           </main>
         </div>
       </Tooltip.Provider>
+      <div
+        className={cx(
+          "fixed left-0 bottom-0 p-4 transition-opacity duration-300 pointer-events-none",
+          transition.state === "idle" ? "opacity-0" : "opacity-100",
+        )}
+      >
+        <LoadingIcon size="large" />
+      </div>
     </Document>
   )
 }
