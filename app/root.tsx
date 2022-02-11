@@ -130,38 +130,44 @@ function HeaderNavigation() {
   const data = useLoaderDataTyped<typeof loader>()
   const [collapsibleOpen, setCollapsibleOpen] = useState(false)
   return (
-    <Collapsible.Root open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
-      <nav className="flex items-center h-16">
-        <div className="sm:hidden mr-3">
-          <Collapsible.Trigger
-            type="button"
-            title="Menu"
-            className={clearIconButtonClass}
-          >
-            <MenuIcon className="w-6" />
-          </Collapsible.Trigger>
+    <Collapsible.Root
+      asChild
+      open={collapsibleOpen}
+      onOpenChange={setCollapsibleOpen}
+    >
+      <nav className="py-2 grid gap-2">
+        <div className="flex items-center">
+          <div className="sm:hidden mr-3">
+            <Collapsible.Trigger
+              type="button"
+              title="Menu"
+              className={clearIconButtonClass}
+            >
+              <MenuIcon className="w-6" />
+            </Collapsible.Trigger>
+          </div>
+
+          <Link to="/" title="Home" className="translate-y-[-2px]">
+            <h1 className="text-3xl font-light">
+              <span className="text-sky-400">ani</span>
+              <span className="text-emerald-400">green</span>
+            </h1>
+          </Link>
+
+          <div className="hidden sm:flex gap-2 mx-6">
+            <MainNavigationLinks />
+          </div>
+          <div className="ml-auto">
+            {data.user ? <UserMenuButton user={data.user} /> : <LoginButton />}
+          </div>
         </div>
 
-        <Link to="/" title="Home" className="translate-y-[-2px]">
-          <h1 className="text-3xl font-light">
-            <span className="text-sky-400">ani</span>
-            <span className="text-emerald-400">green</span>
-          </h1>
-        </Link>
-
-        <div className="hidden sm:flex gap-8 mx-6">
-          <MainNavigationLinks />
-        </div>
-        <div className="ml-auto">
-          {data.user ? <UserMenuButton user={data.user} /> : <LoginButton />}
-        </div>
+        <Collapsible.Content asChild onClick={() => setCollapsibleOpen(false)}>
+          <div className="grid gap-2 sm:hidden">
+            <MainNavigationLinks />
+          </div>
+        </Collapsible.Content>
       </nav>
-
-      <Collapsible.Content onClick={() => setCollapsibleOpen(false)}>
-        <div className="grid gap-5 pb-3 sm:hidden">
-          <MainNavigationLinks />
-        </div>
-      </Collapsible.Content>
     </Collapsible.Root>
   )
 }
