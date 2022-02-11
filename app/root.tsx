@@ -32,6 +32,7 @@ import {
 } from "~/modules/ui/button-style"
 import { LoadingIcon } from "~/modules/ui/loading-icon"
 import { Menu } from "~/modules/ui/menu"
+import type { AnilistUser } from "./modules/anilist/user"
 import { loadViewerUser } from "./modules/anilist/user"
 import { getSession } from "./modules/auth/session.server"
 import { raise } from "./modules/common/errors"
@@ -44,11 +45,6 @@ export const meta: MetaFunction = () => ({
   title: getAppTitle(),
   description: "your week in anime 🌠",
 })
-
-type UserData = {
-  name: string
-  avatarUrl?: string
-}
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
@@ -283,7 +279,7 @@ function LoginButton() {
   )
 }
 
-function UserMenuButton({ user }: { user: UserData }) {
+function UserMenuButton({ user }: { user: AnilistUser }) {
   const fetcher = useFetcher()
   return (
     <Menu
@@ -304,7 +300,27 @@ function UserMenuButton({ user }: { user: UserData }) {
       }
       items={
         <>
-          <p className="px-3 py-2 opacity-60">Logged in as {user.name}</p>
+          <Menu.Item>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={user.profileUrl}
+              className="relative px-3 py-2 text-white leading-none bg-slate-900 focus:outline-none focus-visible:text-emerald-400 transition-colors"
+            >
+              <div
+                style={{
+                  backgroundImage: user.bannerUrl
+                    ? `url(${user.bannerUrl})`
+                    : undefined,
+                }}
+                className="bg-cover bg-center absolute inset-0 bg-gradient-to-r from-blue-400 to-emerald-400 opacity-40"
+              />
+              <p className="text-sm relative opacity-90">hi, {user.name}!</p>
+              <p className="text-xs relative opacity-90">
+                View AniList profile
+              </p>
+            </a>
+          </Menu.Item>
           <Menu.Separator />
           <fetcher.Form
             action="/logout"

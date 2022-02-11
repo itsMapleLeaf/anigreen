@@ -8,7 +8,9 @@ import { anilistRequest } from "./request.server"
 export type AnilistUser = {
   id: number
   name: string
+  profileUrl: string
   avatarUrl?: string
+  bannerUrl?: string
 }
 
 export async function loadViewerUser(
@@ -23,6 +25,8 @@ export async function loadViewerUser(
           avatar {
             medium
           }
+          bannerImage
+          siteUrl
         }
       }
     `,
@@ -32,5 +36,8 @@ export async function loadViewerUser(
     id: data.Viewer!.id,
     name: data.Viewer!.name,
     avatarUrl: data.Viewer!.avatar?.medium,
+    bannerUrl: data.Viewer!.bannerImage,
+    profileUrl:
+      data.Viewer!.siteUrl ?? `https://anilist.co/user/${data.Viewer!.name}/`,
   }
 }

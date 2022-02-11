@@ -32,9 +32,9 @@
 
 - [x] show a loading spinner in a corner while loading or navigating
 - [x] make the header transparent black on scroll, solid when at top
+- [x] show a pretty banner on the user menu, like in anigreen fly
 - [ ] currently, the arrow keys for pagination prevent using the arrow keys for other things, like radio inputs. need to figure something out for this
 - [ ] recently aired section on watching
-- [ ] show a pretty banner on the user menu, like in anigreen fly
 - [ ] my list - a page which lists your full anime list
 - settings
   - general
