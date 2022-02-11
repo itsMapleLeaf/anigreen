@@ -122,7 +122,6 @@ export function MediaEditModal({
         <ModalFooter>
           <div className="flex gap-2 items-center">
             <Button
-              type="submit"
               className={solidDangerButtonClass}
               onClick={() => {
                 fetcher.submit(
