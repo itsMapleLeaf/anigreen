@@ -13,8 +13,10 @@ import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
 import { parsePositiveInteger } from "~/modules/common/parse-positive-integer"
 
+const positiveInteger = () => z.string().transform(parsePositiveInteger)
+
 const bodySchema = z.object({
-  mediaId: z.string().transform(parsePositiveInteger),
+  mediaId: positiveInteger(),
   status: z
     .union([
       z.literal(MediaListStatus.Current),
@@ -22,7 +24,8 @@ const bodySchema = z.object({
       z.literal(MediaListStatus.Dropped),
     ])
     .optional(),
-  progress: z.string().transform(parsePositiveInteger).optional(),
+  progress: positiveInteger().optional(),
+  score: positiveInteger().optional(),
 })
 
 export async function action({ request }: DataFunctionArgs) {
@@ -40,18 +43,23 @@ export async function action({ request }: DataFunctionArgs) {
         $mediaId: Int!
         $status: MediaListStatus
         $progress: Int
+        $score: Int
       ) {
         SaveMediaListEntry(
           mediaId: $mediaId
           status: $status
           progress: $progress
+          scoreRaw: $score
         ) {
           status
         }
       }
     `,
     accessToken: session.accessToken,
-    variables,
+    variables: {
+      ...variables,
+      score: variables.score == undefined ? undefined : variables.score * 10,
+    },
   })
 
   return {}

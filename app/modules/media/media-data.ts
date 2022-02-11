@@ -26,6 +26,7 @@ export type AnilistMediaListEntry = {
   mediaListId: number
   status: MediaListStatus
   progress: number
+  score?: number
 }
 
 export const mediaFragment = gql`
@@ -64,6 +65,7 @@ export const mediaListEntryFragment = gql`
     id
     status
     progress
+    score(format: POINT_10)
   }
 `
 
@@ -100,6 +102,7 @@ export function extractMediaData(
       mediaListId: mediaListEntry.id,
       status: mediaListEntry.status,
       progress: mediaListEntry.progress ?? 0,
+      score: mediaListEntry.score,
     },
   }
 }
