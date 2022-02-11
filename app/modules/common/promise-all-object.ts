@@ -1,5 +1,5 @@
 export async function promiseAllObject<
-  Promises extends Record<string, PromiseLike<unknown>>,
+  Promises extends Record<string, unknown>,
 >(
   promises: Promises,
 ): Promise<{ [Key in keyof Promises]: Awaited<Promises[Key]> }> {
