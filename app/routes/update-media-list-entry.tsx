@@ -62,7 +62,10 @@ export async function action({ request }: DataFunctionArgs) {
       }
     `,
     accessToken: session.accessToken,
-    variables: { ...variables, score },
+    variables: {
+      ...variables,
+      score: score != undefined ? score * 10 : undefined,
+    },
   })
 
   return {}
