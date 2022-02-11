@@ -17,7 +17,7 @@ import {
   useFetcher,
 } from "remix"
 import { useLoaderDataTyped } from "remix-typed"
-import { cx } from "twind"
+import { cx, install } from "twind"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
@@ -37,6 +37,7 @@ import { raise } from "./modules/common/errors"
 import { getAppTitle } from "./modules/meta"
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
+import { twindConfig } from "./twind-config"
 
 export const meta: MetaFunction = () => ({
   title: getAppTitle(),
@@ -115,6 +116,16 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
 }
 
 function Document({ children }: { children: React.ReactNode }) {
+  // when hitting the error boundary, remix yeets the whole document and re-renders it,
+  // which causes the twind style tag to go away :(
+  // so we'll use this effect to install them on mount
+  //
+  // thankfully, the styles always exist from the server,
+  // so there shouldn't be any weird flash
+  useEffect(() => {
+    install(twindConfig, process.env.NODE_ENV === "production")
+  }, [])
+
   return (
     <html lang="en" className="bg-slate-900 text-slate-100">
       <head>

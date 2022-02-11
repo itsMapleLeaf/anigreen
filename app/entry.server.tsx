@@ -2,10 +2,8 @@ import "dotenv/config"
 import { renderToString } from "react-dom/server"
 import type { EntryContext } from "remix"
 import { RemixServer } from "remix"
-import { inline } from "twind"
-import { setupTwind } from "./twind-setup"
-
-setupTwind()
+import { inline, install } from "twind"
+import { twindConfig } from "./twind-config"
 
 export default function handleRequest(
   request: Request,
@@ -13,6 +11,8 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
+  install(twindConfig, process.env.NODE_ENV === "production")
+
   const markup = inline(
     renderToString(<RemixServer context={remixContext} url={request.url} />),
   )
