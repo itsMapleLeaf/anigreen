@@ -124,6 +124,7 @@ export function MediaEditModal({
             <Button
               className={solidDangerButtonClass}
               onClick={() => {
+                // can't have a nested form, just using fetcher here
                 fetcher.submit(
                   {
                     mediaListId: String(watchListInfo.mediaListId),
