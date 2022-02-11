@@ -7,13 +7,28 @@
   "theme_color": "#047857",
   "icons": [
     {
-      "sizes": "192x192",
-      "src": "/android-chrome-192x192.png",
+      "sizes": "32x32",
+      "src": "/logo-32x.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "64x64",
+      "src": "/logo-64x.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "128x128",
+      "src": "/logo-128x.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "256x256",
+      "src": "/logo-256x.png",
       "type": "image/png"
     },
     {
       "sizes": "512x512",
-      "src": "/android-chrome-512x512.png",
+      "src": "/logo-512x.png",
       "type": "image/png"
     }
   ]
