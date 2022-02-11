@@ -10,8 +10,8 @@
         - [x] hold
         - [x] drop
         - [x] remove
-        - [ ] rate
-        - [ ] set progress -> + and - buttons with an input
+        - [x] rate
+        - [x] set progress -> + and - buttons with an input
   - [x] links button, pops a menu on open, lists all the media external links
   - [x] advance progress button
     - only show when on list and when progress is not 100%
@@ -31,6 +31,7 @@
 
 ## ideas
 
+- [ ] currently, the arrow keys for pagination prevent using the arrow keys for other things, like radio inputs. need to figure something out for this
 - [ ] show a pretty banner on the user menu, like in anigreen fly
 - [ ] my list - a page which lists your full anime list
 - settings
