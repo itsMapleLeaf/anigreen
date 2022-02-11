@@ -20,7 +20,6 @@
   - [x] show watching status (watching, completed, on hold, dropped)
 - [x] schedule page
 - watching page
-  - [ ] recently aired section
   - [x] "In progress" section, for items that aren't completed
   - [x] watching items sectioned by weekday + "not airing"
   - [x] hide watching status - they're all "watching", so it's redundant to show it
@@ -32,6 +31,7 @@
 ## ideas
 
 - [ ] currently, the arrow keys for pagination prevent using the arrow keys for other things, like radio inputs. need to figure something out for this
+- [ ] recently aired section on watching
 - [ ] show a pretty banner on the user menu, like in anigreen fly
 - [ ] my list - a page which lists your full anime list
 - settings
