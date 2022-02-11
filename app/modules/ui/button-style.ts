@@ -1,10 +1,15 @@
 import { cx } from "twind"
 
-const baseButtonClass = cx`font-medium rounded-md transition flex flex-row items-center gap-2`
+const baseButtonClass = cx`font-medium rounded-md transition flex flex-row items-center gap-2 leading-none`
 
 export const solidButtonClass = cx(
   baseButtonClass,
-  cx`bg-emerald-700 text-emerald-100 hover:translate-y-[-2px] hover:shadow hover:bg-emerald-800`,
+  cx`bg-emerald-700 text-emerald-100 hover:translate-y-[-2px] hover:shadow hover:bg-emerald-800 px-3 py-2`,
+)
+
+export const solidDangerButtonClass = cx(
+  baseButtonClass,
+  cx`bg-red-700 text-red-100 hover:translate-y-[-2px] hover:shadow hover:bg-red-800 px-3 py-2`,
 )
 
 const baseClearButtonClass = cx(
