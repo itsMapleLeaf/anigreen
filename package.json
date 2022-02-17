@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "remix setup node",
+    "prepare": "remix setup node && node scripts/post.mjs",
     "dev": "run-p --race --print-label remix-watch serve-dev graphql-watch",
     "build": "pnpm graphql && remix build",
     "test": "bash scripts/test.sh",
