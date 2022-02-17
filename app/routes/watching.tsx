@@ -1,4 +1,4 @@
-import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import type { DataFunctionArgs, MetaFunction } from "@remix-run/server-runtime"
 import gql from "graphql-tag"
 import { useLoaderDataTyped } from "remix-typed"
 import type {
@@ -17,14 +17,12 @@ import {
   mediaFragment,
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
-import { getAppTitle } from "~/modules/meta"
+import { getAppMeta } from "~/modules/meta"
 import { GridSection } from "~/modules/ui/grid-section"
 import { SystemMessage } from "~/modules/ui/system-message"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 
-export const meta = () => ({
-  title: getAppTitle("Watching"),
-})
+export const meta: MetaFunction = () => getAppMeta("Watching")
 
 async function loadInProgressItems(
   accessToken: string,

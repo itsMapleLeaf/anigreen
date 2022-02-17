@@ -1,8 +1,6 @@
-import { getAppTitle } from "~/modules/meta"
+import { getAppMeta } from "~/modules/meta"
 
-export const meta = () => ({
-  title: getAppTitle("Page not found"),
-})
+export const meta = () => getAppMeta("Page not found")
 
 export default function NotFound() {
   return (

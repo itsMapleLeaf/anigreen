@@ -36,15 +36,12 @@ import type { AnilistUser } from "./modules/anilist/user"
 import { loadViewerUser } from "./modules/anilist/user"
 import { getSession } from "./modules/auth/session.server"
 import { raise } from "./modules/common/errors"
-import { getAppTitle } from "./modules/meta"
+import { getAppMeta } from "./modules/meta"
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
 import { twindConfig } from "./twind-config"
 
-export const meta: MetaFunction = () => ({
-  title: getAppTitle(),
-  description: "your week in anime 🌠",
-})
+export const meta: MetaFunction = () => getAppMeta()
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
@@ -139,6 +136,7 @@ function Document({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+
         <link rel="icon" href="/logo-32x.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -151,6 +149,7 @@ function Document({ children }: { children: React.ReactNode }) {
           href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
+
         <Meta />
         <Links />
       </head>

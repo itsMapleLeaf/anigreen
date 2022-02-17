@@ -20,7 +20,7 @@ import {
   mediaFragment,
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
-import { getAppTitle } from "~/modules/meta"
+import { getAppMeta } from "~/modules/meta"
 import { clearButtonClass } from "~/modules/ui/button-style"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"
@@ -105,9 +105,7 @@ async function loadSchedule({
   }
 }
 
-export const meta: MetaFunction = () => ({
-  title: getAppTitle("Schedule"),
-})
+export const meta: MetaFunction = () => getAppMeta("Schedule")
 
 export async function loader({ request }: DataFunctionArgs) {
   let page = Number(new URL(request.url).searchParams.get("page"))
