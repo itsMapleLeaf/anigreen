@@ -12,13 +12,13 @@ export const getAppMeta = (titlePrefix?: string): HtmlMetaDescriptor => {
     "og:url": `https://${appDomain}/schedule`,
     "og:title": title,
     "og:description": description,
-    "og:image": "/banner.png",
+    "og:image": `https://${appDomain}/banner.png`,
 
     "twitter:card": "summary_large_image",
     "twitter:domain": appDomain,
     "twitter:url": `https://${appDomain}/schedule`,
     "twitter:title": title,
     "twitter:description": description,
-    "twitter:image": "/banner.png",
+    "twitter:image": `https://${appDomain}/banner.png`,
   }
 }
