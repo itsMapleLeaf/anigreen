@@ -11,7 +11,7 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  install(twindConfig, process.env.NODE_ENV === "production")
+  install(twindConfig, false)
 
   const markup = inline(
     renderToString(<RemixServer context={remixContext} url={request.url} />),

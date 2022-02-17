@@ -129,7 +129,9 @@ function Document({ children }: { children: React.ReactNode }) {
   // thankfully, the styles always exist from the server,
   // so there shouldn't be any weird flash
   useEffect(() => {
-    install(twindConfig, process.env.NODE_ENV === "production")
+    // install(twindConfig, process.env.NODE_ENV === "production")
+    // temporary fix for https://github.com/tw-in-js/twind/issues/293
+    install(twindConfig, false)
   }, [])
 
   return (
