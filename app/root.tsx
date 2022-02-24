@@ -4,7 +4,7 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import type { ReactNode } from "react"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useState } from "react"
 import type { ErrorBoundaryComponent, MetaFunction } from "remix"
 import {
   Link,
@@ -161,12 +161,30 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <ActionScrollRestoration />
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
   )
+}
+
+// fetcher actions scroll the page to the top after the redirect,
+// and this is a workaround to keep that from happening
+function ActionScrollRestoration() {
+  const transition = useTransition()
+
+  useLayoutEffect(() => {
+    if (transition.type === "idle") {
+      const top = window.scrollY
+      requestAnimationFrame(() => {
+        window.scrollTo({ top })
+      })
+    }
+  })
+
+  return <></>
 }
 
 function Header({ authAction }: { authAction?: ReactNode }) {
