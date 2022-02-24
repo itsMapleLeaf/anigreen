@@ -3568,7 +3568,7 @@ export type Staff = {
    * @deprecated Replaced with languageV2
    */
   language?: Maybe<StaffLanguage>;
-  /** The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan */
+  /** The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan, Finnish, Turkish, Dutch, Swedish, Thai, Tagalog, Malaysian, Indonesian, Vietnamese, Nepali, Hindi, Urdu */
   languageV2?: Maybe<Scalars['String']>;
   /** Notes for site moderators */
   modNotes?: Maybe<Scalars['String']>;
