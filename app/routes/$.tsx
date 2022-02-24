@@ -1,6 +1,10 @@
+import type { LoaderFunction } from "remix"
+import { responseTyped } from "remix-typed"
 import { getAppMeta } from "~/modules/meta"
 
 export const meta = () => getAppMeta("Page not found")
+
+export const loader: LoaderFunction = () => responseTyped(undefined, 404)
 
 export default function NotFound() {
   return (
