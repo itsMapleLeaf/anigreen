@@ -1,4 +1,4 @@
-import { HtmlMetaDescriptor } from "remix"
+import type { HtmlMetaDescriptor } from "remix"
 
 const appDomain = "anigreen.mapleleaf.dev"
 
@@ -6,8 +6,8 @@ export const getAppMeta = (titlePrefix?: string): HtmlMetaDescriptor => {
   const title = [titlePrefix, "anigreen"].filter(Boolean).join(" | ")
   const description = "your week in anime 🌠"
   return {
-    "title": title,
-    "description": description,
+    title,
+    description,
 
     "og:url": `https://${appDomain}/schedule`,
     "og:title": title,

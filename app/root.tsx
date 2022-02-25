@@ -140,7 +140,7 @@ function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="bg-slate-900 text-slate-100">
       <head>
-        <meta charSet="utf-8" />
+        <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
 
         <link rel="icon" href="/logo-32x.png" />
