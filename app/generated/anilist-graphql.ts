@@ -175,7 +175,8 @@ export type ActivityReplySubscribedNotification = {
 /** Activity sort enums */
 export enum ActivitySort {
   Id = 'ID',
-  IdDesc = 'ID_DESC'
+  IdDesc = 'ID_DESC',
+  Pinned = 'PINNED'
 }
 
 /** Activity type enum. */
@@ -499,6 +500,18 @@ export type Deleted = {
   deleted?: Maybe<Scalars['Boolean']>;
 };
 
+export enum ExternalLinkMediaType {
+  Anime = 'ANIME',
+  Manga = 'MANGA',
+  Staff = 'STAFF'
+}
+
+export enum ExternalLinkType {
+  Info = 'INFO',
+  Social = 'SOCIAL',
+  Streaming = 'STREAMING'
+}
+
 /** User's favourite anime, manga, characters, staff & studios */
 export type Favourites = {
   __typename?: 'Favourites';
@@ -781,6 +794,8 @@ export type InternalPageMediaArgs = {
   isAdult?: InputMaybe<Scalars['Boolean']>;
   isLicensed?: InputMaybe<Scalars['Boolean']>;
   licensedBy?: InputMaybe<Scalars['String']>;
+  licensedById?: InputMaybe<Scalars['Int']>;
+  licensedById_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   licensedBy_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   minimumTagRank?: InputMaybe<Scalars['Int']>;
   onList?: InputMaybe<Scalars['Boolean']>;
@@ -1036,6 +1051,8 @@ export type ListActivity = {
   isLiked?: Maybe<Scalars['Boolean']>;
   /** If the activity is locked and can receive replies */
   isLocked?: Maybe<Scalars['Boolean']>;
+  /** If the activity is pinned to the top of the users activity feed */
+  isPinned?: Maybe<Scalars['Boolean']>;
   /** If the currently authenticated user is subscribed to the activity */
   isSubscribed?: Maybe<Scalars['Boolean']>;
   /** The amount of likes the activity has */
@@ -1060,6 +1077,17 @@ export type ListActivity = {
   user?: Maybe<User>;
   /** The user id of the activity's creator */
   userId?: Maybe<Scalars['Int']>;
+};
+
+export type ListActivityOption = {
+  __typename?: 'ListActivityOption';
+  disabled?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<MediaListStatus>;
+};
+
+export type ListActivityOptionInput = {
+  disabled?: InputMaybe<Scalars['Boolean']>;
+  type?: InputMaybe<MediaListStatus>;
 };
 
 /** User's list score statistics */
@@ -1383,15 +1411,23 @@ export type MediaEdgeVoiceActorsArgs = {
   sort?: InputMaybe<Array<InputMaybe<StaffSort>>>;
 };
 
-/** An external link to another site related to the media */
+/** An external link to another site related to the media or staff member */
 export type MediaExternalLink = {
   __typename?: 'MediaExternalLink';
+  color?: Maybe<Scalars['String']>;
+  /** The icon image url of the site. Not available for all links. Transparent PNG 64x64 */
+  icon?: Maybe<Scalars['String']>;
   /** The id of the external link */
   id: Scalars['Int'];
-  /** The site location of the external link */
+  /** Language the site content is in. See Staff language field for values. */
+  language?: Maybe<Scalars['String']>;
+  /** The links website site name */
   site: Scalars['String'];
-  /** The url of the external link */
-  url: Scalars['String'];
+  /** The links website site id */
+  siteId?: Maybe<Scalars['Int']>;
+  type?: Maybe<ExternalLinkType>;
+  /** The url of the external link or base url of link source */
+  url?: Maybe<Scalars['String']>;
 };
 
 /** An external link to another site related to the media */
@@ -1848,7 +1884,7 @@ export type MediaSubmission = {
   changes?: Maybe<Array<Maybe<Scalars['String']>>>;
   characters?: Maybe<Array<Maybe<MediaSubmissionComparison>>>;
   createdAt?: Maybe<Scalars['Int']>;
-  externalLinks?: Maybe<Array<Maybe<MediaExternalLink>>>;
+  externalLinks?: Maybe<Array<Maybe<MediaSubmissionComparison>>>;
   /** The id of the submission */
   id: Scalars['Int'];
   /** Whether the submission is locked */
@@ -1871,6 +1907,7 @@ export type MediaSubmission = {
 export type MediaSubmissionComparison = {
   __typename?: 'MediaSubmissionComparison';
   character?: Maybe<MediaCharacter>;
+  externalLink?: Maybe<MediaExternalLink>;
   staff?: Maybe<StaffEdge>;
   studio?: Maybe<StudioEdge>;
   submission?: Maybe<MediaSubmissionEdge>;
@@ -1883,6 +1920,7 @@ export type MediaSubmissionEdge = {
   characterRole?: Maybe<CharacterRole>;
   characterSubmission?: Maybe<Character>;
   dubGroup?: Maybe<Scalars['String']>;
+  externalLink?: Maybe<MediaExternalLink>;
   /** The id of the direct submission */
   id?: Maybe<Scalars['Int']>;
   isMain?: Maybe<Scalars['Boolean']>;
@@ -2169,6 +2207,8 @@ export type Mutation = {
   SaveThread?: Maybe<Thread>;
   /** Create or update a thread comment */
   SaveThreadComment?: Maybe<ThreadComment>;
+  /** Toggle activity to be pinned to the top of the user's activity feed */
+  ToggleActivityPin?: Maybe<ActivityUnion>;
   /** Toggle the subscription of an activity item */
   ToggleActivitySubscription?: Maybe<ActivityUnion>;
   /** Favourite or unfavourite an anime, manga, character, staff member, or studio */
@@ -2324,6 +2364,12 @@ export type MutationSaveThreadCommentArgs = {
 };
 
 
+export type MutationToggleActivityPinArgs = {
+  id?: InputMaybe<Scalars['Int']>;
+  pinned?: InputMaybe<Scalars['Boolean']>;
+};
+
+
 export type MutationToggleActivitySubscriptionArgs = {
   activityId?: InputMaybe<Scalars['Int']>;
   subscribe?: InputMaybe<Scalars['Boolean']>;
@@ -2412,11 +2458,13 @@ export type MutationUpdateUserArgs = {
   activityMergeTime?: InputMaybe<Scalars['Int']>;
   airingNotifications?: InputMaybe<Scalars['Boolean']>;
   animeListOptions?: InputMaybe<MediaListOptionsInput>;
+  disabledListActivity?: InputMaybe<Array<InputMaybe<ListActivityOptionInput>>>;
   displayAdultContent?: InputMaybe<Scalars['Boolean']>;
   donatorBadge?: InputMaybe<Scalars['String']>;
   mangaListOptions?: InputMaybe<MediaListOptionsInput>;
   notificationOptions?: InputMaybe<Array<InputMaybe<NotificationOptionInput>>>;
   profileColor?: InputMaybe<Scalars['String']>;
+  restrictMessagesToFollowing?: InputMaybe<Scalars['Boolean']>;
   rowOrder?: InputMaybe<Scalars['String']>;
   scoreFormat?: InputMaybe<ScoreFormat>;
   staffNameLanguage?: InputMaybe<UserStaffNameLanguage>;
@@ -2642,6 +2690,8 @@ export type PageMediaArgs = {
   isAdult?: InputMaybe<Scalars['Boolean']>;
   isLicensed?: InputMaybe<Scalars['Boolean']>;
   licensedBy?: InputMaybe<Scalars['String']>;
+  licensedById?: InputMaybe<Scalars['Int']>;
+  licensedById_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   licensedBy_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   minimumTagRank?: InputMaybe<Scalars['Int']>;
   onList?: InputMaybe<Scalars['Boolean']>;
@@ -2855,6 +2905,8 @@ export type Query = {
   AniChartUser?: Maybe<AniChartUser>;
   /** Character query */
   Character?: Maybe<Character>;
+  /** ExternalLinkSource collection query */
+  ExternalLinkSourceCollection?: Maybe<Array<Maybe<MediaExternalLink>>>;
   /** Follow query */
   Follower?: Maybe<User>;
   /** Follow query */
@@ -2970,6 +3022,13 @@ export type QueryCharacterArgs = {
 };
 
 
+export type QueryExternalLinkSourceCollectionArgs = {
+  id?: InputMaybe<Scalars['Int']>;
+  mediaType?: InputMaybe<ExternalLinkMediaType>;
+  type?: InputMaybe<ExternalLinkType>;
+};
+
+
 export type QueryFollowerArgs = {
   sort?: InputMaybe<Array<InputMaybe<UserSort>>>;
   userId: Scalars['Int'];
@@ -3030,6 +3089,8 @@ export type QueryMediaArgs = {
   isAdult?: InputMaybe<Scalars['Boolean']>;
   isLicensed?: InputMaybe<Scalars['Boolean']>;
   licensedBy?: InputMaybe<Scalars['String']>;
+  licensedById?: InputMaybe<Scalars['Int']>;
+  licensedById_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   licensedBy_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   minimumTagRank?: InputMaybe<Scalars['Int']>;
   onList?: InputMaybe<Scalars['Boolean']>;
@@ -3400,6 +3461,8 @@ export type RevisionHistory = {
   character?: Maybe<Character>;
   /** When the mod feed entry was created */
   createdAt?: Maybe<Scalars['Int']>;
+  /** The external link source the mod feed entry references */
+  externalLink?: Maybe<MediaExternalLink>;
   /** The id of the media */
   id: Scalars['Int'];
   /** The media the mod feed entry references */
@@ -3885,6 +3948,8 @@ export type TextActivity = {
   isLiked?: Maybe<Scalars['Boolean']>;
   /** If the activity is locked and can receive replies */
   isLocked?: Maybe<Scalars['Boolean']>;
+  /** If the activity is pinned to the top of the users activity feed */
+  isPinned?: Maybe<Scalars['Boolean']>;
   /** If the currently authenticated user is subscribed to the activity */
   isSubscribed?: Maybe<Scalars['Boolean']>;
   /** The amount of likes the activity has */
@@ -4303,12 +4368,16 @@ export type UserOptions = {
   activityMergeTime?: Maybe<Scalars['Int']>;
   /** Whether the user receives notifications when a show they are watching aires */
   airingNotifications?: Maybe<Scalars['Boolean']>;
+  /** The list activity types the user has disabled from being created from list updates */
+  disabledListActivity?: Maybe<Array<Maybe<ListActivityOption>>>;
   /** Whether the user has enabled viewing of 18+ content */
   displayAdultContent?: Maybe<Scalars['Boolean']>;
   /** Notification options */
   notificationOptions?: Maybe<Array<Maybe<NotificationOption>>>;
   /** Profile highlight color (blue, purple, pink, orange, red, green, gray) */
   profileColor?: Maybe<Scalars['String']>;
+  /** Whether the user only allow messages from users they follow */
+  restrictMessagesToFollowing?: Maybe<Scalars['Boolean']>;
   /** The language the user wants to see staff and character names in */
   staffNameLanguage?: Maybe<UserStaffNameLanguage>;
   /** The user's timezone offset (Auth user only) */
@@ -4598,7 +4667,7 @@ export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ViewerQuery = { __typename?: 'Query', Viewer?: { __typename?: 'User', id: number, name: string, bannerImage?: string | undefined, siteUrl?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined } | undefined };
 
-export type MediaFragment = { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined };
+export type MediaFragment = { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined };
 
 export type MediaListEntryFragment = { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined };
 
@@ -4615,7 +4684,7 @@ export type ScheduleQueryVariables = Exact<{
 }>;
 
 
-export type ScheduleQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined, airingSchedules?: Array<{ __typename?: 'AiringSchedule', id: number, episode: number, airingAt: number, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined };
+export type ScheduleQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined, airingSchedules?: Array<{ __typename?: 'AiringSchedule', id: number, episode: number, airingAt: number, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined };
 
 export type UpdateMediaListEntryMutationVariables = Exact<{
   mediaId: Scalars['Int'];
@@ -4632,4 +4701,4 @@ export type WatchingQueryVariables = Exact<{
 }>;
 
 
-export type WatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url: string, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };
+export type WatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };

@@ -31,15 +31,23 @@ export function MediaCardLinksButton({ media }: { media: AnilistMedia }) {
           <Menu.Separator />
           {media.externalLinks
             .sort((a, b) => a.site.localeCompare(b.site))
-            .map((link) => (
-              <LinkItem
-                key={link.id}
-                name={link.site}
-                url={link.url}
-                icon={<ExternalLinkIcon className="w-5" />}
-                showsDomain={(nameCounts.get(link.site) ?? 0) >= 2}
-              />
-            ))}
+            .map((link) =>
+              link.url ? (
+                <LinkItem
+                  key={link.id}
+                  name={link.site}
+                  url={link.url}
+                  icon={<ExternalLinkIcon className="w-5" />}
+                  subtext={
+                    (nameCounts.get(link.site) ?? 0) >= 2 && (
+                      <div className="text-xs text-gray-600 leading-none">
+                        {getDomain(link.url)}
+                      </div>
+                    )
+                  }
+                />
+              ) : undefined,
+            )}
         </>
       }
     />
@@ -50,12 +58,12 @@ function LinkItem({
   name,
   url,
   icon,
-  showsDomain,
+  subtext,
 }: {
   name: string
   url: string
   icon: ReactNode
-  showsDomain?: boolean
+  subtext?: ReactNode
 }) {
   return (
     <Menu.Item>
@@ -68,11 +76,7 @@ function LinkItem({
         {icon}
         <div className="flex flex-col">
           <div>{name}</div>
-          {showsDomain && (
-            <div className="text-xs text-gray-600 leading-none">
-              {getDomain(url)}
-            </div>
-          )}
+          {subtext}
         </div>
       </a>
     </Menu.Item>
