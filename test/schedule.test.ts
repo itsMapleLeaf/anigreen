@@ -67,7 +67,7 @@ describe("schedule", () => {
     await expect(nextButton()).toBeVisible()
     await expect(previousButton()).toBeHidden()
     await assertPageTitles(1)
-    await expect(dayHeader("Tuesday")).toBeVisible()
+    await expect(dayHeader("Monday")).toBeVisible()
 
     await nextButton().click()
 
@@ -76,7 +76,6 @@ describe("schedule", () => {
     expect(page.url()).toContain("page=2")
     await assertPageTitles(2)
     await expect(page.locator("text=Tuesday")).toBeVisible()
-    await expect(page.locator("text=Wednesday")).toBeVisible()
 
     await nextButton().click()
 
@@ -84,8 +83,8 @@ describe("schedule", () => {
     await expect(nextButton()).toBeHidden()
     expect(page.url()).toContain("page=3")
     await assertPageTitles(3)
+    await expect(page.locator("text=Tuesday")).toBeVisible()
     await expect(page.locator("text=Wednesday")).toBeVisible()
-    await expect(page.locator("text=Thursday")).toBeVisible()
 
     await previousButton().click()
 
@@ -94,7 +93,6 @@ describe("schedule", () => {
     expect(page.url()).toContain("page=2")
     await assertPageTitles(2)
     await expect(page.locator("text=Tuesday")).toBeVisible()
-    await expect(page.locator("text=Wednesday")).toBeVisible()
 
     await previousButton().click()
 
@@ -102,6 +100,6 @@ describe("schedule", () => {
     await expect(previousButton()).toBeHidden()
     expect(page.url()).toContain("page=1")
     await assertPageTitles(1)
-    await expect(page.locator("text=Tuesday")).toBeVisible()
+    await expect(page.locator("text=Monday")).toBeVisible()
   }, 10_000)
 })
