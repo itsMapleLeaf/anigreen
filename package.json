@@ -5,7 +5,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "del-cli node_modules/remix/index.d.ts && remix setup node",
     "dev": "run-p --race --print-label remix-watch serve-dev graphql-watch",
     "build": "pnpm run graphql && remix build",
     "test": "bash scripts/test.sh",
@@ -71,7 +70,6 @@
     "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
-    "del-cli": "^4.0.1",
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.7.1",
