@@ -57,6 +57,7 @@ export const mediaFragment = gql`
       episode
       airingAt
     }
+    isAdult
   }
 `
 

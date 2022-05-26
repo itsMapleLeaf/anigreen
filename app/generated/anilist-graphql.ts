@@ -1150,6 +1150,8 @@ export type Media = {
   isLocked?: Maybe<Scalars['Boolean']>;
   /** If the media is blocked from being recommended to/from */
   isRecommendationBlocked?: Maybe<Scalars['Boolean']>;
+  /** If the media is blocked from being reviewed */
+  isReviewBlocked?: Maybe<Scalars['Boolean']>;
   /** Mean score of all the user's scores of the media */
   meanScore?: Maybe<Scalars['Int']>;
   /** The authenticated user's media list entry for the media */
@@ -1419,8 +1421,10 @@ export type MediaExternalLink = {
   icon?: Maybe<Scalars['String']>;
   /** The id of the external link */
   id: Scalars['Int'];
+  isDisabled?: Maybe<Scalars['Boolean']>;
   /** Language the site content is in. See Staff language field for values. */
   language?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
   /** The links website site name */
   site: Scalars['String'];
   /** The links website site id */
@@ -4667,7 +4671,7 @@ export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ViewerQuery = { __typename?: 'Query', Viewer?: { __typename?: 'User', id: number, name: string, bannerImage?: string | undefined, siteUrl?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined } | undefined };
 
-export type MediaFragment = { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined };
+export type MediaFragment = { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, isAdult?: boolean | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined };
 
 export type MediaListEntryFragment = { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined };
 
@@ -4684,7 +4688,7 @@ export type ScheduleQueryVariables = Exact<{
 }>;
 
 
-export type ScheduleQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined, airingSchedules?: Array<{ __typename?: 'AiringSchedule', id: number, episode: number, airingAt: number, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined };
+export type ScheduleQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined, airingSchedules?: Array<{ __typename?: 'AiringSchedule', id: number, episode: number, airingAt: number, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, isAdult?: boolean | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined };
 
 export type UpdateMediaListEntryMutationVariables = Exact<{
   mediaId: Scalars['Int'];
@@ -4701,4 +4705,4 @@ export type WatchingQueryVariables = Exact<{
 }>;
 
 
-export type WatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };
+export type WatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, isAdult?: boolean | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };

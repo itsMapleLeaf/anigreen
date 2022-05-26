@@ -81,6 +81,7 @@ async function loadSchedule({
   const items: ScheduleItem[] = (data.Page?.airingSchedules ?? []).flatMap(
     (schedule) => {
       if (!schedule?.media) return []
+      if (schedule.media.isAdult) return []
       return {
         id: schedule.id,
         episode: schedule.episode,
