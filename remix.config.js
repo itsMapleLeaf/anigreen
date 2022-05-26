@@ -9,4 +9,9 @@ module.exports = {
   publicPath: "/build/",
   devServerPort: 8002,
   ignoredRouteFiles: [".*"],
+  serverDependenciesToBundle: [
+    "twind",
+    "@twind/preset-line-clamp",
+    "@twind/preset-tailwind",
+  ],
 }
