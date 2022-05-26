@@ -1,4 +1,4 @@
-import { createCookie } from "remix"
+import { createCookie } from "@remix-run/node"
 import { raise } from "~/modules/common/errors"
 
 const cookie = createCookie("timezone", {

@@ -1,4 +1,4 @@
-import type { LoaderFunction } from "remix"
+import type { LoaderFunction } from "@remix-run/node"
 import { responseTyped } from "remix-typed"
 import { getAppMeta } from "~/modules/meta"
 

@@ -1,6 +1,6 @@
 import { useMatch } from "react-router-dom"
-import type { LinkProps } from "remix"
-import { Link } from "remix"
+import type { LinkProps } from "@remix-run/react"
+import { Link } from "@remix-run/react"
 import { cx } from "twind"
 
 export type ActiveLinkProps = Omit<LinkProps, "to"> & {

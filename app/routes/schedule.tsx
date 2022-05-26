@@ -1,8 +1,8 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import gql from "graphql-tag"
-import type { MetaFunction } from "remix"
-import { Link, useNavigate } from "remix"
+import type { MetaFunction } from "@remix-run/node"
+import { Link, useNavigate } from "@remix-run/react"
 import { useLoaderDataTyped } from "remix-typed"
 import type {
   ScheduleQuery,

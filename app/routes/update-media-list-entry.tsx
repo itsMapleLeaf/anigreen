@@ -1,8 +1,8 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import gql from "graphql-tag"
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
-import type { FormProps } from "remix"
-import { Form } from "remix"
+import type { FormProps } from "@remix-run/react"
+import { Form } from "@remix-run/react"
 import { z } from "zod"
 import type {
   UpdateMediaListEntryMutation,

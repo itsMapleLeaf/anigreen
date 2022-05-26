@@ -5,7 +5,8 @@ import * as Tooltip from "@radix-ui/react-tooltip"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
 import type { ReactNode } from "react"
 import { useEffect, useLayoutEffect, useMemo, useState } from "react"
-import type { ErrorBoundaryComponent, MetaFunction } from "remix"
+import type { ErrorBoundaryComponent, MetaFunction } from "@remix-run/node"
+
 import {
   Link,
   Links,
@@ -16,7 +17,8 @@ import {
   ScrollRestoration,
   useFetcher,
   useTransition,
-} from "remix"
+} from "@remix-run/react"
+
 import { useLoaderDataTyped } from "remix-typed"
 import { cx, install } from "twind"
 import { AuthProvider } from "~/modules/auth/auth-context"

@@ -1,4 +1,4 @@
-import { json } from "remix"
+import { json } from "@remix-run/node"
 import type { z, ZodTypeDef } from "zod"
 
 export async function requireValidBody<Output>(

@@ -1,4 +1,4 @@
-import type { HtmlMetaDescriptor } from "remix"
+import type { HtmlMetaDescriptor } from "@remix-run/node"
 
 const appDomain = "anigreen.mapleleaf.dev"
 

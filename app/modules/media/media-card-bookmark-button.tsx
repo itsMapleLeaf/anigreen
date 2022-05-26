@@ -1,5 +1,5 @@
 import { BookmarkIcon } from "@heroicons/react/solid"
-import { useFetcher } from "remix"
+import { useFetcher } from "@remix-run/react"
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
 import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"

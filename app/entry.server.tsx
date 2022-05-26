@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { renderToString } from "react-dom/server"
-import type { EntryContext } from "remix"
-import { RemixServer } from "remix"
+import type { EntryContext } from "@remix-run/node"
+import { RemixServer } from "@remix-run/react"
 import { inline, install } from "twind"
 import { twindConfig } from "./twind-config"
 
