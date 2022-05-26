@@ -1,5 +1,6 @@
 node_modules
-pnpm-lock.yaml
 build
+dist
 .cache
+pnpm-lock.yaml
 generated
