@@ -4,9 +4,11 @@
     "jsx": "react-jsx",
     "checkJs": false,
     "resolveJsonModule": true,
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
     }
   },
-  "exclude": ["**/node_modules/**", "**/build/**", "**/.cache/**"]
+  "exclude": ["**/node_modules/**", "**/build/**", "**/.cache/**"],
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
 }
