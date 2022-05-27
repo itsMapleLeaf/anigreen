@@ -1,4 +1,4 @@
-import type { DataFunctionArgs, MetaFunction } from "@remix-run/server-runtime"
+import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
 import { useLoaderDataTyped } from "remix-typed"
 import type {
   WatchingQuery,

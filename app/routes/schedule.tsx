@@ -1,5 +1,5 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
-import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import type { DataFunctionArgs } from "@remix-run/node"
 import type { MetaFunction } from "@remix-run/node"
 import { Link, useNavigate } from "@remix-run/react"
 import { useLoaderDataTyped } from "remix-typed"

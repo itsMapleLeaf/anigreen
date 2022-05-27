@@ -1,4 +1,4 @@
-import type { DataFunctionArgs } from "@remix-run/server-runtime"
+import type { DataFunctionArgs } from "@remix-run/node"
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
 import type { FormProps } from "@remix-run/react"
 import { Form } from "@remix-run/react"

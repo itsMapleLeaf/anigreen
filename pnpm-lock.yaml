@@ -17,7 +17,6 @@ specifiers:
   '@remix-run/express': ^1.5.1
   '@remix-run/node': ^1.5.1
   '@remix-run/react': ^1.5.1
-  '@remix-run/server-runtime': ^1.5.1
   '@rushstack/eslint-patch': ^1.1.3
   '@twind/preset-line-clamp': ^1.0.0-next.38
   '@twind/preset-tailwind': ^1.0.0-next.38
@@ -88,7 +87,7 @@ dependencies:
   react-dom: 17.0.2_react@17.0.2
   react-router: 6.3.0_react@17.0.2
   react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
-  remix-typed: 0.1.2_djknuarrnikbsphuvt4q3vrtr4
+  remix-typed: 0.1.2_d3qzjffjgzu3bqxre5xu2mcmbe
   tsx: 3.4.2
   twind: 1.0.0-next.38_typescript@4.7.2
   zod: 3.17.3
@@ -99,7 +98,6 @@ devDependencies:
   '@graphql-codegen/typescript-operations': 2.4.0_graphql@16.5.0
   '@playwright/test': 1.22.2
   '@remix-run/dev': 1.5.1_sfoxds7t5ydpegc3knd667wn6m
-  '@remix-run/server-runtime': 1.5.1_sfoxds7t5ydpegc3knd667wn6m
   '@rushstack/eslint-patch': 1.1.3
   '@types/compression': 1.7.2
   '@types/eslint': 8.4.2
@@ -8998,7 +8996,7 @@ packages:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
     dev: true
 
-  /remix-typed/0.1.2_djknuarrnikbsphuvt4q3vrtr4:
+  /remix-typed/0.1.2_d3qzjffjgzu3bqxre5xu2mcmbe:
     resolution: {integrity: sha512-lt3qhfgVsNHGpskIG8qzq0Xles1fn/ULMKdzLXWK+CuWzfEAGffLGYrYFtz8sHd+/p2JfD1etUNMVLebCkNgvA==}
     peerDependencies:
       '@remix-run/react': ^1.1.3
@@ -9007,7 +9005,6 @@ packages:
       react-dom: ^17.0.2
     dependencies:
       '@remix-run/react': 1.5.1_sfoxds7t5ydpegc3knd667wn6m
-      '@remix-run/server-runtime': 1.5.1_sfoxds7t5ydpegc3knd667wn6m
       '@types/react': 17.0.45
       '@types/react-dom': 18.0.5
       react: 17.0.2
