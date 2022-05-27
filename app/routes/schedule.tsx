@@ -1,6 +1,5 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import gql from "graphql-tag"
 import type { MetaFunction } from "@remix-run/node"
 import { Link, useNavigate } from "@remix-run/react"
 import { useLoaderDataTyped } from "remix-typed"
@@ -48,7 +47,7 @@ async function loadSchedule({
   timezone: string
 }): Promise<ScheduleData> {
   const data = await anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
-    document: gql`
+    query: /* GraphQL */ `
       query Schedule($startDate: Int!, $page: Int!) {
         Page(page: $page, perPage: 30) {
           pageInfo {

@@ -1,4 +1,3 @@
-import gql from "graphql-tag"
 import type {
   MediaExternalLink,
   MediaFragment,
@@ -29,7 +28,7 @@ export type AnilistMediaListEntry = {
   score?: number
 }
 
-export const mediaFragment = gql`
+export const mediaFragment = /* GraphQL */ `
   fragment media on Media {
     id
     siteUrl
@@ -61,7 +60,7 @@ export const mediaFragment = gql`
   }
 `
 
-export const mediaListEntryFragment = gql`
+export const mediaListEntryFragment = /* GraphQL */ `
   fragment mediaListEntry on MediaList {
     id
     status

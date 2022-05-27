@@ -1,5 +1,4 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime"
-import gql from "graphql-tag"
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
 import type { FormProps } from "@remix-run/react"
 import { Form } from "@remix-run/react"
@@ -45,7 +44,7 @@ export async function action({ request }: DataFunctionArgs) {
     UpdateMediaListEntryMutation,
     UpdateMediaListEntryMutationVariables
   >({
-    document: gql`
+    query: /* GraphQL */ `
       mutation UpdateMediaListEntry(
         $mediaId: Int!
         $status: MediaListStatus

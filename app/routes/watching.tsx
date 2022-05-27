@@ -1,5 +1,4 @@
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/server-runtime"
-import gql from "graphql-tag"
 import { useLoaderDataTyped } from "remix-typed"
 import type {
   WatchingQuery,
@@ -30,7 +29,7 @@ async function loadInProgressItems(
   const user = await loadViewerUser(accessToken)
 
   const data = await anilistRequest<WatchingQuery, WatchingQueryVariables>({
-    document: gql`
+    query: /* GraphQL */ `
       query Watching($userId: Int!) {
         MediaListCollection(
           userId: $userId

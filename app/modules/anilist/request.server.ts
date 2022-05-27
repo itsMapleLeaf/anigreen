@@ -6,7 +6,7 @@ import { inspect } from "node:util"
 type AnyRecord = { [key: string]: unknown }
 
 type RequestOptions<Variables extends AnyRecord> = {
-  document: DocumentNode
+  query: string
   accessToken?: string
 } & RequestVariables<Variables>
 
@@ -20,7 +20,7 @@ export async function anilistRequest<
   Result extends AnyRecord,
   Variables extends AnyRecord,
 >(options: RequestOptions<Variables>): Promise<Result> {
-  const { document, variables, accessToken } = options
+  const { query, variables, accessToken } = options
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export async function anilistRequest<
   const response = await fetch("https://graphql.anilist.co", {
     method: "POST",
     headers,
-    body: JSON.stringify({ query: print(document), variables }),
+    body: JSON.stringify({ query, variables }),
   })
 
   if (response.status === 429) {
@@ -47,7 +47,7 @@ export async function anilistRequest<
 
   if (!response.ok) {
     raiseRequestError(
-      document,
+      query,
       variables,
       response,
       response.statusText || "Unknown error",
@@ -61,7 +61,7 @@ export async function anilistRequest<
       inspect(json.errors, { depth: Number.POSITIVE_INFINITY }),
     )
     raiseRequestError(
-      document,
+      query,
       variables,
       response,
       json.errors[0]?.message || response.statusText || "Unknown error",
@@ -72,12 +72,12 @@ export async function anilistRequest<
 }
 
 function raiseRequestError(
-  document: DocumentNode,
+  query: string,
   variables: unknown,
   response: Response,
   message: string,
 ): never {
-  console.warn("query:", print(document))
+  console.warn("query:", query)
   console.warn(
     "variables:",
     inspect(variables, { depth: Number.POSITIVE_INFINITY }),

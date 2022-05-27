@@ -38,7 +38,6 @@ specifiers:
   express: ^4.18.1
   framer-motion: ^6.3.4
   graphql: ^16.5.0
-  graphql-tag: ^2.12.6
   msw: ^0.41.0
   nodemon: ^2.0.16
   npm-run-all: ^4.1.5
@@ -82,7 +81,6 @@ dependencies:
   express: 4.18.1
   framer-motion: 6.3.4_sfoxds7t5ydpegc3knd667wn6m
   graphql: 16.5.0
-  graphql-tag: 2.12.6_graphql@16.5.0
   pino: 7.11.0
   pino-colada: 2.2.2
   pino-http: 6.6.0
@@ -5843,6 +5841,7 @@ packages:
     dependencies:
       graphql: 16.5.0
       tslib: 2.4.0
+    dev: true
 
   /graphql-ws/5.8.2_graphql@16.5.0:
     resolution: {integrity: sha512-hYo8kTGzxePFJtMGC7Y4cbypwifMphIJJ7n4TDcVUAfviRwQBnmZAbfZlC+XFwWDUaR7raEDQPxWctpccmE0JQ==}

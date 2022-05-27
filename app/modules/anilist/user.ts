@@ -1,4 +1,3 @@
-import gql from "graphql-tag"
 import type {
   ViewerQuery,
   ViewerQueryVariables,
@@ -17,7 +16,7 @@ export async function loadViewerUser(
   accessToken: string,
 ): Promise<AnilistUser> {
   const data = await anilistRequest<ViewerQuery, ViewerQueryVariables>({
-    document: gql`
+    query: /* GraphQL */ `
       query Viewer {
         Viewer {
           id
