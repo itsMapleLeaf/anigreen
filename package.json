@@ -5,20 +5,18 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "run-p --race --print-label remix-watch serve-dev graphql-watch",
+    "dev": "run-p --race --print-label dev:*",
+    "dev:remix": "remix watch",
+    "dev:server": "cross-env NODE_ENV=development nodemon server/build/index.js | pino-colada --color",
+    "dev:graphql": "pnpm run graphql --watch",
     "build": "pnpm run graphql && remix build",
+    "start": "node server/build/index.js",
     "test": "bash scripts/test.sh",
-    "start": "pnpm serve-prod",
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "remix-watch": "remix watch",
-    "serve": "tsx server/main.mts | pino-colada --color",
-    "serve-dev": "cross-env NODE_ENV=development nodemon -x tsx server/main.mts | pino-colada --color",
-    "serve-prod": "cross-env NODE_ENV=production pnpm run serve",
-    "graphql": "graphql-codegen --config graphql.config.json",
-    "graphql-watch": "pnpm run graphql --watch"
+    "graphql": "graphql-codegen --config graphql.config.json"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
@@ -81,7 +79,7 @@
     "wait-on": "^6.0.1"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "sideEffects": false,
   "prettier": "@itsmapleleaf/configs/prettier"
