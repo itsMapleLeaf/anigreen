@@ -1,7 +1,7 @@
 import type { DataFunctionArgs } from "@remix-run/node"
-import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
 import type { FormProps } from "@remix-run/react"
 import { Form } from "@remix-run/react"
+import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
 import { z } from "zod"
 import type {
   UpdateMediaListEntryMutation,
@@ -10,13 +10,12 @@ import type {
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
+import { maybeValidNumber } from "~/modules/common/maybe-valid-number"
 import { parseUnsignedInteger } from "~/modules/common/parse-unsigned-integer"
 import { redirectBack } from "~/modules/network/redirect-back"
 
-const stringAsUnsignedInteger = () => z.string().transform(parseUnsignedInteger)
-
 const bodySchema = z.object({
-  mediaId: stringAsUnsignedInteger(),
+  mediaId: z.string().transform(parseUnsignedInteger),
   status: z
     .union([
       z.literal(MediaListStatus.Current),
@@ -24,8 +23,8 @@ const bodySchema = z.object({
       z.literal(MediaListStatus.Dropped),
     ])
     .optional(),
-  progress: stringAsUnsignedInteger().optional(),
-  score: z.string().optional(),
+  progress: z.string().transform(parseUnsignedInteger).optional(),
+  score: z.string().transform(maybeValidNumber).optional(),
 })
 
 export async function action({ request }: DataFunctionArgs) {
@@ -34,11 +33,6 @@ export async function action({ request }: DataFunctionArgs) {
   const variables = bodySchema.parse(
     Object.fromEntries(await request.formData()),
   )
-
-  let score: number | undefined = Number(variables.score)
-  if (Number.isNaN(score)) {
-    score = undefined
-  }
 
   await anilistRequest<
     UpdateMediaListEntryMutation,
@@ -64,7 +58,7 @@ export async function action({ request }: DataFunctionArgs) {
     accessToken: session.accessToken,
     variables: {
       ...variables,
-      score: score != undefined ? score * 10 : undefined,
+      score: variables.score != undefined ? variables.score * 10 : undefined,
     },
   })
 
