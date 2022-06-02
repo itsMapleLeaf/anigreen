@@ -2,10 +2,13 @@ import { MenuIcon } from "@heroicons/react/outline"
 import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
-import type { DataFunctionArgs } from "@remix-run/node"
+import type {
+  DataFunctionArgs,
+  ErrorBoundaryComponent,
+  MetaFunction,
+} from "@remix-run/node"
 import type { ReactNode } from "react"
 import { useEffect, useLayoutEffect, useMemo, useState } from "react"
-import type { ErrorBoundaryComponent, MetaFunction } from "@remix-run/node"
 
 import {
   Link,
@@ -19,6 +22,7 @@ import {
   useTransition,
 } from "@remix-run/react"
 
+import type { Transition } from "@remix-run/react/transition"
 import { useLoaderDataTyped } from "remix-typed"
 import { cx, install } from "twind"
 import { AuthProvider } from "~/modules/auth/auth-context"
@@ -176,15 +180,22 @@ function Document({ children }: { children: React.ReactNode }) {
 // and this is a workaround to keep that from happening
 function ActionScrollRestoration() {
   const transition = useTransition()
+  const [lastTransition, setLastTransition] = useState<Transition>(transition)
 
   useLayoutEffect(() => {
-    if (transition.type === "idle") {
+    if (lastTransition === transition) return
+    setLastTransition(transition)
+
+    if (
+      transition.type === "idle" &&
+      lastTransition.type === "fetchActionRedirect"
+    ) {
       const top = window.scrollY
       requestAnimationFrame(() => {
         window.scrollTo({ top })
       })
     }
-  })
+  }, [lastTransition, transition])
 
   return <></>
 }
