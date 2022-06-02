@@ -18,10 +18,9 @@ import {
   useFetcher,
   useTransition,
 } from "@remix-run/react"
-import type { Transition } from "@remix-run/react/transition"
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { useEffect, useLayoutEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLoaderDataTyped } from "remix-typed"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
@@ -41,6 +40,7 @@ import { loadViewerUser } from "./modules/anilist/user"
 import { getSession } from "./modules/auth/session.server"
 import { raise } from "./modules/common/errors"
 import { getAppMeta } from "./modules/meta"
+import { ActionScrollRestoration } from "./modules/remix/action-scroll-restoration"
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
 import tailwind from "./tailwind.out.css"
@@ -161,30 +161,6 @@ function Document({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   )
-}
-
-// fetcher actions scroll the page to the top after the redirect,
-// and this is a workaround to keep that from happening
-function ActionScrollRestoration() {
-  const transition = useTransition()
-  const [lastTransition, setLastTransition] = useState<Transition>(transition)
-
-  useLayoutEffect(() => {
-    if (lastTransition === transition) return
-    setLastTransition(transition)
-
-    if (
-      transition.type === "idle" &&
-      lastTransition.type === "fetchActionRedirect"
-    ) {
-      const top = window.scrollY
-      requestAnimationFrame(() => {
-        window.scrollTo({ top })
-      })
-    }
-  }, [lastTransition, transition])
-
-  return <></>
 }
 
 function Header({ authAction }: { authAction?: ReactNode }) {
