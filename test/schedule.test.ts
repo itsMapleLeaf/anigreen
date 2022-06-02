@@ -2,18 +2,16 @@ import { expect } from "@playwright/test"
 import type { ChromiumBrowser, Page } from "playwright"
 import { chromium } from "playwright"
 import { afterAll, beforeAll, beforeEach, describe, it } from "vitest"
-import type { ServerHandle } from "../server/server.js"
-import { startServer } from "../server/server.js"
 import { anilistApiMockServer } from "./anilist-api-mock-server.mjs"
 import schedule from "./fixtures/schedule.json"
 
-let server: ServerHandle
-beforeAll(async () => {
-  server = await startServer({ port: 8888 })
-})
-afterAll(() => {
-  server.stop()
-})
+// let server: ServerHandle
+// beforeAll(async () => {
+//   server = await startServer({ port: 8888 })
+// })
+// afterAll(() => {
+//   server.stop()
+// })
 
 beforeAll(() => {
   anilistApiMockServer.listen()
@@ -28,7 +26,7 @@ beforeEach(async () => {
   browser ??= await chromium.launch({
     headless: process.env.CI !== undefined,
   })
-  page = await browser.newPage()
+  page = await browser.newPage({ baseURL: "http://localhost:8888" })
 })
 afterAll(async () => {
   await page.screenshot({ fullPage: true, path: "artifacts/screenshot.png" })
@@ -62,7 +60,7 @@ describe("schedule", () => {
       }
     }
 
-    await page.goto(`${server.url}/schedule`)
+    await page.goto(`/schedule`)
 
     await expect(nextButton()).toBeVisible()
     await expect(previousButton()).toBeHidden()
