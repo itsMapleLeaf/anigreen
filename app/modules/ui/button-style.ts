@@ -1,4 +1,4 @@
-import { cx } from "twind"
+import cx from "clsx"
 
 const baseButtonClass = cx`font-medium rounded-md transition flex flex-row items-center gap-2 leading-none`
 

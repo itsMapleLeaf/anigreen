@@ -1,6 +1,6 @@
+import cx from "clsx"
 import type { ReactElement } from "react"
 import { useEffect, useReducer, useState } from "react"
-import { cx } from "twind"
 import { useElementEvent } from "~/modules/dom/use-event"
 
 type TransitionStatus =
