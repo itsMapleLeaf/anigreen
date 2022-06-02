@@ -7,9 +7,6 @@ import type {
   ErrorBoundaryComponent,
   MetaFunction,
 } from "@remix-run/node"
-import type { ReactNode } from "react"
-import { useEffect, useLayoutEffect, useMemo, useState } from "react"
-
 import {
   Link,
   Links,
@@ -21,10 +18,11 @@ import {
   useFetcher,
   useTransition,
 } from "@remix-run/react"
-
 import type { Transition } from "@remix-run/react/transition"
+import clsx from "clsx"
+import type { ReactNode } from "react"
+import { useEffect, useLayoutEffect, useMemo, useState } from "react"
 import { useLoaderDataTyped } from "remix-typed"
-import { cx, install } from "twind"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
@@ -45,7 +43,7 @@ import { raise } from "./modules/common/errors"
 import { getAppMeta } from "./modules/meta"
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
-import { twindConfig } from "./twind-config"
+import tailwind from "./tailwind.out.css"
 
 export const meta: MetaFunction = () => getAppMeta()
 
@@ -91,7 +89,7 @@ function NavigationIndicator() {
   const transition = useTransition()
   return (
     <div
-      className={cx(
+      className={clsx(
         "fixed left-0 bottom-0 p-4 transition-opacity duration-300 pointer-events-none",
         transition.state === "idle" ? "opacity-0" : "opacity-100",
       )}
@@ -117,7 +115,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
                 <Link
                   to="/"
                   reloadDocument
-                  className={cx(solidButtonClass, "justify-self-start")}
+                  className={clsx(solidButtonClass, "justify-self-start")}
                 >
                   Return to safety
                 </Link>
@@ -131,18 +129,6 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
 }
 
 function Document({ children }: { children: React.ReactNode }) {
-  // when hitting the error boundary, remix yeets the whole document and re-renders it,
-  // which causes the twind style tag to go away :(
-  // so we'll use this effect to install them on mount
-  //
-  // thankfully, the styles always exist from the server,
-  // so there shouldn't be any weird flash
-  useEffect(() => {
-    // install(twindConfig, process.env.NODE_ENV === "production")
-    // temporary fix for https://github.com/tw-in-js/twind/issues/293
-    install(twindConfig, false)
-  }, [])
-
   return (
     <html lang="en" className="bg-slate-900 text-slate-100">
       <head>
@@ -152,6 +138,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/logo-32x.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="stylesheet" href={tailwind} />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
@@ -259,7 +246,7 @@ function HeaderPanel({ children }: { children: React.ReactNode }) {
 
   return (
     <header
-      className={cx(
+      className={clsx(
         "shadow sticky top-0 z-10 transition-colors backdrop-blur-lg",
         scrolled ? "bg-black/60" : "bg-slate-800",
       )}

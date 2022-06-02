@@ -1,4 +1,4 @@
-import { cx } from "twind"
+import cx from "clsx"
 
 type LoadingIconSize = "normal" | "large"
 

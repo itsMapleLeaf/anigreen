@@ -1,5 +1,5 @@
+import cx from "clsx"
 import type { ReactNode } from "react"
-import { cx } from "twind"
 import { autoRef } from "~/modules/react/auto-ref"
 import type { ButtonProps } from "~/modules/ui/button"
 import { Button } from "~/modules/ui/button"
