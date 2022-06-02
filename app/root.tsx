@@ -43,6 +43,7 @@ import { getAppMeta } from "./modules/meta"
 import { ActionScrollRestoration } from "./modules/remix/action-scroll-restoration"
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
+import { SearchInput } from "./routes/search"
 import tailwind from "./tailwind.out.css"
 
 export const meta: MetaFunction = () => getAppMeta()
@@ -164,7 +165,7 @@ function Document({ children }: { children: React.ReactNode }) {
 }
 
 function Header({ authAction }: { authAction?: ReactNode }) {
-  const [collapsibleOpen, setCollapsibleOpen] = useState(false)
+  const [collapsibleOpen, setCollapsibleOpen] = useState(true)
   return (
     <HeaderPanel>
       <div className={maxWidthContainerClass}>
@@ -193,17 +194,16 @@ function Header({ authAction }: { authAction?: ReactNode }) {
               </Link>
 
               <div className="hidden sm:flex gap-2 mx-6">
-                <MainNavigationLinks />
+                <MainNavigationItems />
               </div>
               <div className="ml-auto">{authAction}</div>
             </div>
 
-            <Collapsible.Content
-              asChild
-              onClick={() => setCollapsibleOpen(false)}
-            >
+            <Collapsible.Content asChild>
               <div className="grid gap-2 sm:hidden">
-                <MainNavigationLinks />
+                <MainNavigationItems
+                  onLinkClicked={() => setCollapsibleOpen(false)}
+                />
               </div>
             </Collapsible.Content>
           </nav>
@@ -232,17 +232,20 @@ function HeaderPanel({ children }: { children: React.ReactNode }) {
   )
 }
 
-function MainNavigationLinks() {
+function MainNavigationItems(props: { onLinkClicked?: () => void }) {
   return (
     <>
-      <MainNavigationLink to="/watching">
+      <MainNavigationLink to="/watching" onClick={props.onLinkClicked}>
         <BookmarkIcon className="w-5" />
         Watching
       </MainNavigationLink>
-      <MainNavigationLink to="/schedule">
+      <MainNavigationLink to="/schedule" onClick={props.onLinkClicked}>
         <CalendarIcon className="w-5" />
         Schedule
       </MainNavigationLink>
+      <div className="relative">
+        <SearchInput />
+      </div>
     </>
   )
 }

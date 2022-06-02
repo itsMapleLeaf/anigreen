@@ -1,12 +1,12 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
-import type { DataFunctionArgs } from "@remix-run/node"
-import type { MetaFunction } from "@remix-run/node"
+import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
 import { Link, useNavigate } from "@remix-run/react"
 import { useLoaderDataTyped } from "remix-typed"
 import type {
   ScheduleQuery,
   ScheduleQueryVariables,
 } from "~/generated/anilist-graphql"
+import { resolvePageInfo, resolvePageParam } from "~/modules/anilist/paging"
 import { anilistRequest } from "~/modules/anilist/request.server"
 import { getSession } from "~/modules/auth/session.server"
 import { startOfDayZoned } from "~/modules/dates/start-of-day-zoned"
@@ -93,33 +93,24 @@ async function loadSchedule({
     },
   )
 
-  const pageInfo = { currentPage: 1, ...data.Page?.pageInfo }
-  const previousPage =
-    pageInfo.currentPage > 1 ? pageInfo.currentPage - 1 : undefined
-  const nextPage = pageInfo.hasNextPage ? pageInfo.currentPage + 1 : undefined
-
   return {
     items,
-    nextPage,
-    previousPage,
+    ...resolvePageInfo(data.Page?.pageInfo ?? {}),
   }
 }
 
 export const meta: MetaFunction = () => getAppMeta("Schedule")
 
 export async function loader({ request }: DataFunctionArgs) {
-  let page = Number(new URL(request.url).searchParams.get("page"))
-  if (!Number.isFinite(page) || page < 1) {
-    page = 1
-  }
-
   const session = await getSession(request)
   const timezone = await getTimezone(request)
 
   return {
     timezone,
     schedule: await loadSchedule({
-      page,
+      page: resolvePageParam(
+        new URL(request.url).searchParams.get("page") ?? "1",
+      ),
       timezone,
       accessToken: session?.accessToken,
     }),
