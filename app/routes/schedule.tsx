@@ -1,7 +1,6 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
-import type { DataFunctionArgs } from "@remix-run/node"
-import type { MetaFunction } from "@remix-run/node"
-import { Link, useNavigate } from "@remix-run/react"
+import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
+import { Deferred, Link, useDeferred, useNavigate } from "@remix-run/react"
 import { useLoaderDataTyped } from "remix-typed"
 import type {
   ScheduleQuery,
@@ -20,7 +19,9 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppMeta } from "~/modules/meta"
+import { deferredTyped } from "~/modules/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
+import { LoadingPlaceholder } from "~/modules/ui/loading-placeholder"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"
 
@@ -28,6 +29,7 @@ type ScheduleData = {
   items: ScheduleItem[]
   nextPage?: number
   previousPage?: number
+  timezone: string
 }
 
 type ScheduleItem = {
@@ -102,6 +104,7 @@ async function loadSchedule({
     items,
     nextPage,
     previousPage,
+    timezone,
   }
 }
 
@@ -116,31 +119,31 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   const timezone = await getTimezone(request)
 
-  return {
-    timezone,
-    schedule: await loadSchedule({
+  return deferredTyped({
+    schedule: loadSchedule({
       page,
       timezone,
       accessToken: session?.accessToken,
     }),
-  }
+  })
 }
 
 export default function Schedule() {
+  const { schedule } = useLoaderDataTyped<typeof loader>()
   return (
-    <>
+    <Deferred data={schedule} fallback={<LoadingPlaceholder />}>
       <ScheduleItems />
       <Pagination />
-    </>
+    </Deferred>
   )
 }
 
 function ScheduleItems() {
-  const data = useLoaderDataTyped<typeof loader>()
+  const schedule = useDeferred<ScheduleData>()
   return (
     <WeekdaySectionedList
-      items={data.schedule.items}
-      timezone={data.timezone}
+      items={schedule.items}
+      timezone={schedule.timezone}
       getItemDate={(item) => item.airingDayMs}
       getItemKey={(item) => item.id}
       renderItem={(item) => (
@@ -155,7 +158,7 @@ function ScheduleItems() {
 }
 
 function Pagination() {
-  const { schedule } = useLoaderDataTyped<typeof loader>()
+  const schedule = useDeferred<ScheduleData>()
 
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
