@@ -12,7 +12,7 @@
     "dev:tailwind": "pnpm run tailwind --watch",
     "build": "pnpm run graphql && pnpm run tailwind --minify && remix build",
     "start": "node server/build/index.js",
-    "test": "bash scripts/test.sh",
+    "test": "echo todo lol",
     "lint": "eslint --ext js,ts,tsx .",
     "lint-fix": "pnpm lint -- --fix",
     "format": "prettier --write .",
