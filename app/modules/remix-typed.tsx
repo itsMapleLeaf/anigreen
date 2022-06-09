@@ -86,13 +86,18 @@ export function DeferredTyped<Data>({
   children,
   ...props
 }: DeferredTypedProps<Data>) {
-  function Consumer() {
-    const data = useDeferred<Data>()
-    return <>{children(data)}</>
-  }
   return (
     <Deferred {...props}>
-      <Consumer />
+      <DeferredConsumer>{children}</DeferredConsumer>
     </Deferred>
   )
+}
+
+function DeferredConsumer<Data>({
+  children,
+}: {
+  children: (data: Data) => React.ReactNode
+}) {
+  const data = useDeferred<Data>()
+  return <>{children(data)}</>
 }
