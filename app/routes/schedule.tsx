@@ -24,7 +24,7 @@ import {
   useLoaderDataTyped,
 } from "~/modules/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
-import { LoadingPlaceholder } from "~/modules/ui/loading-placeholder"
+import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"
 
@@ -134,7 +134,7 @@ export async function loader({ request }: DataFunctionArgs) {
 export default function Schedule() {
   const { schedule } = useLoaderDataTyped<typeof loader>()
   return (
-    <DeferredTyped data={schedule} fallback={<LoadingPlaceholder />}>
+    <DeferredTyped data={schedule} fallback={<GridSkeleton />}>
       {(data) => (
         <>
           <ScheduleItems schedule={data} />
