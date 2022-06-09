@@ -4698,6 +4698,13 @@ export type SearchQueryVariables = Exact<{
 
 export type SearchQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', currentPage?: number | undefined, hasNextPage?: boolean | undefined } | undefined, media?: Array<{ __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, isAdult?: boolean | undefined, mediaListEntry?: { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined> | undefined } | undefined };
 
+export type SearchWatchingQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type SearchWatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', mediaId: number, id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };
+
 export type UpdateMediaListEntryMutationVariables = Exact<{
   mediaId: Scalars['Int'];
   status?: InputMaybe<MediaListStatus>;

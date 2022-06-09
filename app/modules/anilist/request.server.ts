@@ -1,5 +1,3 @@
-import type { DocumentNode } from "graphql"
-import { print } from "graphql"
 import { setTimeout } from "node:timers/promises"
 import { inspect } from "node:util"
 
@@ -43,15 +41,6 @@ export async function anilistRequest<
       await setTimeout(retryAfterSeconds * 1000)
       return anilistRequest(options)
     }
-  }
-
-  if (!response.ok) {
-    raiseRequestError(
-      query,
-      variables,
-      response,
-      response.statusText || "Unknown error",
-    )
   }
 
   const json = await response.json()

@@ -2,11 +2,16 @@ import { SearchIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/node"
 import { Form } from "@remix-run/react"
 import type {
+  MediaListEntryFragment,
   SearchQuery,
   SearchQueryVariables,
+  SearchWatchingQuery,
+  SearchWatchingQueryVariables,
 } from "~/generated/anilist-graphql"
 import { resolvePageInfo, resolvePageParam } from "~/modules/anilist/paging"
 import { anilistRequest } from "~/modules/anilist/request.server"
+import { loadViewerUser } from "~/modules/anilist/user"
+import { getSession } from "~/modules/auth/session.server"
 import { MediaCard } from "~/modules/media/media-card"
 import type { AnilistMedia } from "~/modules/media/media-data"
 import {
@@ -23,8 +28,12 @@ import {
 import { GridSection } from "~/modules/ui/grid-section"
 import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 
-async function loadSearchResults(query: string, page: number) {
-  const data = await anilistRequest<SearchQuery, SearchQueryVariables>({
+async function loadSearchResults(
+  query: string,
+  page: number,
+  accessToken: string | undefined,
+) {
+  const searchResult = await anilistRequest<SearchQuery, SearchQueryVariables>({
     query: /* GraphQL */ `
       query Search($query: String!, $page: Int!) {
         Page(page: $page, perPage: 30) {
@@ -46,14 +55,55 @@ async function loadSearchResults(query: string, page: number) {
     variables: { page, query },
   })
 
-  const items: AnilistMedia[] = (data.Page?.media ?? []).flatMap((media) => {
-    if (!media) return []
-    return extractMediaData(media, media?.mediaListEntry)
-  })
+  const user = accessToken ? await loadViewerUser(accessToken) : undefined
+
+  // search doesn't include watch list info, so we have to query it separately
+  const searchWatchingResult =
+    user && accessToken
+      ? await anilistRequest<SearchWatchingQuery, SearchWatchingQueryVariables>(
+          {
+            query: /* GraphQL */ `
+              query SearchWatching($userId: Int!) {
+                MediaListCollection(
+                  userId: $userId
+                  type: ANIME
+                  forceSingleCompletedList: true
+                  status: CURRENT
+                ) {
+                  lists {
+                    entries {
+                      ...mediaListEntry
+                      mediaId
+                    }
+                  }
+                }
+              }
+              ${mediaListEntryFragment}
+            `,
+            variables: { userId: user.id },
+            accessToken,
+          },
+        )
+      : undefined
+
+  const mediaListEntriesByMediaId = new Map<number, MediaListEntryFragment>()
+  for (const list of searchWatchingResult?.MediaListCollection?.lists ?? []) {
+    for (const entry of list?.entries ?? []) {
+      if (!entry?.mediaId) continue
+      mediaListEntriesByMediaId.set(entry.mediaId, entry)
+    }
+  }
+
+  const items: AnilistMedia[] = (searchResult.Page?.media ?? []).flatMap(
+    (media) => {
+      if (!media) return []
+      return extractMediaData(media, mediaListEntriesByMediaId.get(media.id))
+    },
+  )
 
   return {
     items,
-    ...resolvePageInfo(data.Page?.pageInfo ?? {}),
+    ...resolvePageInfo(searchResult.Page?.pageInfo ?? {}),
   }
 }
 
@@ -63,10 +113,13 @@ export async function loader({ request }: DataFunctionArgs) {
     return jsonTyped({ search: undefined, query: undefined })
   }
 
+  const session = await getSession(request)
+
   return deferredTyped({
     search: loadSearchResults(
       params.query,
       resolvePageParam(params.page || "1"),
+      session?.accessToken,
     ),
     query: params.query,
   })
