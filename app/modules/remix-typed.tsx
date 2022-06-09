@@ -33,10 +33,12 @@ export type DeferredInput = {
 }
 
 export type DeferredOutput<Input extends DeferredInput> = {
-  [K in keyof Input]: Input[K] extends PromiseLike<infer V>
-    ? DeferredValue<V>
-    : Input[K]
+  [K in keyof Input]: PromiseToDeferred<Input[K]>
 }
+
+export type PromiseToDeferred<T> = T extends PromiseLike<infer U>
+  ? DeferredValue<U>
+  : T
 
 export type DeferredValue<Value> = { __deferred: Value }
 
@@ -78,7 +80,7 @@ export type DeferredTypedProps<Data> = Omit<
   DeferredProps,
   "data" | "children"
 > & {
-  data: DeferredValue<Data>
+  data: Data | DeferredValue<Data>
   children: (data: Data) => React.ReactNode
 }
 
@@ -86,13 +88,18 @@ export function DeferredTyped<Data>({
   children,
   ...props
 }: DeferredTypedProps<Data>) {
-  function Consumer() {
-    const data = useDeferred<Data>()
-    return <>{children(data)}</>
-  }
   return (
     <Deferred {...props}>
-      <Consumer />
+      <DeferredConsumer>{children}</DeferredConsumer>
     </Deferred>
   )
+}
+
+function DeferredConsumer<Data>({
+  children,
+}: {
+  children: (data: Data) => React.ReactNode
+}) {
+  const data = useDeferred<Data>()
+  return <>{children(data)}</>
 }
