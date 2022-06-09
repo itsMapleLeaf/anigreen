@@ -14,15 +14,16 @@ import {
   mediaFragment,
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
-import { jsonTyped, useLoaderDataTyped } from "~/modules/remix-typed"
+import {
+  DeferredTyped,
+  deferredTyped,
+  jsonTyped,
+  useLoaderDataTyped,
+} from "~/modules/remix-typed"
 import { GridSection } from "~/modules/ui/grid-section"
+import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 
-export async function loader({ request }: DataFunctionArgs) {
-  const params = Object.fromEntries(new URL(request.url).searchParams)
-  if (!params.query) {
-    return jsonTyped({ search: undefined, query: undefined })
-  }
-
+async function loadSearchResults(query: string, page: number) {
   const data = await anilistRequest<SearchQuery, SearchQueryVariables>({
     query: /* GraphQL */ `
       query Search($query: String!, $page: Int!) {
@@ -42,10 +43,7 @@ export async function loader({ request }: DataFunctionArgs) {
       ${mediaFragment}
       ${mediaListEntryFragment}
     `,
-    variables: {
-      page: resolvePageParam(params.page || "1"),
-      query: params.query,
-    },
+    variables: { page, query },
   })
 
   const items: AnilistMedia[] = (data.Page?.media ?? []).flatMap((media) => {
@@ -53,11 +51,23 @@ export async function loader({ request }: DataFunctionArgs) {
     return extractMediaData(media, media?.mediaListEntry)
   })
 
-  return jsonTyped({
-    search: {
-      items,
-      ...resolvePageInfo(data.Page?.pageInfo ?? {}),
-    },
+  return {
+    items,
+    ...resolvePageInfo(data.Page?.pageInfo ?? {}),
+  }
+}
+
+export async function loader({ request }: DataFunctionArgs) {
+  const params = Object.fromEntries(new URL(request.url).searchParams)
+  if (!params.query) {
+    return jsonTyped({ search: undefined, query: undefined })
+  }
+
+  return deferredTyped({
+    search: loadSearchResults(
+      params.query,
+      resolvePageParam(params.page || "1"),
+    ),
     query: params.query,
   })
 }
@@ -74,11 +84,15 @@ export default function SearchPage() {
   }
 
   return (
-    <GridSection title={`Results for "${query}"`}>
-      {search.items.map((item) => (
-        <MediaCard key={item.id} media={item} />
-      ))}
-    </GridSection>
+    <DeferredTyped data={search} fallback={<GridSkeleton />}>
+      {(search) => (
+        <GridSection title={`Results for "${query}"`}>
+          {search.items.map((item) => (
+            <MediaCard key={item.id} media={item} />
+          ))}
+        </GridSection>
+      )}
+    </DeferredTyped>
   )
 }
 
