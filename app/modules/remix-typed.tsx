@@ -29,7 +29,7 @@ export function jsonTyped<Input extends JsonValue>(
 }
 
 export type DeferredInput = {
-  [key: string]: MaybePromise<JsonValue>
+  [key: string]: MaybePromise<JsonValue> | undefined
 }
 
 export type DeferredOutput<Input extends DeferredInput> = {

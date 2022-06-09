@@ -25,7 +25,11 @@ import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
 import { ActiveLink } from "~/modules/navigation/active-link"
-import { jsonTyped, useLoaderDataTyped } from "~/modules/remix-typed"
+import {
+  DeferredTyped,
+  deferredTyped,
+  useLoaderDataTyped,
+} from "~/modules/remix-typed"
 import { Button } from "~/modules/ui/button"
 import {
   activeClearButtonClass,
@@ -50,10 +54,8 @@ export const meta: MetaFunction = () => getAppMeta()
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
-  const user = session && (await loadViewerUser(session.accessToken))
-
-  return jsonTyped({
-    user,
+  return deferredTyped({
+    user: session && loadViewerUser(session.accessToken),
     anilistClientId:
       process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
     anilistRedirectUri:
@@ -70,7 +72,18 @@ export default function App() {
       <Tooltip.Provider delayDuration={700}>
         <div className="isolate">
           <Header
-            authAction={user ? <UserMenuButton user={user} /> : <LoginButton />}
+            authAction={
+              <DeferredTyped
+                data={user}
+                fallback={
+                  <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
+                }
+              >
+                {(user) =>
+                  user ? <UserMenuButton user={user} /> : <LoginButton />
+                }
+              </DeferredTyped>
+            }
           />
           <main className={maxWidthContainerClass}>
             <div className="my-8">
