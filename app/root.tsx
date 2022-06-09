@@ -235,11 +235,11 @@ function HeaderPanel({ children }: { children: React.ReactNode }) {
 function MainNavigationLinks() {
   return (
     <>
-      <MainNavigationLink to="/watching">
+      <MainNavigationLink to="/watching" prefetch="intent">
         <BookmarkIcon className="w-5" />
         Watching
       </MainNavigationLink>
-      <MainNavigationLink to="/schedule">
+      <MainNavigationLink to="/schedule" prefetch="intent">
         <CalendarIcon className="w-5" />
         Schedule
       </MainNavigationLink>

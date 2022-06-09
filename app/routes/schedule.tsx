@@ -183,6 +183,7 @@ function Pagination({ schedule }: { schedule: ScheduleData }) {
           to={`?page=${schedule.previousPage}`}
           className={clearButtonClass}
           data-testid="schedule-pagination-previous"
+          prefetch="intent"
         >
           <KeyboardKey label="Left arrow">
             <ArrowSmLeftIcon className="w-5" />
@@ -195,6 +196,7 @@ function Pagination({ schedule }: { schedule: ScheduleData }) {
           to={`?page=${schedule.nextPage}`}
           className={clearButtonClass}
           data-testid="schedule-pagination-next"
+          prefetch="intent"
         >
           <KeyboardKey label="Right arrow">
             <ArrowSmRightIcon className="w-5" />
