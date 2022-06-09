@@ -54,14 +54,14 @@ export function WeekdaySectionedList<T>({
             subtitle={<DateTime date={day} dateStyle="long" />}
           >
             {items.map((item) => (
-              <li key={getItemKey(item)}>{renderItem(item)}</li>
+              <div key={getItemKey(item)}>{renderItem(item)}</div>
             ))}
           </GridSection>
         ))}
       {notAiring.length > 0 && (
         <GridSection title="Not airing">
           {notAiring.map((item) => (
-            <li key={getItemKey(item)}>{renderItem(item)}</li>
+            <div key={getItemKey(item)}>{renderItem(item)}</div>
           ))}
         </GridSection>
       )}
