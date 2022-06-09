@@ -1,7 +1,6 @@
 import { SearchIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/node"
 import { Form } from "@remix-run/react"
-import { useLoaderDataTyped } from "remix-typed"
 import type {
   SearchQuery,
   SearchQueryVariables,
@@ -15,7 +14,7 @@ import {
   mediaFragment,
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
-import { jsonTyped } from "~/modules/remix-typed"
+import { jsonTyped, useLoaderDataTyped } from "~/modules/remix-typed"
 import { GridSection } from "~/modules/ui/grid-section"
 
 export async function loader({ request }: DataFunctionArgs) {

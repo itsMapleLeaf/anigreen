@@ -1,7 +1,6 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
 import { Link, useNavigate } from "@remix-run/react"
-import { useLoaderDataTyped } from "remix-typed"
 import type {
   ScheduleQuery,
   ScheduleQueryVariables,
@@ -20,7 +19,13 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppMeta } from "~/modules/meta"
+import {
+  DeferredTyped,
+  deferredTyped,
+  useLoaderDataTyped,
+} from "~/modules/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
+import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 import { KeyboardKey } from "../modules/ui/keyboard-key"
 
@@ -28,6 +33,7 @@ type ScheduleData = {
   items: ScheduleItem[]
   nextPage?: number
   previousPage?: number
+  timezone: string
 }
 
 type ScheduleItem = {
@@ -94,8 +100,9 @@ async function loadSchedule({
   )
 
   return {
-    items,
     ...resolvePageInfo(data.Page?.pageInfo ?? {}),
+    items,
+    timezone,
   }
 }
 
@@ -105,33 +112,36 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   const timezone = await getTimezone(request)
 
-  return {
-    timezone,
-    schedule: await loadSchedule({
+  return deferredTyped({
+    schedule: loadSchedule({
       page: resolvePageParam(
         new URL(request.url).searchParams.get("page") ?? "1",
       ),
       timezone,
       accessToken: session?.accessToken,
     }),
-  }
+  })
 }
 
 export default function Schedule() {
+  const { schedule } = useLoaderDataTyped<typeof loader>()
   return (
-    <>
-      <ScheduleItems />
-      <Pagination />
-    </>
+    <DeferredTyped data={schedule} fallback={<GridSkeleton />}>
+      {(data) => (
+        <>
+          <ScheduleItems schedule={data} />
+          <Pagination schedule={data} />
+        </>
+      )}
+    </DeferredTyped>
   )
 }
 
-function ScheduleItems() {
-  const data = useLoaderDataTyped<typeof loader>()
+function ScheduleItems({ schedule }: { schedule: ScheduleData }) {
   return (
     <WeekdaySectionedList
-      items={data.schedule.items}
-      timezone={data.timezone}
+      items={schedule.items}
+      timezone={schedule.timezone}
       getItemDate={(item) => item.airingDayMs}
       getItemKey={(item) => item.id}
       renderItem={(item) => (
@@ -145,9 +155,7 @@ function ScheduleItems() {
   )
 }
 
-function Pagination() {
-  const { schedule } = useLoaderDataTyped<typeof loader>()
-
+function Pagination({ schedule }: { schedule: ScheduleData }) {
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
     if (event.key === "ArrowLeft" && schedule.previousPage != undefined) {
@@ -167,6 +175,7 @@ function Pagination() {
           to={`?page=${schedule.previousPage}`}
           className={clearButtonClass}
           data-testid="schedule-pagination-previous"
+          prefetch="intent"
         >
           <KeyboardKey label="Left arrow">
             <ArrowSmLeftIcon className="w-5" />
@@ -179,6 +188,7 @@ function Pagination() {
           to={`?page=${schedule.nextPage}`}
           className={clearButtonClass}
           data-testid="schedule-pagination-next"
+          prefetch="intent"
         >
           <KeyboardKey label="Right arrow">
             <ArrowSmRightIcon className="w-5" />

@@ -1,7 +1,11 @@
 import type { EntryContext } from "@remix-run/node"
+import { Response } from "@remix-run/node"
 import { RemixServer } from "@remix-run/react"
 import "dotenv/config"
-import { renderToString } from "react-dom/server"
+import { PassThrough } from "node:stream"
+import { renderToPipeableStream } from "react-dom/server"
+
+const ABORT_DELAY = 5000
 
 export default function handleRequest(
   request: Request,
@@ -9,14 +13,47 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const markup = renderToString(
-    <RemixServer context={remixContext} url={request.url} />,
-  )
+  // install(twindConfig, false)
 
-  responseHeaders.set("Content-Type", "text/html")
+  // const markup = inline(
+  //   renderToString(<RemixServer context={remixContext} url={request.url} />),
+  // )
 
-  return new Response("<!DOCTYPE html>" + markup, {
-    status: responseStatusCode,
-    headers: responseHeaders,
+  // responseHeaders.set("Content-Type", "text/html")
+
+  // return new Response("<!DOCTYPE html>" + markup, {
+  //   status: responseStatusCode,
+  //   headers: responseHeaders,
+  // })
+
+  return new Promise((resolve, reject) => {
+    let didError = false
+
+    let { pipe, abort } = renderToPipeableStream(
+      <RemixServer context={remixContext} url={request.url} />,
+      {
+        onShellReady() {
+          let body = new PassThrough()
+
+          responseHeaders.set("Content-Type", "text/html")
+
+          resolve(
+            new Response(body, {
+              status: didError ? 500 : responseStatusCode,
+              headers: responseHeaders,
+            }),
+          )
+          pipe(body)
+        },
+        onShellError(err) {
+          reject(err)
+        },
+        onError(error) {
+          didError = true
+          console.error(error)
+        },
+      },
+    )
+    setTimeout(abort, ABORT_DELAY)
   })
 }
