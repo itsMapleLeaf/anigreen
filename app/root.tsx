@@ -21,11 +21,11 @@ import {
 import clsx from "clsx"
 import type { ReactNode } from "react"
 import { useEffect, useMemo, useState } from "react"
-import { useLoaderDataTyped } from "remix-typed"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
 import { ActiveLink } from "~/modules/navigation/active-link"
+import { jsonTyped, useLoaderDataTyped } from "~/modules/remix-typed"
 import { Button } from "~/modules/ui/button"
 import {
   activeClearButtonClass,
@@ -51,13 +51,13 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   const user = session && (await loadViewerUser(session.accessToken))
 
-  return {
+  return jsonTyped({
     user,
     anilistClientId:
       process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
     anilistRedirectUri:
       process.env.ANILIST_REDIRECT_URI ?? raise("ANILIST_REDIRECT_URI not set"),
-  }
+  })
 }
 
 export default function App() {

@@ -1,5 +1,4 @@
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
-import { useLoaderDataTyped } from "remix-typed"
 import type {
   WatchingQuery,
   WatchingQueryVariables,
@@ -17,6 +16,7 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppMeta } from "~/modules/meta"
+import { jsonTyped, useLoaderDataTyped } from "~/modules/remix-typed"
 import { GridSection } from "~/modules/ui/grid-section"
 import { SystemMessage } from "~/modules/ui/system-message"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
@@ -68,14 +68,16 @@ async function loadInProgressItems(
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   if (!session) {
-    return { loggedIn: false as const }
+    return jsonTyped({ loggedIn: false as const })
   }
 
-  return promiseAllObject({
-    loggedIn: true as const,
-    timezone: getTimezone(request),
-    watchingItems: loadInProgressItems(session.accessToken),
-  })
+  return jsonTyped(
+    await promiseAllObject({
+      loggedIn: true as const,
+      timezone: getTimezone(request),
+      watchingItems: loadInProgressItems(session.accessToken),
+    }),
+  )
 }
 
 export default function WatchingPage() {

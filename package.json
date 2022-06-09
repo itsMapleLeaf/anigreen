@@ -46,7 +46,6 @@
     "react-dom": "^18.1.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
-    "remix-typed": "^0.1.2",
     "zod": "^3.17.3"
   },
   "devDependencies": {

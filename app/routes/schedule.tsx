@@ -1,7 +1,6 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
-import { Deferred, Link, useDeferred, useNavigate } from "@remix-run/react"
-import { useLoaderDataTyped } from "remix-typed"
+import { Link, useNavigate } from "@remix-run/react"
 import type {
   ScheduleQuery,
   ScheduleQueryVariables,
@@ -19,7 +18,11 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppMeta } from "~/modules/meta"
-import { deferredTyped } from "~/modules/remix-typed"
+import {
+  DeferredTyped,
+  deferredTyped,
+  useLoaderDataTyped,
+} from "~/modules/remix-typed"
 import { clearButtonClass } from "~/modules/ui/button-style"
 import { LoadingPlaceholder } from "~/modules/ui/loading-placeholder"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
@@ -131,15 +134,18 @@ export async function loader({ request }: DataFunctionArgs) {
 export default function Schedule() {
   const { schedule } = useLoaderDataTyped<typeof loader>()
   return (
-    <Deferred data={schedule} fallback={<LoadingPlaceholder />}>
-      <ScheduleItems />
-      <Pagination />
-    </Deferred>
+    <DeferredTyped data={schedule} fallback={<LoadingPlaceholder />}>
+      {(data) => (
+        <>
+          <ScheduleItems schedule={data} />
+          <Pagination schedule={data} />
+        </>
+      )}
+    </DeferredTyped>
   )
 }
 
-function ScheduleItems() {
-  const schedule = useDeferred<ScheduleData>()
+function ScheduleItems({ schedule }: { schedule: ScheduleData }) {
   return (
     <WeekdaySectionedList
       items={schedule.items}
@@ -157,9 +163,7 @@ function ScheduleItems() {
   )
 }
 
-function Pagination() {
-  const schedule = useDeferred<ScheduleData>()
-
+function Pagination({ schedule }: { schedule: ScheduleData }) {
   const navigate = useNavigate()
   useWindowEvent("keydown", (event) => {
     if (event.key === "ArrowLeft" && schedule.previousPage != undefined) {
