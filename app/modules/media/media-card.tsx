@@ -4,6 +4,7 @@ import { filterJoin } from "~/modules/common/filter-join"
 import { infix } from "~/modules/common/infix"
 import { MediaCardControls } from "~/modules/media/media-card-controls"
 import { LazyImage } from "~/modules/ui/lazy-image"
+import { getOptimizedImageUrl } from "~/routes/optimized-image"
 import type { AnilistMedia } from "./media-data"
 
 export const MediaCard = memo(function MediaCard({
@@ -23,11 +24,13 @@ export const MediaCard = memo(function MediaCard({
         className="p-3 relative flex h-20"
         style={{ backgroundColor: media.coverColor || "rgba(0 0 0 / 0.50)" }}
       >
-        <LazyImage
-          src={media.bannerImageUrl}
-          alt=""
-          className="absolute inset-0 brightness-50"
-        />
+        {media.bannerImageUrl != undefined && (
+          <LazyImage
+            src={getOptimizedImageUrl(media.bannerImageUrl, 320, 80)}
+            alt=""
+            className="absolute inset-0 brightness-50"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 opacity-40 pointer-events-none" />
       </div>
 
@@ -35,11 +38,13 @@ export const MediaCard = memo(function MediaCard({
         <h3 className="text-xl font-light leading-tight flex-1 line-clamp-2 self-start">
           {media.title}
         </h3>
-        <LazyImage
-          src={media.coverImageUrl}
-          alt=""
-          className="relative w-20 h-24 rounded-md shadow -mt-20 overflow-hidden"
-        />
+        {media.coverImageUrl != undefined && (
+          <LazyImage
+            src={getOptimizedImageUrl(media.coverImageUrl, 80, 96)}
+            alt=""
+            className="relative w-20 h-24 rounded-md shadow -mt-20 overflow-hidden"
+          />
+        )}
       </div>
 
       <div className="px-3 pb-3 text-sm uppercase font-medium opacity-60 leading-none flex items-center gap-1">
