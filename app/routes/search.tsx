@@ -136,7 +136,7 @@ export default function SearchPage() {
   if (search === undefined) {
     return (
       <p className="text-xl opacity-50 italic font-light text-center">
-        enter a search term to get started!
+        Enter a search term to get started!
       </p>
     )
   }
