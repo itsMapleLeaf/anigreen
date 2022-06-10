@@ -150,7 +150,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-        <link rel="icon" href="/logo-32x.png" />
+        <link rel="icon" href="/images/logo-32x.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="stylesheet" href={tailwind} />
         <link rel="stylesheet" href={fonts} />
