@@ -40,6 +40,7 @@ export async function loader({ request }: DataFunctionArgs) {
     status: 200,
     headers: {
       "Content-Type": "image/webp",
+      "Cache-Control": "public, max-age=5184000",
     },
   })
 }
