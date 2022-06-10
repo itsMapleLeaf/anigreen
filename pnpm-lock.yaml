@@ -13,15 +13,16 @@ specifiers:
   '@radix-ui/react-popover': ^0.1.6
   '@radix-ui/react-tooltip': ^0.1.7
   '@remix-run/dev': 0.0.0-experimental-9784dd06
+  '@remix-run/express': 0.0.0-experimental-9784dd06
   '@remix-run/node': 0.0.0-experimental-9784dd06
   '@remix-run/react': 0.0.0-experimental-9784dd06
-  '@remix-run/serve': 0.0.0-experimental-9784dd06
   '@rushstack/eslint-patch': ^1.1.3
   '@tailwindcss/line-clamp': ^0.4.0
   '@types/compression': ^1.7.2
   '@types/eslint': ^8.4.3
   '@types/express': ^4.17.13
   '@types/lodash-es': ^4.17.6
+  '@types/morgan': ^1.9.3
   '@types/node': ^17.0.41
   '@types/react': ^18.0.12
   '@types/react-dom': ^18.0.5
@@ -36,6 +37,7 @@ specifiers:
   framer-motion: ^6.3.11
   graphql: ^16.5.0
   lodash-es: ^4.17.21
+  morgan: ^1.10.0
   msw: ^0.42.1
   nodemon: ^2.0.16
   npm-run-all: ^4.1.5
@@ -62,9 +64,9 @@ dependencies:
   '@radix-ui/react-dropdown-menu': 0.1.6_eurjwfem4ie5nnznw6gmhlbswe
   '@radix-ui/react-popover': 0.1.6_eurjwfem4ie5nnznw6gmhlbswe
   '@radix-ui/react-tooltip': 0.1.7_ef5jwxihqo6n7gxfmzogljlgcm
+  '@remix-run/express': 0.0.0-experimental-9784dd06_uylvv7bgf3i235clkffsyjrkfm
   '@remix-run/node': 0.0.0-experimental-9784dd06_ef5jwxihqo6n7gxfmzogljlgcm
   '@remix-run/react': 0.0.0-experimental-9784dd06_ef5jwxihqo6n7gxfmzogljlgcm
-  '@remix-run/serve': 0.0.0-experimental-9784dd06_ef5jwxihqo6n7gxfmzogljlgcm
   clsx: 1.1.1
   compression: 1.7.4
   cross-env: 7.0.3
@@ -75,6 +77,7 @@ dependencies:
   framer-motion: 6.3.11_ef5jwxihqo6n7gxfmzogljlgcm
   graphql: 16.5.0
   lodash-es: 4.17.21
+  morgan: 1.10.0
   pino: 8.0.0
   pino-colada: 2.2.2
   pino-http: 7.1.0
@@ -96,6 +99,7 @@ devDependencies:
   '@types/eslint': 8.4.3
   '@types/express': 4.17.13
   '@types/lodash-es': 4.17.6
+  '@types/morgan': 1.9.3
   '@types/node': 17.0.41
   '@types/react': 18.0.12
   '@types/react-dom': 18.0.5
@@ -2058,21 +2062,6 @@ packages:
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
     dev: false
 
-  /@remix-run/serve/0.0.0-experimental-9784dd06_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution: {integrity: sha512-ybOJnxRYNlWUXHDSYjngPx8HWkXfp9JVjn3xn9Ltv28PbBWJ1DM/aCJbI8KNz1WI71LSiErQJ3jg6iFd/g+nCg==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dependencies:
-      '@remix-run/express': 0.0.0-experimental-9784dd06_uylvv7bgf3i235clkffsyjrkfm
-      compression: 1.7.4
-      express: 4.18.1
-      morgan: 1.10.0
-    transitivePeerDependencies:
-      - react
-      - react-dom
-      - supports-color
-    dev: false
-
   /@remix-run/server-runtime/0.0.0-experimental-9784dd06_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-h1cCjAltL1sxEgYDKW0nIYc4gCi4+RlGhDlxObG6il3AO4uBk88wTgIwH1XNxju8nyYVQOJbBLVpJSuyeJd3Yw==}
     engines: {node: '>=14'}
@@ -2370,6 +2359,12 @@ packages:
 
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
+    dev: true
+
+  /@types/morgan/1.9.3:
+    resolution: {integrity: sha512-BiLcfVqGBZCyNCnCH3F4o2GmDLrpy0HeBVnNlyZG4fo88ZiE9SoiBe3C+2ezuwbjlEyT+PDZ17//TAlRxAn75Q==}
+    dependencies:
+      '@types/node': 17.0.41
     dev: true
 
   /@types/ms/0.7.31:

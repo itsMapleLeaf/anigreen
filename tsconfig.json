@@ -10,5 +10,5 @@
     }
   },
   "exclude": ["**/node_modules/**", "**/build/**", "**/.cache/**"],
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"]
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.cjs"]
 }
