@@ -39,6 +39,7 @@ import {
 } from "~/modules/ui/button-style"
 import { LoadingIcon } from "~/modules/ui/loading-icon"
 import { Menu } from "~/modules/ui/menu"
+import fonts from "./fonts.css"
 import type { AnilistUser } from "./modules/anilist/user"
 import { loadViewerUser } from "./modules/anilist/user"
 import { getSession } from "./modules/auth/session.server"
@@ -151,17 +152,8 @@ function Document({ children }: { children: React.ReactNode }) {
 
         <link rel="icon" href="/logo-32x.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="stylesheet" href={tailwind} />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="stylesheet" href={fonts} />
 
         <Meta />
         <Links />
