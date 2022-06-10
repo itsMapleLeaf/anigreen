@@ -3,6 +3,7 @@
  * @type {import('@remix-run/dev/config').AppConfig}
  */
 module.exports = {
+  serverDependenciesToBundle: ["lodash-es"],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // server: "./server/main.ts",

@@ -1,6 +1,7 @@
 import { SearchIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/node"
-import { Form } from "@remix-run/react"
+import { Form, useNavigate } from "@remix-run/react"
+import type { NavigateOptions, To } from "react-router"
 import type {
   MediaListEntryFragment,
   SearchQuery,
@@ -25,6 +26,7 @@ import {
   jsonTyped,
   useLoaderDataTyped,
 } from "~/modules/remix-typed"
+import { useDebouncedCallback } from "~/modules/state/use-debounced-callback"
 import { GridSection } from "~/modules/ui/grid-section"
 import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 
@@ -150,6 +152,12 @@ export default function SearchPage() {
 }
 
 export function SearchInput() {
+  const navigate = useNavigate()
+
+  const navigateDebounced =
+    // it infers the wrong overload by default
+    useDebouncedCallback<(to: To, options?: NavigateOptions) => void>(navigate)
+
   return (
     <Form className="contents" method="get" action="/search">
       <input
@@ -157,6 +165,20 @@ export function SearchInput() {
         name="query"
         className="bg-black/50 leading-none pr-3 py-3 pl-10 rounded w-full font-medium focus:outline-none focus:ring-2 focus:ring-green-400"
         placeholder="Search..."
+        onChange={(event) => {
+          const query = event.target.value.trim()
+          if (query) {
+            navigateDebounced(`/search?query=${query}`, { replace: true })
+          } else {
+            navigateDebounced.cancel()
+          }
+        }}
+        onKeyDown={(event) => {
+          // prevent a double navigation
+          if (event.key === "Enter") {
+            navigateDebounced.cancel()
+          }
+        }}
       />
       <SearchIcon className="w-5 absolute left-3 top-3" />
     </Form>
