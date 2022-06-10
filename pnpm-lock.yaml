@@ -3,8 +3,8 @@ lockfileVersion: 5.4
 specifiers:
   '@google-cloud/storage': ^6.1.0
   '@graphql-codegen/cli': 2.6.2
-  '@graphql-codegen/typescript': 2.5.0
-  '@graphql-codegen/typescript-operations': 2.4.1
+  '@graphql-codegen/typescript': 2.5.1
+  '@graphql-codegen/typescript-operations': 2.4.2
   '@heroicons/react': ^1.0.6
   '@itsmapleleaf/configs': ^1.1.3
   '@playwright/test': ^1.22.2
@@ -53,10 +53,10 @@ specifiers:
   react-router: ^6.3.0
   react-router-dom: ^6.3.0
   sharp: ^0.30.6
-  tailwindcss: ^3.0.24
+  tailwindcss: ^3.1.2
   typescript: ^4.7.3
-  vite: ^2.9.10
-  vitest: ^0.14.1
+  vite: ^2.9.12
+  vitest: ^0.14.2
   zod: ^3.17.3
 
 dependencies:
@@ -94,12 +94,12 @@ dependencies:
 
 devDependencies:
   '@graphql-codegen/cli': 2.6.2_twdjvmx5enwfmntmh5iacc5lky
-  '@graphql-codegen/typescript': 2.5.0_graphql@16.5.0
-  '@graphql-codegen/typescript-operations': 2.4.1_graphql@16.5.0
+  '@graphql-codegen/typescript': 2.5.1_graphql@16.5.0
+  '@graphql-codegen/typescript-operations': 2.4.2_graphql@16.5.0
   '@playwright/test': 1.22.2
   '@remix-run/dev': 0.0.0-experimental-9784dd06_ef5jwxihqo6n7gxfmzogljlgcm
   '@rushstack/eslint-patch': 1.1.3
-  '@tailwindcss/line-clamp': 0.4.0_tailwindcss@3.0.24
+  '@tailwindcss/line-clamp': 0.4.0_tailwindcss@3.1.2
   '@types/compression': 1.7.2
   '@types/eslint': 8.4.3
   '@types/express': 4.17.13
@@ -115,10 +115,10 @@ devDependencies:
   npm-run-all: 4.1.5
   playwright: 1.22.2
   prettier: 2.6.2
-  tailwindcss: 3.0.24
+  tailwindcss: 3.1.2
   typescript: 4.7.3
-  vite: 2.9.10
-  vitest: 0.14.1
+  vite: 2.9.12
+  vitest: 0.14.2
 
 packages:
 
@@ -128,6 +128,35 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.13
+    dev: true
+
+  /@ardatan/relay-compiler/12.0.0_graphql@16.5.0:
+    resolution: {integrity: sha512-9anThAaj1dQr6IGmzBMcfzOQKTa5artjuPmw8NYK/fiGEMjADbSguBY2FMDykt+QhilR3wc9VA/3yVju7JHg7Q==}
+    hasBin: true
+    peerDependencies:
+      graphql: '*'
+    dependencies:
+      '@babel/core': 7.18.2
+      '@babel/generator': 7.18.2
+      '@babel/parser': 7.18.4
+      '@babel/runtime': 7.18.3
+      '@babel/traverse': 7.18.2
+      '@babel/types': 7.18.4
+      babel-preset-fbjs: 3.4.0_@babel+core@7.18.2
+      chalk: 4.1.2
+      fb-watchman: 2.0.1
+      fbjs: 3.0.4
+      glob: 7.2.3
+      graphql: 16.5.0
+      immutable: 3.7.6
+      invariant: 2.2.4
+      nullthrows: 1.1.1
+      relay-runtime: 12.0.0
+      signedsource: 1.0.0
+      yargs: 15.4.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
     dev: true
 
   /@babel/code-frame/7.16.7:
@@ -1089,14 +1118,14 @@ packages:
       tslib: 2.3.1
     dev: true
 
-  /@graphql-codegen/typescript-operations/2.4.1_graphql@16.5.0:
-    resolution: {integrity: sha512-NIHn4T5wxQ45PtKJ19q+AOqR4f2jW8UlMfQD34RG7vTuD42g+Y00GupYFTyzE6bsUAIhsVgJ4QJmP+taipBKAQ==}
+  /@graphql-codegen/typescript-operations/2.4.2_graphql@16.5.0:
+    resolution: {integrity: sha512-0/Jk+FxJVOdznSJ+G3KKPbMr2gK67yQetUAUS0FzV9FptVDFkklK/BazKqJJE5dNrj9ubuI2BafXPzSTN4M2Ug==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 2.4.2_graphql@16.5.0
-      '@graphql-codegen/typescript': 2.5.0_graphql@16.5.0
-      '@graphql-codegen/visitor-plugin-common': 2.9.0_graphql@16.5.0
+      '@graphql-codegen/typescript': 2.5.1_graphql@16.5.0
+      '@graphql-codegen/visitor-plugin-common': 2.9.1_graphql@16.5.0
       auto-bind: 4.0.0
       graphql: 16.5.0
       tslib: 2.4.0
@@ -1105,14 +1134,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript/2.5.0_graphql@16.5.0:
-    resolution: {integrity: sha512-eCCebNyhV5NcNyfrNOdur1b4zPSyj2o89yaSliEMSShf4WolfFOv4aYpL4tFXjhkw3n2pR7MYFDUnrzmDpfmNw==}
+  /@graphql-codegen/typescript/2.5.1_graphql@16.5.0:
+    resolution: {integrity: sha512-D/9V2VfVIE4Mu5UiMGQtxyFU5xe1ZkAZi8g/IsqymW8rqlhTwsGhtk4JR55qPfOYxR8G94RJSJpzgNakRneytw==}
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 2.4.2_graphql@16.5.0
       '@graphql-codegen/schema-ast': 2.4.1_graphql@16.5.0
-      '@graphql-codegen/visitor-plugin-common': 2.9.0_graphql@16.5.0
+      '@graphql-codegen/visitor-plugin-common': 2.9.1_graphql@16.5.0
       auto-bind: 4.0.0
       graphql: 16.5.0
       tslib: 2.4.0
@@ -1121,14 +1150,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/visitor-plugin-common/2.9.0_graphql@16.5.0:
-    resolution: {integrity: sha512-w353lPpXlgsQT6dxfcHw3hQdodGnfSwsxofHVfROqrIBZIjH0kNiFHOt8rnewYkLGEa75bWDVaM1ofyXEaN+3w==}
+  /@graphql-codegen/visitor-plugin-common/2.9.1_graphql@16.5.0:
+    resolution: {integrity: sha512-j9eGOSGt+sJcwv0ijhZiQ2cF/0ponscekNVoF+vHdOT4RB0qgOQxykPBk6EbKxIHECnkdV8ARdPVTA21A93/QQ==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 2.4.2_graphql@16.5.0
       '@graphql-tools/optimize': 1.2.1_graphql@16.5.0
-      '@graphql-tools/relay-operation-optimizer': 6.4.13_graphql@16.5.0
+      '@graphql-tools/relay-operation-optimizer': 6.4.14_graphql@16.5.0
       '@graphql-tools/utils': 8.6.13_graphql@16.5.0
       auto-bind: 4.0.0
       change-case-all: 1.0.14
@@ -1346,14 +1375,14 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@graphql-tools/relay-operation-optimizer/6.4.13_graphql@16.5.0:
-    resolution: {integrity: sha512-H2urxI53jCgrvhjaRFMzFvdHEs95BES3Am07Zr1NZsbme9sxyPfaj8qftnaU37KvVs0v+wtf1pw6PnYelMsNoQ==}
+  /@graphql-tools/relay-operation-optimizer/6.4.14_graphql@16.5.0:
+    resolution: {integrity: sha512-vqch2M/sIUfMmlRJ4eCupiHlVPXWOPVpHX9yCZwRrpNg0Eaokyc57NSjJuKVV3KcvcJKf03qfMK2PxFbfDvN9A==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
+      '@ardatan/relay-compiler': 12.0.0_graphql@16.5.0
       '@graphql-tools/utils': 8.6.13_graphql@16.5.0
       graphql: 16.5.0
-      relay-compiler: 12.0.0_graphql@16.5.0
       tslib: 2.4.0
     transitivePeerDependencies:
       - encoding
@@ -2223,12 +2252,12 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@tailwindcss/line-clamp/0.4.0_tailwindcss@3.0.24:
+  /@tailwindcss/line-clamp/0.4.0_tailwindcss@3.1.2:
     resolution: {integrity: sha512-HQZo6gfx1D0+DU3nWlNLD5iA6Ef4JAXh0LeD8lOGrJwEDBwwJNKQza6WoXhhY1uQrxOuU8ROxV7CqiQV4CoiLw==}
     peerDependencies:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
     dependencies:
-      tailwindcss: 3.0.24
+      tailwindcss: 3.1.2
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -8415,6 +8444,11 @@ packages:
     hasBin: true
     dev: true
 
+  /pify/2.3.0:
+    resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
   /pify/3.0.0:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
@@ -8539,6 +8573,18 @@ packages:
   /posix-character-classes/0.1.1:
     resolution: {integrity: sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /postcss-import/14.1.0_postcss@8.4.14:
+    resolution: {integrity: sha512-flwI+Vgm4SElObFVPpTIT7SU7R3qk2L7PyduMcokiaVKuWv9d/U+Gm/QAd8NDLuykTWTkcrjOeD2Pp1rMeBTGw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      postcss: ^8.0.0
+    dependencies:
+      postcss: 8.4.14
+      postcss-value-parser: 4.2.0
+      read-cache: 1.0.0
+      resolve: 1.22.0
     dev: true
 
   /postcss-js/4.0.0_postcss@8.4.14:
@@ -8915,6 +8961,12 @@ packages:
     dependencies:
       loose-envify: 1.4.0
 
+  /read-cache/1.0.0:
+    resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
+    dependencies:
+      pify: 2.3.0
+    dev: true
+
   /read-pkg-up/7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
     engines: {node: '>=8'}
@@ -9031,35 +9083,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       rc: 1.2.8
-    dev: true
-
-  /relay-compiler/12.0.0_graphql@16.5.0:
-    resolution: {integrity: sha512-SWqeSQZ+AMU/Cr7iZsHi1e78Z7oh00I5SvR092iCJq79aupqJ6Ds+I1Pz/Vzo5uY5PY0jvC4rBJXzlIN5g9boQ==}
-    hasBin: true
-    peerDependencies:
-      graphql: ^15.0.0
-    dependencies:
-      '@babel/core': 7.18.2
-      '@babel/generator': 7.18.2
-      '@babel/parser': 7.18.4
-      '@babel/runtime': 7.18.3
-      '@babel/traverse': 7.18.2
-      '@babel/types': 7.18.4
-      babel-preset-fbjs: 3.4.0_@babel+core@7.18.2
-      chalk: 4.1.2
-      fb-watchman: 2.0.1
-      fbjs: 3.0.4
-      glob: 7.2.3
-      graphql: 16.5.0
-      immutable: 3.7.6
-      invariant: 2.2.4
-      nullthrows: 1.1.1
-      relay-runtime: 12.0.0
-      signedsource: 1.0.0
-      yargs: 15.4.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: true
 
   /relay-runtime/12.0.0:
@@ -9954,8 +9977,8 @@ packages:
       - encoding
     dev: true
 
-  /tailwindcss/3.0.24:
-    resolution: {integrity: sha512-H3uMmZNWzG6aqmg9q07ZIRNIawoiEcNFKDfL+YzOPuPsXuDXxJxB9icqzLgdzKNwjG3SAro2h9SYav8ewXNgig==}
+  /tailwindcss/3.1.2:
+    resolution: {integrity: sha512-yJ6L5s1U5AeS5g7HHy212zdQfjwD426FBfm59pet/JsyneuZuD4C2W7PpJEg4ppisiB21uLqtNagv8KXury3+Q==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     dependencies:
@@ -9973,6 +9996,7 @@ packages:
       object-hash: 3.0.0
       picocolors: 1.0.0
       postcss: 8.4.14
+      postcss-import: 14.1.0_postcss@8.4.14
       postcss-js: 4.0.0_postcss@8.4.14
       postcss-load-config: 3.1.4_postcss@8.4.14
       postcss-nested: 5.0.6_postcss@8.4.14
@@ -10588,8 +10612,8 @@ packages:
       vfile-message: 3.1.2
     dev: true
 
-  /vite/2.9.10:
-    resolution: {integrity: sha512-TwZRuSMYjpTurLqXspct+HZE7ONiW9d+wSWgvADGxhDPPyoIcNywY+RX4ng+QpK30DCa1l/oZgi2PLZDibhzbQ==}
+  /vite/2.9.12:
+    resolution: {integrity: sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -10612,8 +10636,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitest/0.14.1:
-    resolution: {integrity: sha512-2UUm6jYgkwh7Y3VKSRR8OuaNCm+iA5LPDnal7jyITN39maZK9L+JVxqjtQ39PSFo5Fl3/BgaJvER6GGHX9JLxg==}
+  /vitest/0.14.2:
+    resolution: {integrity: sha512-vXQUl8OUCqHmxKWscMGL+6Xl1pBJmYHZ8N85iNpLGrirAC2vhspu7b73ShRcLonmZT44BYZW+LBAVvn0L4jyVA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -10638,7 +10662,7 @@ packages:
       local-pkg: 0.4.1
       tinypool: 0.1.3
       tinyspy: 0.3.2
-      vite: 2.9.10
+      vite: 2.9.12
     transitivePeerDependencies:
       - less
       - sass
