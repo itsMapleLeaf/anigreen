@@ -8,6 +8,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node"
 import {
+  Form,
   Link,
   Links,
   LiveReload,
@@ -15,7 +16,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useFetcher,
   useTransition,
 } from "@remix-run/react"
 import clsx from "clsx"
@@ -292,16 +292,12 @@ function LoginButton() {
 }
 
 function UserMenuButton({ user }: { user: AnilistUser }) {
-  const fetcher = useFetcher()
   return (
     <Menu
       side="bottom"
       align="end"
       trigger={
-        <Button
-          className="transition opacity-75 hover:opacity-100 focus:opacity-100"
-          loading={!!fetcher.submission}
-        >
+        <Button className="transition opacity-75 hover:opacity-100 focus:opacity-100">
           <img
             src={user.avatarUrl}
             alt={`Logged in as ${user.name}`}
@@ -334,18 +330,13 @@ function UserMenuButton({ user }: { user: AnilistUser }) {
             </a>
           </Menu.Item>
           <Menu.Separator />
-          <fetcher.Form
-            action="/logout"
-            method="post"
-            replace
-            className="contents"
-          >
+          <Form action="/logout" method="post" replace className="contents">
             <Menu.Item>
               <button type="submit" className={Menu.itemClass}>
                 Log out
               </button>
             </Menu.Item>
-          </fetcher.Form>
+          </Form>
         </>
       }
     />
