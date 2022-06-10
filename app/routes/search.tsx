@@ -26,6 +26,7 @@ import {
   jsonTyped,
   useLoaderDataTyped,
 } from "~/modules/remix-typed"
+import { shouldDefer } from "~/modules/remix/no-defer"
 import { useDebouncedCallback } from "~/modules/state/use-debounced-callback"
 import { GridSection } from "~/modules/ui/grid-section"
 import { GridSkeleton } from "~/modules/ui/grid-skeleton"
@@ -117,12 +118,14 @@ export async function loader({ request }: DataFunctionArgs) {
 
   const session = await getSession(request)
 
+  const results = loadSearchResults(
+    params.query,
+    resolvePageParam(params.page || "1"),
+    session?.accessToken,
+  )
+
   return deferredTyped({
-    search: loadSearchResults(
-      params.query,
-      resolvePageParam(params.page || "1"),
-      session?.accessToken,
-    ),
+    search: shouldDefer(request) ? results : await results,
     query: params.query,
   })
 }

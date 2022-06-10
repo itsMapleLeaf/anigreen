@@ -12,7 +12,7 @@ import { anilistRequest } from "~/modules/anilist/request.server"
 import { requireSession } from "~/modules/auth/require-session"
 import { maybeValidNumber } from "~/modules/common/maybe-valid-number"
 import { parseUnsignedInteger } from "~/modules/common/parse-unsigned-integer"
-import { redirectBack } from "~/modules/network/redirect-back"
+import { redirectWithNoDefer } from "~/modules/remix/no-defer"
 
 const bodySchema = z.object({
   mediaId: z.string().transform(parseUnsignedInteger),
@@ -62,7 +62,7 @@ export async function action({ request }: DataFunctionArgs) {
     },
   })
 
-  return redirectBack(request)
+  return redirectWithNoDefer(request)
 }
 
 export function UpdateMediaListEntryForm({

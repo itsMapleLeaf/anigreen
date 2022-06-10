@@ -21,6 +21,7 @@ import {
   deferredTyped,
   useLoaderDataTyped,
 } from "~/modules/remix-typed"
+import { shouldDefer } from "~/modules/remix/no-defer"
 import { GridSection } from "~/modules/ui/grid-section"
 import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 import { SystemMessage } from "~/modules/ui/system-message"
@@ -70,11 +71,14 @@ async function loadWatchingItems(accessToken: string): Promise<AnilistMedia[]> {
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
+
+  const result = promiseAllObject({
+    timezone: getTimezone(request),
+    watchingItems: session && loadWatchingItems(session.accessToken),
+  })
+
   return deferredTyped({
-    data: promiseAllObject({
-      timezone: getTimezone(request),
-      watchingItems: session && loadWatchingItems(session.accessToken),
-    }),
+    data: shouldDefer(request) ? result : await result,
   })
 }
 

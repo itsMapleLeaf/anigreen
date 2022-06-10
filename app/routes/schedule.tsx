@@ -24,6 +24,7 @@ import {
   deferredTyped,
   useLoaderDataTyped,
 } from "~/modules/remix-typed"
+import { shouldDefer } from "~/modules/remix/no-defer"
 import { clearButtonClass } from "~/modules/ui/button-style"
 import { GridSkeleton } from "~/modules/ui/grid-skeleton"
 import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
@@ -112,14 +113,16 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   const timezone = await getTimezone(request)
 
+  const schedule = loadSchedule({
+    page: resolvePageParam(
+      new URL(request.url).searchParams.get("page") ?? "1",
+    ),
+    timezone,
+    accessToken: session?.accessToken,
+  })
+
   return deferredTyped({
-    schedule: loadSchedule({
-      page: resolvePageParam(
-        new URL(request.url).searchParams.get("page") ?? "1",
-      ),
-      timezone,
-      accessToken: session?.accessToken,
-    }),
+    schedule: shouldDefer(request) ? schedule : await schedule,
   })
 }
 
