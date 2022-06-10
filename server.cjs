@@ -19,7 +19,10 @@ app.use(
   express.static("public/build", { immutable: true, maxAge: "1y" }),
 )
 
-app.use(express.static("public/fonts", { immutable: true, maxAge: "1y" }))
+app.use(
+  "/fonts",
+  express.static("public/fonts", { immutable: true, maxAge: "1y" }),
+)
 
 app.use(express.static("public", { maxAge: "1h" }))
 
