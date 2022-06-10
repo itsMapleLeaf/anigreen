@@ -2,6 +2,7 @@
 @font-face {
   font-family: 'Fira Sans';
   src: url(/fonts/FiraSans/FiraSans-Regular.ttf) format('truetype');
+  font-display: swap;
 }
 
 /* light */
@@ -9,6 +10,7 @@
   font-family: 'Fira Sans';
   src: url(/fonts/FiraSans/FiraSans-Light.ttf) format('truetype');
   font-weight: 300;
+  font-display: swap;
 }
 
 /* light italic */
@@ -17,6 +19,7 @@
   src: url(/fonts/FiraSans/FiraSans-LightItalic.ttf) format('truetype');
   font-weight: 300;
   font-style: italic;
+  font-display: swap;
 }
 
 /* medium */
@@ -24,6 +27,7 @@
   font-family: 'Fira Sans';
   src: url(/fonts/FiraSans/FiraSans-Medium.ttf) format('truetype');
   font-weight: 500;
+  font-display: swap;
 }
 
 /* medium italic */
@@ -32,4 +36,5 @@
   src: url(/fonts/FiraSans/FiraSans-MediumItalic.ttf) format('truetype');
   font-weight: 500;
   font-style: italic;
+  font-display: swap;
 }
