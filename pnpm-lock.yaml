@@ -74,6 +74,7 @@ dependencies:
   express: 4.18.1
   framer-motion: 6.3.11_ef5jwxihqo6n7gxfmzogljlgcm
   graphql: 16.5.0
+  lodash-es: 4.17.21
   pino: 8.0.0
   pino-colada: 2.2.2
   pino-http: 7.1.0
@@ -99,7 +100,6 @@ devDependencies:
   '@types/react': 18.0.12
   '@types/react-dom': 18.0.5
   eslint: 8.17.0
-  lodash-es: 4.17.21
   msw: 0.42.1_typescript@4.7.3
   nodemon: 2.0.16
   npm-run-all: 4.1.5
@@ -6747,6 +6747,7 @@ packages:
 
   /lodash-es/4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
