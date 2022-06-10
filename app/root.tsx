@@ -152,6 +152,31 @@ function Document({ children }: { children: React.ReactNode }) {
 
         <link rel="icon" href="/images/logo-32x.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <link
+          rel="preload"
+          href="/fonts/FiraSans/FiraSans-Regular.ttf"
+          as="font"
+        />
+        <link
+          rel="preload"
+          href="/fonts/FiraSans/FiraSans-LightItalic.ttf"
+          as="font"
+        />
+        <link
+          rel="preload"
+          href="/fonts/FiraSans/FiraSans-Light.ttf"
+          as="font"
+        />
+        <link
+          rel="preload"
+          href="/fonts/FiraSans/FiraSans-MediumItalic.ttf"
+          as="font"
+        />
+        <link
+          rel="preload"
+          href="/fonts/FiraSans/FiraSans-Medium.ttf"
+          as="font"
+        />
         <link rel="stylesheet" href={tailwind} />
         <link rel="stylesheet" href={fonts} />
 
