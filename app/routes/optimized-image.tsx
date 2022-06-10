@@ -18,7 +18,7 @@ export async function loader({ request }: DataFunctionArgs) {
   )
 
   const imageUrlHash = hash(params.imageUrl)
-  const imageFile = `${imageUrlHash}-${params.width}x${params.height}.png`
+  const imageFile = `${imageUrlHash}-${params.width}x${params.height}.webp`
 
   const storageFile = getStorageFile(imageFile)
   const [storageFileExists] = await storageFile.exists()
@@ -39,7 +39,7 @@ export async function loader({ request }: DataFunctionArgs) {
   return new Response(resized.buffer, {
     status: 200,
     headers: {
-      "Content-Type": "image/png",
+      "Content-Type": "image/webp",
     },
   })
 }
