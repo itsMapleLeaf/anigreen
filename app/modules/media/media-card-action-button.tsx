@@ -8,6 +8,7 @@ import { Tooltip } from "~/modules/ui/tooltip"
 export const MediaCardActionButton = autoRef(function MediaCardActionButton({
   tooltip,
   className,
+  children,
   ...props
 }: ButtonProps & { tooltip: ReactNode }) {
   return (
@@ -16,7 +17,10 @@ export const MediaCardActionButton = autoRef(function MediaCardActionButton({
         type="submit"
         {...props}
         className={cx(className, actionButtonClass)}
-      />
+      >
+        {children}
+        <span className="sr-only">{tooltip}</span>
+      </Button>
     </Tooltip>
   )
 })
