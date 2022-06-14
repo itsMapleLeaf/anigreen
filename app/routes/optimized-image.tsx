@@ -23,7 +23,12 @@ export async function loader({ request }: DataFunctionArgs) {
   const storageFile = getStorageFile(imageFile)
   const [storageFileExists] = await storageFile.exists()
   if (storageFileExists) {
-    return redirect(storageFile.publicUrl())
+    return redirect(storageFile.publicUrl(), {
+      headers: {
+        "Content-Type": "image/webp",
+        "Cache-Control": "public, max-age=5184000",
+      },
+    })
   }
 
   const image = await fetch(params.imageUrl).then((res) => res.arrayBuffer())
