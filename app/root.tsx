@@ -156,26 +156,31 @@ function Document({ children }: { children: React.ReactNode }) {
           rel="preload"
           href="/fonts/FiraSans/FiraSans-Regular.ttf"
           as="font"
+          crossOrigin="anonymous"
         />
         <link
           rel="preload"
           href="/fonts/FiraSans/FiraSans-LightItalic.ttf"
           as="font"
+          crossOrigin="anonymous"
         />
         <link
           rel="preload"
           href="/fonts/FiraSans/FiraSans-Light.ttf"
           as="font"
+          crossOrigin="anonymous"
         />
         <link
           rel="preload"
           href="/fonts/FiraSans/FiraSans-MediumItalic.ttf"
           as="font"
+          crossOrigin="anonymous"
         />
         <link
           rel="preload"
           href="/fonts/FiraSans/FiraSans-Medium.ttf"
           as="font"
+          crossOrigin="anonymous"
         />
         <link rel="stylesheet" href={tailwind} />
         <link rel="stylesheet" href={fonts} />
