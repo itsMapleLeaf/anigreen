@@ -1,6 +1,7 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
 import { Link, useNavigate } from "@remix-run/react"
+import { DeferredTyped, deferredTyped, useLoaderDataTyped } from "remix-typed"
 import type {
   ScheduleQuery,
   ScheduleQueryVariables,
@@ -19,11 +20,6 @@ import {
   mediaListEntryFragment,
 } from "~/modules/media/media-data"
 import { getAppMeta } from "~/modules/meta"
-import {
-  DeferredTyped,
-  deferredTyped,
-  useLoaderDataTyped,
-} from "~/modules/remix-typed"
 import { shouldDefer } from "~/modules/remix/no-defer"
 import { clearButtonClass } from "~/modules/ui/button-style"
 import { GridSkeleton } from "~/modules/ui/grid-skeleton"

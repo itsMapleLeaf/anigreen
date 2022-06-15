@@ -21,15 +21,11 @@ import {
 import clsx from "clsx"
 import type { ReactNode } from "react"
 import { useEffect, useMemo, useState } from "react"
+import { DeferredTyped, deferredTyped, useLoaderDataTyped } from "remix-typed"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
 import { ActiveLink } from "~/modules/navigation/active-link"
-import {
-  DeferredTyped,
-  deferredTyped,
-  useLoaderDataTyped,
-} from "~/modules/remix-typed"
 import { Button } from "~/modules/ui/button"
 import {
   activeClearButtonClass,
