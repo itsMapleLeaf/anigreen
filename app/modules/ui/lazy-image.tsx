@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react"
-import { useCallback } from "react"
+import { useEffect, useRef } from "react"
+import { raise } from "../common/errors"
 
 export function LazyImage({
   src,
@@ -7,15 +8,17 @@ export function LazyImage({
   className,
   ...props
 }: ComponentPropsWithoutRef<"img">) {
-  const ref = useCallback((image: HTMLImageElement | null) => {
-    if (!image) return
+  const ref = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    const image = ref.current ?? raise("ref not assigned")
 
     const handleLoad = () => {
       image.style.opacity = "1"
     }
 
     if (image.complete) {
-      requestAnimationFrame(handleLoad)
+      handleLoad()
     } else {
       image.addEventListener("load", handleLoad, { once: true })
     }
