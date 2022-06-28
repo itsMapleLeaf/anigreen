@@ -1,5 +1,7 @@
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
-import { DeferredTyped, deferredTyped, useLoaderDataTyped } from "remix-typed"
+import { deferred } from "@remix-run/node"
+import { Deferred } from "@remix-run/react"
+import { useLoaderDataTyped } from "remix-typed"
 import type {
   WatchingQuery,
   WatchingQueryVariables,
@@ -73,7 +75,7 @@ export async function loader({ request }: DataFunctionArgs) {
     watchingItems: session && loadWatchingItems(session.accessToken),
   })
 
-  return deferredTyped({
+  return deferred({
     data: shouldDefer(request) ? result : await result,
   })
 }
@@ -82,7 +84,10 @@ export default function WatchingPage() {
   const { data } = useLoaderDataTyped<typeof loader>()
 
   return (
-    <DeferredTyped data={data} fallback={<GridSkeleton />}>
+    <Deferred<{ timezone: string; watchingItems: AnilistMedia[] | undefined }>
+      value={data}
+      fallback={<GridSkeleton />}
+    >
       {(data) =>
         data.watchingItems ? (
           <>
@@ -110,7 +115,7 @@ export default function WatchingPage() {
           </SystemMessage>
         )
       }
-    </DeferredTyped>
+    </Deferred>
   )
 }
 

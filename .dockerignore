@@ -1,8 +1,0 @@
-.cache
-.git
-.vscode
-build
-public/build
-node_modules
-.env*
-.prettierignore

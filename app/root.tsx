@@ -4,10 +4,13 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import type {
   DataFunctionArgs,
+  Deferrable,
   ErrorBoundaryComponent,
   MetaFunction,
 } from "@remix-run/node"
+import { deferred } from "@remix-run/node"
 import {
+  Deferred,
   Form,
   Link,
   Links,
@@ -16,12 +19,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useTransition,
 } from "@remix-run/react"
 import clsx from "clsx"
 import type { ReactNode } from "react"
 import { useEffect, useMemo, useState } from "react"
-import { DeferredTyped, deferredTyped, useLoaderDataTyped } from "remix-typed"
+import { useLoaderDataTyped } from "remix-typed"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
@@ -49,9 +53,15 @@ import tailwind from "./tailwind.out.css"
 
 export const meta: MetaFunction = () => getAppMeta()
 
+type LoaderData = {
+  user: Deferrable<AnilistUser> | undefined
+  anilistClientId: string
+  anilistRedirectUri: string
+}
+
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
-  return deferredTyped({
+  return deferred<LoaderData>({
     user: session && loadViewerUser(session.accessToken),
     anilistClientId:
       process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
@@ -61,7 +71,7 @@ export async function loader({ request }: DataFunctionArgs) {
 }
 
 export default function App() {
-  const { user } = useLoaderDataTyped<typeof loader>()
+  const { user } = useLoaderData<LoaderData>()
   const authProviderValue = useMemo(() => ({ loggedIn: !!user }), [user])
 
   return (
@@ -70,8 +80,8 @@ export default function App() {
         <div className="isolate">
           <Header
             authAction={
-              <DeferredTyped
-                data={user}
+              <Deferred
+                value={user}
                 fallback={
                   <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
                 }
@@ -79,7 +89,7 @@ export default function App() {
                 {(user) =>
                   user ? <UserMenuButton user={user} /> : <LoginButton />
                 }
-              </DeferredTyped>
+              </Deferred>
             }
           />
           <main className={maxWidthContainerClass}>
