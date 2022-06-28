@@ -21,6 +21,7 @@ const bodySchema = z.object({
       z.literal(MediaListStatus.Current),
       z.literal(MediaListStatus.Paused),
       z.literal(MediaListStatus.Dropped),
+      z.literal(MediaListStatus.Completed),
     ])
     .optional(),
   progress: z.string().transform(parseUnsignedInteger).optional(),

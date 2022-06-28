@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/solid"
 import * as Dialog from "@radix-ui/react-dialog"
 import { useFetcher } from "@remix-run/react"
-import cx from "clsx"
+import { default as clsx, default as cx } from "clsx"
 import { AnimatePresence, motion } from "framer-motion"
 import type { ReactElement, ReactNode } from "react"
 import { useEffect, useState } from "react"
@@ -40,6 +40,7 @@ export function MediaEditModal({
   const fetcher = useFetcher()
   const [status, setStatus] = useState(watchListInfo.status)
   const [open, setOpen] = useState(false)
+  const [progressInput, setProgressInput] = useState(watchListInfo.progress)
 
   useEffect(() => {
     if (fetcher.type === "done") {
@@ -83,28 +84,42 @@ export function MediaEditModal({
         <div className="px-4 py-6 grid grid-cols-2 gap-6">
           <div className="col-span-2">
             <Field label="Status">
-              <div className="flex gap-2">
-                {statusItems.map((item) => (
-                  <div key={item.status}>
-                    <input
-                      type="radio"
-                      name="status"
-                      className="sr-only peer"
-                      id={`status-${item.status}`}
-                      value={item.status}
-                      checked={status === item.status}
-                      onChange={() => setStatus(item.status)}
-                    />
-                    <label
-                      htmlFor={`status-${item.status}`}
-                      className={statusItemClass(item)}
-                    >
-                      {item.icon}
-                      {item.text}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {progressInput === media.episodeCount ? (
+                <>
+                  <input
+                    type="hidden"
+                    name="status"
+                    value={MediaListStatus.Completed}
+                  />
+                  <p className={clsx(activeClearButtonClass, "w-fit")}>
+                    <CheckCircleIcon className="w-5" />
+                    Completed
+                  </p>
+                </>
+              ) : (
+                <div className="flex gap-2">
+                  {statusItems.map((item) => (
+                    <div key={item.status}>
+                      <input
+                        type="radio"
+                        name="status"
+                        className="sr-only peer"
+                        id={`status-${item.status}`}
+                        value={item.status}
+                        checked={status === item.status}
+                        onChange={() => setStatus(item.status)}
+                      />
+                      <label
+                        htmlFor={`status-${item.status}`}
+                        className={statusItemClass(item)}
+                      >
+                        {item.icon}
+                        {item.text}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </Field>
           </div>
 
@@ -112,6 +127,7 @@ export function MediaEditModal({
             <NumberInput
               name="progress"
               defaultValue={watchListInfo.progress}
+              onChange={setProgressInput}
             />
           </Field>
           <Field label="Score (out of 10)">
@@ -253,20 +269,31 @@ function Field({
 function NumberInput({
   name,
   defaultValue,
+  onChange,
 }: {
   name: string
   defaultValue?: string | number
+  onChange?: (value: number) => void
 }) {
   const [value, setValue] = useState(
     defaultValue != undefined ? String(defaultValue) : undefined,
   )
+
+  const handleChange = (value: string) => {
+    setValue(value)
+
+    const numberValue = Number(value)
+    if (Number.isFinite(numberValue)) {
+      onChange?.(numberValue)
+    }
+  }
 
   const add = (amount: number) => {
     let numberValue = Number.parseInt(value ?? "0", 10)
     if (!Number.isFinite(numberValue)) {
       numberValue = 0
     }
-    setValue(String(Math.max(numberValue + amount, 0)))
+    handleChange(String(Math.max(numberValue + amount, 0)))
   }
 
   return (
@@ -285,7 +312,7 @@ function NumberInput({
         className="w-16 text-center px-3 py-2 bg-black/40 focus:bg-black/70 transition rounded-md"
         placeholder="0"
         value={value ?? ""}
-        onChange={(event) => setValue(event.currentTarget.value)}
+        onChange={(event) => handleChange(event.currentTarget.value)}
         onFocus={(event) => event.currentTarget.select()}
       />
       <Button
