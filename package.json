@@ -82,9 +82,6 @@
     "vite": "^2.9.12",
     "vitest": "^0.15.0"
   },
-  "engines": {
-    "node": ">=16"
-  },
   "sideEffects": false,
   "prettier": "@itsmapleleaf/configs/prettier"
 }
