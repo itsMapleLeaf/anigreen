@@ -1,13 +1,9 @@
 import { SearchIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/node"
-import { Form, useNavigate } from "@remix-run/react"
+import { deferred } from "@remix-run/node"
+import { Deferred, Form, useNavigate } from "@remix-run/react"
 import type { NavigateOptions, To } from "react-router"
-import {
-  DeferredTyped,
-  deferredTyped,
-  jsonTyped,
-  useLoaderDataTyped,
-} from "remix-typed"
+import { jsonTyped, useLoaderDataTyped } from "remix-typed"
 import type {
   MediaListEntryFragment,
   SearchQuery,
@@ -124,7 +120,7 @@ export async function loader({ request }: DataFunctionArgs) {
     session?.accessToken,
   )
 
-  return deferredTyped({
+  return deferred({
     search: shouldDefer(request) ? results : await results,
     query: params.query,
   })
@@ -142,7 +138,15 @@ export default function SearchPage() {
   }
 
   return (
-    <DeferredTyped data={search} fallback={<GridSkeleton />}>
+    <Deferred<{
+      currentPage: number
+      previousPage: number | undefined
+      nextPage: number | undefined
+      items: AnilistMedia[]
+    }>
+      value={search}
+      fallback={<GridSkeleton />}
+    >
       {(search) => (
         <GridSection title={`Results for "${query}"`}>
           {search.items.map((item) => (
@@ -150,7 +154,7 @@ export default function SearchPage() {
           ))}
         </GridSection>
       )}
-    </DeferredTyped>
+    </Deferred>
   )
 }
 

@@ -1,7 +1,8 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
-import { Link, useNavigate } from "@remix-run/react"
-import { DeferredTyped, deferredTyped, useLoaderDataTyped } from "remix-typed"
+import { deferred } from "@remix-run/node"
+import { Deferred, Link, useNavigate } from "@remix-run/react"
+import { useLoaderDataTyped } from "remix-typed"
 import type {
   ScheduleQuery,
   ScheduleQueryVariables,
@@ -117,7 +118,7 @@ export async function loader({ request }: DataFunctionArgs) {
     accessToken: session?.accessToken,
   })
 
-  return deferredTyped({
+  return deferred({
     schedule: shouldDefer(request) ? schedule : await schedule,
   })
 }
@@ -125,14 +126,14 @@ export async function loader({ request }: DataFunctionArgs) {
 export default function Schedule() {
   const { schedule } = useLoaderDataTyped<typeof loader>()
   return (
-    <DeferredTyped data={schedule} fallback={<GridSkeleton />}>
+    <Deferred<ScheduleData> value={schedule} fallback={<GridSkeleton />}>
       {(data) => (
         <>
           <ScheduleItems schedule={data} />
           <Pagination schedule={data} />
         </>
       )}
-    </DeferredTyped>
+    </Deferred>
   )
 }
 
