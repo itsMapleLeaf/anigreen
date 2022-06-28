@@ -4,11 +4,11 @@
  */
 module.exports = {
   serverDependenciesToBundle: ["lodash-es"],
+  devServerPort: 8002,
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // server: "./server/main.ts",
   // serverBuildPath: "server/build/index.js",
   // publicPath: "/build/",
-  // devServerPort: 8002,
   // ignoredRouteFiles: [".*"],
 }
