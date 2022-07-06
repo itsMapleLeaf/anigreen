@@ -29,7 +29,7 @@ function getRedisClient() {
 }
 
 async function createConnectedClient() {
-  const client = createClient<{}, {}, {}>()
+  const client = createClient<{}, {}, {}>({ url: process.env.REDIS_URL })
   await client.connect()
   return client
 }
