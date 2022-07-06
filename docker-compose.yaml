@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+ redis:
+    image: redis
+    command: redis-server
+    ports:
+     - "6379:6379"
+    volumes:
+      - $PWD/redis/data:/var/lib/redis
+      - $PWD/redis/redis.conf:/usr/local/etc/redis/redis.conf
