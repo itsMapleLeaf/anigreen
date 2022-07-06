@@ -9,6 +9,7 @@
     "dev:remix": "remix dev",
     "dev:graphql": "pnpm run graphql --watch",
     "dev:tailwind": "pnpm run tailwind --watch",
+    "dev:docker": "docker-compose up",
     "build": "pnpm run graphql && pnpm run tailwind --minify && remix build",
     "start": "cross-env NODE_ENV=production node ./server.cjs",
     "test": "echo todo lol",
@@ -48,6 +49,7 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
+    "redis": "^4.2.0",
     "remix-typed": "^0.3.0",
     "sharp": "^0.30.6",
     "zod": "^3.17.3"
