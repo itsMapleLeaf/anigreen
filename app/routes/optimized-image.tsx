@@ -1,9 +1,10 @@
 import type { DataFunctionArgs } from "@remix-run/node"
-import { redirect } from "@remix-run/node"
+// eslint-disable-next-line unicorn/import-style, unicorn/prefer-node-protocol
+import { extname } from "path"
 import { z } from "zod"
 import { hash } from "~/modules/common/hash.server"
 import { parseUnsignedInteger } from "~/modules/common/parse-unsigned-integer"
-import { getRedisClient } from "~/modules/redis"
+import { redisGetBuffer, redisSet } from "~/modules/redis.server"
 import { resizeImage } from "~/modules/resize-image.server"
 
 export async function loader({ request }: DataFunctionArgs) {
@@ -21,16 +22,13 @@ export async function loader({ request }: DataFunctionArgs) {
   const imageFile = `${imageUrlHash}-${params.width}x${params.height}.webp`
   const cacheKey = `optimized-image:${imageFile}`
 
-  const redis = await getRedisClient().catch((error) => {
-    console.warn("Failed to get redis client:", error)
-  })
-
-  const cachedImage = await redis?.get(cacheKey).catch((error) => {
+  const cachedImage = await redisGetBuffer(cacheKey).catch((error) => {
     console.warn("Failed to get cached image:", error)
   })
 
   if (cachedImage) {
-    return redirect(cachedImage, {
+    return new Response(cachedImage, {
+      status: 200,
       headers: {
         "Content-Type": "image/webp",
         "Cache-Control": "public, max-age=5184000",
@@ -57,16 +55,16 @@ export async function loader({ request }: DataFunctionArgs) {
     return new Response(image, {
       status: 200,
       headers: {
-        "Content-Type": "image/png",
-        "Cache-Control": "no-store",
+        "Content-Type": `image/${extname(params.imageUrl)}`,
+        "Cache-Control": "public, max-age=5184000",
       },
     })
   }
 
   // failing to cache isn't fatal, but we still want to know if it happens
-  await redis
-    ?.set(cacheKey, resized, { PX: 1000 * 60 * 60 * 24 * 7 })
-    .catch((error) => console.warn("Failed to cache image:", error))
+  await redisSet(cacheKey, resized, {
+    expiryMs: 1000 * 60 * 60 * 24 * 7,
+  }).catch((error) => console.warn("Failed to cache image:", error))
 
   return new Response(resized.buffer, {
     status: 200,

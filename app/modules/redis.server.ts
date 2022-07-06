@@ -1,7 +1,21 @@
 import type { RedisClientType } from "redis"
-import { createClient } from "redis"
+import { commandOptions, createClient } from "redis"
 
-export function getRedisClient() {
+export async function redisGetBuffer(key: string) {
+  const client = await getRedisClient()
+  return client.get(commandOptions({ returnBuffers: true }), key)
+}
+
+export async function redisSet(
+  key: string,
+  value: string | Buffer,
+  { expiryMs }: { expiryMs?: number } = {},
+) {
+  const client = await getRedisClient()
+  return client.set(key, value, { PX: expiryMs })
+}
+
+function getRedisClient() {
   if (globalThis.redisClientPromise) {
     return globalThis.redisClientPromise
   }
