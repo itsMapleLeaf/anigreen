@@ -191,6 +191,15 @@ function Document({ children }: { children: React.ReactNode }) {
         <link rel="stylesheet" href={tailwind} />
         <link rel="stylesheet" href={fonts} />
 
+        {process.env.NODE_ENV === "production" && (
+          <script
+            async
+            defer
+            data-website-id="1a4aa4cb-24ce-4cd9-88d9-e7408e76a791"
+            src="https://umami-production-72bc.up.railway.app/umami.js"
+          ></script>
+        )}
+
         <Meta />
         <Links />
       </head>
