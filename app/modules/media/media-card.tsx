@@ -57,11 +57,11 @@ export const MediaCard = memo(function MediaCard({
                 status={media.watchListEntry.status}
               />
             ),
-            media.watchListEntry?.progress && !hideProgress && (
+            !hideProgress && (
               <p key="scheduleEpisode">
                 Watched{" "}
                 {filterJoin("/", [
-                  media.watchListEntry.progress,
+                  media.watchListEntry?.progress ?? 0,
                   media.currentEpisode,
                 ])}
               </p>
