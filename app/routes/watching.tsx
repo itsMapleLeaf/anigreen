@@ -1,7 +1,7 @@
 import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
 import { deferred } from "@remix-run/node"
-import { Deferred } from "@remix-run/react"
-import { useLoaderDataTyped } from "remix-typed"
+import { Deferred, useLoaderData } from "@remix-run/react"
+import { Suspense } from "react"
 import type {
   WatchingQuery,
   WatchingQueryVariables,
@@ -81,41 +81,46 @@ export async function loader({ request }: DataFunctionArgs) {
 }
 
 export default function WatchingPage() {
-  const { data } = useLoaderDataTyped<typeof loader>()
+  const { data } = useLoaderData<typeof loader>()
 
   return (
-    <Deferred<{ timezone: string; watchingItems: AnilistMedia[] | undefined }>
-      value={data}
-      fallback={<GridSkeleton />}
-    >
-      {(data) =>
-        data.watchingItems ? (
-          <>
-            <GridSection
-              title="In progress"
-              subtitle="Catch up on some leftovers"
-            >
-              {data.watchingItems.filter(isInProgress).map((media) => (
-                <MediaCard key={media.id} media={media} hideWatchingStatus />
-              ))}
-            </GridSection>
-            <WeekdaySectionedList
-              items={data.watchingItems}
-              timezone={data.timezone}
-              getItemKey={(media) => media.id}
-              getItemDate={(media) => media.nextEpisodeAiringTime}
-              renderItem={(media) => (
-                <MediaCard media={media} hideWatchingStatus />
-              )}
-            />
-          </>
-        ) : (
-          <SystemMessage>
-            <p>you need to be logged in to see this page, sorry!</p>
-          </SystemMessage>
-        )
-      }
-    </Deferred>
+    <Suspense fallback={<GridSkeleton />}>
+      <Deferred value={data}>
+        {
+          // @ts-expect-error: remix types are currently incorrect
+          (data: { watchingItems: AnilistMedia[]; timezone: string }) =>
+            data.watchingItems ? (
+              <>
+                <GridSection
+                  title="In progress"
+                  subtitle="Catch up on some leftovers"
+                >
+                  {data.watchingItems.filter(isInProgress).map((media) => (
+                    <MediaCard
+                      key={media.id}
+                      media={media}
+                      hideWatchingStatus
+                    />
+                  ))}
+                </GridSection>
+                <WeekdaySectionedList
+                  items={data.watchingItems}
+                  timezone={data.timezone}
+                  getItemKey={(media) => media.id}
+                  getItemDate={(media) => media.nextEpisodeAiringTime}
+                  renderItem={(media) => (
+                    <MediaCard media={media} hideWatchingStatus />
+                  )}
+                />
+              </>
+            ) : (
+              <SystemMessage>
+                <p>you need to be logged in to see this page, sorry!</p>
+              </SystemMessage>
+            )
+        }
+      </Deferred>
+    </Suspense>
   )
 }
 

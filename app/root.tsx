@@ -4,7 +4,6 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import type {
   DataFunctionArgs,
-  Deferrable,
   ErrorBoundaryComponent,
   MetaFunction,
 } from "@remix-run/node"
@@ -24,8 +23,7 @@ import {
 } from "@remix-run/react"
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { useEffect, useMemo, useState } from "react"
-import { useLoaderDataTyped } from "remix-typed"
+import { Suspense, useEffect, useMemo, useState } from "react"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
@@ -54,7 +52,7 @@ import tailwind from "./tailwind.out.css"
 export const meta: MetaFunction = () => getAppMeta()
 
 type LoaderData = {
-  user: Deferrable<AnilistUser> | undefined
+  user: Promise<AnilistUser> | undefined
   anilistClientId: string
   anilistRedirectUri: string
 }
@@ -80,16 +78,19 @@ export default function App() {
         <div className="isolate">
           <Header
             authAction={
-              <Deferred
-                value={user}
+              <Suspense
                 fallback={
                   <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
                 }
               >
-                {(user) =>
-                  user ? <UserMenuButton user={user} /> : <LoginButton />
-                }
-              </Deferred>
+                <Deferred value={user}>
+                  {
+                    // @ts-expect-error: remix types are currently broken
+                    (user: AnilistUser) =>
+                      user ? <UserMenuButton user={user} /> : <LoginButton />
+                  }
+                </Deferred>
+              </Suspense>
             }
           />
           <main className={maxWidthContainerClass}>
@@ -319,7 +320,7 @@ function MainNavigationLink(props: ActiveLinkProps) {
 }
 
 function LoginButton() {
-  const data = useLoaderDataTyped<typeof loader>()
+  const data = useLoaderData<typeof loader>()
   const [pending, setPending] = useState(false) // no form submits here, we'll just use a flag 🤪
 
   const loginUrl =

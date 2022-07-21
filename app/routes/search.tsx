@@ -1,9 +1,9 @@
 import { SearchIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/node"
-import { deferred } from "@remix-run/node"
-import { Deferred, Form, useNavigate } from "@remix-run/react"
+import { deferred, json } from "@remix-run/node"
+import { Deferred, Form, useLoaderData, useNavigate } from "@remix-run/react"
+import { Suspense } from "react"
 import type { NavigateOptions, To } from "react-router"
-import { jsonTyped, useLoaderDataTyped } from "remix-typed"
 import type {
   MediaListEntryFragment,
   SearchQuery,
@@ -109,7 +109,7 @@ async function loadSearchResults(
 export async function loader({ request }: DataFunctionArgs) {
   const params = Object.fromEntries(new URL(request.url).searchParams)
   if (!params.query) {
-    return jsonTyped({ search: undefined, query: undefined })
+    return json({ state: "empty" } as const)
   }
 
   const session = await getSession(request)
@@ -121,15 +121,16 @@ export async function loader({ request }: DataFunctionArgs) {
   )
 
   return deferred({
+    state: "success",
     search: shouldDefer(request) ? results : await results,
     query: params.query,
-  })
+  } as const)
 }
 
 export default function SearchPage() {
-  const { query, search } = useLoaderDataTyped<typeof loader>()
+  const data = useLoaderData<typeof loader>()
 
-  if (search === undefined) {
+  if (data.state === "empty") {
     return (
       <p className="text-xl opacity-50 italic font-light text-center">
         Enter a search term to get started!
@@ -138,23 +139,25 @@ export default function SearchPage() {
   }
 
   return (
-    <Deferred<{
-      currentPage: number
-      previousPage: number | undefined
-      nextPage: number | undefined
-      items: AnilistMedia[]
-    }>
-      value={search}
-      fallback={<GridSkeleton />}
-    >
-      {(search) => (
-        <GridSection title={`Results for "${query}"`}>
-          {search.items.map((item) => (
-            <MediaCard key={item.id} media={item} />
-          ))}
-        </GridSection>
-      )}
-    </Deferred>
+    <Suspense fallback={<GridSkeleton />}>
+      <Deferred value={data.search}>
+        {
+          // @ts-expect-error: remix types are currently incorrect
+          (search: {
+            currentPage: number
+            previousPage: number | undefined
+            nextPage: number | undefined
+            items: AnilistMedia[]
+          }) => (
+            <GridSection title={`Results for "${data.query}"`}>
+              {search.items.map((item) => (
+                <MediaCard key={item.id} media={item} />
+              ))}
+            </GridSection>
+          )
+        }
+      </Deferred>
+    </Suspense>
   )
 }
 
