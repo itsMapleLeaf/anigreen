@@ -10,7 +10,8 @@
     "dev:graphql": "pnpm run graphql --watch",
     "dev:tailwind": "pnpm run tailwind --watch",
     "dev:docker": "docker-compose up",
-    "build": "pnpm run graphql && pnpm run tailwind --minify && remix build",
+    "dev:routes": "remix-routes -w",
+    "build": "remix-routes && pnpm run graphql && pnpm run tailwind --minify && remix build",
     "start": "cross-env NODE_ENV=production remix-serve build",
     "test": "echo todo lol",
     "lint": "eslint --ext js,ts,tsx .",
@@ -45,6 +46,7 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "redis": "^4.2.0",
+    "remix-routes": "^0.4.0",
     "sharp": "^0.30.7",
     "zod": "^3.17.9"
   },

@@ -4,6 +4,7 @@ import { deferred, json } from "@remix-run/node"
 import { Deferred, Form, useLoaderData, useNavigate } from "@remix-run/react"
 import { Suspense } from "react"
 import type { NavigateOptions, To } from "react-router"
+import { $path } from "remix-routes"
 import type {
   MediaListEntryFragment,
   SearchQuery,
@@ -178,7 +179,9 @@ export function SearchInput() {
         onChange={(event) => {
           const query = event.target.value.trim()
           if (query) {
-            navigateDebounced(`/search?query=${query}`, { replace: true })
+            navigateDebounced($path("/search", { query }), {
+              replace: true,
+            })
           } else {
             navigateDebounced.cancel()
           }

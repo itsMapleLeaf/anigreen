@@ -24,6 +24,7 @@ import {
 import clsx from "clsx"
 import type { ReactNode } from "react"
 import { Suspense, useEffect, useMemo, useState } from "react"
+import { $path } from "remix-routes"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
@@ -135,7 +136,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
                   {error?.stack || error?.message || String(error)}
                 </pre>
                 <Link
-                  to="/"
+                  to={$path("/")}
                   reloadDocument
                   className={clsx(solidButtonClass, "justify-self-start")}
                 >
@@ -237,7 +238,7 @@ function Header({ authAction }: { authAction?: ReactNode }) {
                 </Collapsible.Trigger>
               </div>
 
-              <Link to="/" title="Home" className="translate-y-[-2px]">
+              <Link to={$path("/")} title="Home" className="translate-y-[-2px]">
                 <h1 className="text-3xl font-light">
                   <span className="text-sky-400">ani</span>
                   <span className="text-emerald-400">green</span>
@@ -287,7 +288,7 @@ function MainNavigationItems(props: { onLinkClicked?: () => void }) {
   return (
     <>
       <MainNavigationLink
-        to="/watching"
+        to={$path("/watching")}
         onClick={props.onLinkClicked}
         prefetch="intent"
       >
@@ -295,7 +296,7 @@ function MainNavigationItems(props: { onLinkClicked?: () => void }) {
         Watching
       </MainNavigationLink>
       <MainNavigationLink
-        to="/schedule"
+        to={$path("/schedule")}
         onClick={props.onLinkClicked}
         prefetch="intent"
       >
@@ -381,7 +382,12 @@ function UserMenuButton({ user }: { user: AnilistUser }) {
             </a>
           </Menu.Item>
           <Menu.Separator />
-          <Form action="/logout" method="post" replace className="contents">
+          <Form
+            action={$path("/logout")}
+            method="post"
+            replace
+            className="contents"
+          >
             <Menu.Item>
               <button type="submit" className={Menu.itemClass}>
                 Log out

@@ -15,6 +15,7 @@ import { default as clsx, default as cx } from "clsx"
 import { AnimatePresence, motion } from "framer-motion"
 import type { ReactElement, ReactNode } from "react"
 import { useEffect, useState } from "react"
+import { $path } from "remix-routes"
 import { MediaListStatus } from "~/generated/anilist-graphql"
 import { Button } from "../ui/button"
 import {
@@ -78,7 +79,11 @@ export function MediaEditModal({
         <div className="text-base font-normal opacity-50">Edit media entry</div>
         <div>{media.title}</div>
       </ModalHeader>
-      <fetcher.Form action="/update-media-list-entry" method="post" replace>
+      <fetcher.Form
+        action={$path("/update-media-list-entry")}
+        method="post"
+        replace
+      >
         <input type="hidden" name="mediaId" value={media.id} />
 
         <div className="px-4 py-6 grid grid-cols-2 gap-6">
@@ -146,7 +151,7 @@ export function MediaEditModal({
                     mediaListId: String(watchListInfo.mediaListId),
                   },
                   {
-                    action: "/delete-from-watching",
+                    action: $path("/delete-from-watching"),
                     method: "post",
                     replace: true,
                   },

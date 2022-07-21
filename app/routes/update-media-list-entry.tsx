@@ -2,6 +2,7 @@ import type { DataFunctionArgs } from "@remix-run/node"
 import type { FormProps } from "@remix-run/react"
 import { Form } from "@remix-run/react"
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
+import { $path } from "remix-routes"
 import { z } from "zod"
 import type {
   UpdateMediaListEntryMutation,
@@ -77,7 +78,7 @@ export function UpdateMediaListEntryForm({
 }) {
   return (
     <FormComponent
-      action="/update-media-list-entry"
+      action={$path("/update-media-list-entry")}
       method="post"
       replace
       className="contents"
