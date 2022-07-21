@@ -10,9 +10,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** ISO 3166-1 alpha-2 country code */
   CountryCode: any;
-  /** 8 digit long date integer (YYYYMMDD). Unknown dates represented by 0. E.g. 2016: 20160000, May 1976: 19760500 */
   FuzzyDateInt: any;
   Json: any;
 };

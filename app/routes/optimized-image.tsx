@@ -1,6 +1,7 @@
 import type { DataFunctionArgs } from "@remix-run/node"
 // eslint-disable-next-line unicorn/import-style, unicorn/prefer-node-protocol
 import { extname } from "path"
+import { $path } from "remix-routes"
 import { z } from "zod"
 import { hash } from "~/modules/common/hash.server"
 import { parseUnsignedInteger } from "~/modules/common/parse-unsigned-integer"
@@ -80,10 +81,9 @@ export function getOptimizedImageUrl(
   width: number,
   height: number,
 ) {
-  const params = new URLSearchParams({
+  return $path("/optimized-image", {
     imageUrl,
     width: String(width),
     height: String(height),
   })
-  return `/optimized-image?${params.toString()}`
 }
