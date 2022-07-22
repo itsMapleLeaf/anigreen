@@ -4680,6 +4680,16 @@ export type DeleteFromWatchingMutationVariables = Exact<{
 
 export type DeleteFromWatchingMutation = { __typename?: 'Mutation', DeleteMediaListEntry?: { __typename?: 'Deleted', deleted?: boolean | undefined } | undefined };
 
+export type UpdateMediaListEntryMutationVariables = Exact<{
+  mediaId: Scalars['Int'];
+  status?: InputMaybe<MediaListStatus>;
+  progress?: InputMaybe<Scalars['Int']>;
+  score?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpdateMediaListEntryMutation = { __typename?: 'Mutation', SaveMediaListEntry?: { __typename?: 'MediaList', status?: MediaListStatus | undefined } | undefined };
+
 export type ScheduleQueryVariables = Exact<{
   startDate: Scalars['Int'];
   page: Scalars['Int'];
@@ -4702,16 +4712,6 @@ export type SearchWatchingQueryVariables = Exact<{
 
 
 export type SearchWatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', mediaId: number, id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };
-
-export type UpdateMediaListEntryMutationVariables = Exact<{
-  mediaId: Scalars['Int'];
-  status?: InputMaybe<MediaListStatus>;
-  progress?: InputMaybe<Scalars['Int']>;
-  score?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type UpdateMediaListEntryMutation = { __typename?: 'Mutation', SaveMediaListEntry?: { __typename?: 'MediaList', status?: MediaListStatus | undefined } | undefined };
 
 export type WatchingQueryVariables = Exact<{
   userId: Scalars['Int'];
