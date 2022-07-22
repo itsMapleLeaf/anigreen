@@ -383,7 +383,7 @@ function UserMenuButton({ user }: { user: AnilistUser }) {
           </Menu.Item>
           <Menu.Separator />
           <Form
-            action={$path("/logout")}
+            action={$path("/auth/logout")}
             method="post"
             replace
             className="contents"
