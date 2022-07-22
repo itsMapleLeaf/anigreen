@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { expect } from "@playwright/test"
 import type { ChromiumBrowser, Page } from "playwright"
 import { chromium } from "playwright"
