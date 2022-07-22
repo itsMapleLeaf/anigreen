@@ -1,5 +1,6 @@
 import type { RedisClientType } from "redis"
 import { commandOptions, createClient } from "redis"
+import { env } from "./env.server"
 
 export async function redisGetBuffer(key: string) {
   const client = await getRedisClient()
@@ -29,7 +30,7 @@ function getRedisClient() {
 }
 
 async function createConnectedClient() {
-  const client = createClient<{}, {}, {}>({ url: process.env.REDIS_URL })
+  const client = createClient<{}, {}, {}>({ url: env.REDIS_URL })
   await client.connect()
   return client
 }

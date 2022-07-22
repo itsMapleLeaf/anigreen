@@ -1,6 +1,7 @@
 {
   "extends": "@itsmapleleaf/configs/tsconfig.base",
   "compilerOptions": {
+    "module": "commonjs",
     "jsx": "react-jsx",
     "checkJs": false,
     "resolveJsonModule": true,

@@ -3,10 +3,10 @@ import { setupServer } from "msw/node"
 import type {
   ScheduleQuery,
   ScheduleQueryVariables,
-} from "~/generated/anilist-graphql"
+} from "../app/generated/anilist-graphql"
 import schedule from "./fixtures/schedule.json"
 
-export const anilistApiMockServer = setupServer(
+const anilistApiMockServer = setupServer(
   graphql.query<ScheduleQuery, ScheduleQueryVariables>(
     "Schedule",
     (request, response, context) => {
@@ -21,3 +21,7 @@ export const anilistApiMockServer = setupServer(
     },
   ),
 )
+
+if (process.env.NODE_ENV === "test") {
+  anilistApiMockServer.listen()
+}

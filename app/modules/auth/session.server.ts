@@ -1,8 +1,9 @@
 import { createCookie } from "@remix-run/node"
 import { raise } from "~/modules/common/errors"
+import { env } from "../env.server"
 
 const cookie = createCookie("session", {
-  secrets: [process.env.COOKIE_SECRET ?? raise("COOKIE_SECRET not set")],
+  secrets: [env.COOKIE_SECRET],
   httpOnly: true,
   maxAge: 60 * 60 * 24 * 365,
   sameSite: "lax",
@@ -17,7 +18,7 @@ export async function createAnilistSession(authCallbackUrl: string) {
     new URL(authCallbackUrl).searchParams.get("code") ??
     raise("Anilist auth error: code not found in auth callback url")
 
-  const response = await fetch("https://anilist.co/api/v2/oauth/token", {
+  const response = await fetch(env.ANILIST_AUTH_TOKEN_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,9 +26,9 @@ export async function createAnilistSession(authCallbackUrl: string) {
     },
     body: JSON.stringify({
       grant_type: "authorization_code",
-      client_id: process.env.ANILIST_CLIENT_ID,
-      client_secret: process.env.ANILIST_CLIENT_SECRET,
-      redirect_uri: process.env.ANILIST_REDIRECT_URI,
+      client_id: env.ANILIST_CLIENT_ID,
+      client_secret: env.ANILIST_CLIENT_SECRET,
+      redirect_uri: env.ANILIST_REDIRECT_URI,
       code,
     }),
   })
