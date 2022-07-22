@@ -30,17 +30,19 @@ function TooltipWrapper(
         outClassName={cx`opacity-0 scale-90`}
       >
         {(transition) => (
-          <Tooltip.Content
-            {...transition}
-            side={side}
-            sideOffset={8}
-            forceMount
-          >
-            <div className="bg-white text-slate-800 py-1 px-2 leading-tight rounded-md shadow-lg text-sm font-medium">
-              {text}
-            </div>
-            <Tooltip.Arrow className="fill-white" />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              {...transition}
+              side={side}
+              sideOffset={8}
+              forceMount
+            >
+              <div className="bg-white text-slate-800 py-1 px-2 leading-tight rounded-md shadow-lg text-sm font-medium">
+                {text}
+              </div>
+              <Tooltip.Arrow className="fill-white" />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         )}
       </Transition>
     </Tooltip.Root>
