@@ -42,7 +42,6 @@ import fonts from "./fonts.css"
 import type { AnilistUser } from "./modules/anilist/user"
 import { loadViewerUser } from "./modules/anilist/user"
 import { getSession } from "./modules/auth/session.server"
-import { raise } from "./modules/common/errors"
 import { getAppMeta } from "./modules/meta"
 import { ActionScrollRestoration } from "./modules/remix/action-scroll-restoration"
 import { maxWidthContainerClass } from "./modules/ui/components"
@@ -54,18 +53,12 @@ export const meta: MetaFunction = () => getAppMeta()
 
 type LoaderData = {
   user: Promise<AnilistUser> | undefined
-  anilistClientId: string
-  anilistRedirectUri: string
 }
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
   return deferred<LoaderData>({
     user: session && loadViewerUser(session.accessToken),
-    anilistClientId:
-      process.env.ANILIST_CLIENT_ID ?? raise("ANILIST_CLIENT_ID not set"),
-    anilistRedirectUri:
-      process.env.ANILIST_REDIRECT_URI ?? raise("ANILIST_REDIRECT_URI not set"),
   })
 }
 
@@ -321,20 +314,13 @@ function MainNavigationLink(props: ActiveLinkProps) {
 }
 
 function LoginButton() {
-  const data = useLoaderData<typeof loader>()
   const [pending, setPending] = useState(false) // no form submits here, we'll just use a flag 🤪
-
-  const loginUrl =
-    `https://anilist.co/api/v2/oauth/authorize` +
-    `?client_id=${data.anilistClientId}` +
-    `&redirect_uri=${data.anilistRedirectUri}` +
-    `&response_type=code`
 
   return pending ? (
     <LoadingIcon />
   ) : (
     <a
-      href={loginUrl}
+      href={$path("/auth/anilist/login")}
       className={clearButtonClass}
       onClick={() => setPending(true)}
     >
