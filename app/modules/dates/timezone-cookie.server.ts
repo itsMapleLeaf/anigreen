@@ -1,8 +1,8 @@
 import { createCookie } from "@remix-run/node"
-import { raise } from "~/modules/common/errors"
+import { env } from "../env.server"
 
 const cookie = createCookie("timezone", {
-  secrets: [process.env.COOKIE_SECRET ?? raise("COOKIE_SECRET not set")],
+  secrets: [env.COOKIE_SECRET],
   httpOnly: true,
   maxAge: 60 * 60 * 24 * 365,
   sameSite: "lax",

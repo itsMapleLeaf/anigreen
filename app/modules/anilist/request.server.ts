@@ -1,5 +1,6 @@
 import { setTimeout } from "node:timers/promises"
 import { inspect } from "node:util"
+import { env } from "../env.server"
 
 type AnyRecord = { [key: string]: unknown }
 
@@ -29,7 +30,7 @@ export async function anilistRequest<
     headers.Authorization = `Bearer ${accessToken}`
   }
 
-  const response = await fetch("https://graphql.anilist.co", {
+  const response = await fetch(env.ANILIST_API_URL, {
     method: "POST",
     headers,
     body: JSON.stringify({ query, variables }),
