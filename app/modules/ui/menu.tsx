@@ -51,20 +51,22 @@ export function Menu({
         outClassName={cx`opacity-0 translate-y-3`}
       >
         {(transition) => (
-          <DropdownMenu.Content
-            {...transition}
-            side={side}
-            align={align}
-            sideOffset={16}
-            forceMount
-            onCloseAutoFocus={(event) => {
-              if (lastActionRef.current === "pointer") event.preventDefault()
-            }}
-          >
-            <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-40">
-              {items}
-            </div>
-          </DropdownMenu.Content>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              {...transition}
+              side={side}
+              align={align}
+              sideOffset={16}
+              forceMount
+              onCloseAutoFocus={(event) => {
+                if (lastActionRef.current === "pointer") event.preventDefault()
+              }}
+            >
+              <div className="flex flex-col overflow-hidden font-medium rounded-lg shadow bg-slate-50 text-slate-900 w-40">
+                {items}
+              </div>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
         )}
       </Transition>
     </DropdownMenu.Root>
