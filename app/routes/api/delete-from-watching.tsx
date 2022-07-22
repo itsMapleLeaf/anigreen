@@ -50,7 +50,7 @@ export function DeleteFromWatchingForm({
 }) {
   return (
     <FormComponent
-      action={$path("/delete-from-watching")}
+      action={$path("/api/delete-from-watching")}
       method="post"
       replace
       className="contents"

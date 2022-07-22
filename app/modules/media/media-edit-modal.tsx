@@ -80,7 +80,7 @@ export function MediaEditModal({
         <div>{media.title}</div>
       </ModalHeader>
       <fetcher.Form
-        action={$path("/update-media-list-entry")}
+        action={$path("/api/update-media-list-entry")}
         method="post"
         replace
       >
@@ -151,7 +151,7 @@ export function MediaEditModal({
                     mediaListId: String(watchListInfo.mediaListId),
                   },
                   {
-                    action: $path("/delete-from-watching"),
+                    action: $path("/api/delete-from-watching"),
                     method: "post",
                     replace: true,
                   },

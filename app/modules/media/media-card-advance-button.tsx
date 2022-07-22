@@ -1,7 +1,7 @@
 import { ChevronDoubleRightIcon } from "@heroicons/react/solid"
 import { useFetcher } from "@remix-run/react"
 import { MediaCardActionButton } from "~/modules/media/media-card-action-button"
-import { UpdateMediaListEntryForm } from "~/routes/update-media-list-entry"
+import { UpdateMediaListEntryForm } from "~/routes/api/update-media-list-entry"
 import type { AnilistMedia, AnilistMediaListEntry } from "./media-data"
 import { MediaEditModal } from "./media-edit-modal"
 

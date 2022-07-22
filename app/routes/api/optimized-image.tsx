@@ -81,7 +81,7 @@ export function getOptimizedImageUrl(
   width: number,
   height: number,
 ) {
-  return $path("/optimized-image", {
+  return $path("/api/optimized-image", {
     imageUrl,
     width: String(width),
     height: String(height),

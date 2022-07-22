@@ -78,7 +78,7 @@ export function UpdateMediaListEntryForm({
 }) {
   return (
     <FormComponent
-      action={$path("/update-media-list-entry")}
+      action={$path("/api/update-media-list-entry")}
       method="post"
       replace
       className="contents"
