@@ -1,7 +1,7 @@
 import { SearchIcon } from "@heroicons/react/solid"
 import type { DataFunctionArgs } from "@remix-run/node"
-import { deferred, json } from "@remix-run/node"
-import { Deferred, Form, useLoaderData, useNavigate } from "@remix-run/react"
+import { defer } from "@remix-run/node"
+import { Await, Form, useLoaderData, useNavigate } from "@remix-run/react"
 import { Suspense } from "react"
 import type { NavigateOptions, To } from "react-router"
 import { $path } from "remix-routes"
@@ -109,55 +109,43 @@ async function loadSearchResults(
 
 export async function loader({ request }: DataFunctionArgs) {
   const params = Object.fromEntries(new URL(request.url).searchParams)
-  if (!params.query) {
-    return json({ state: "empty" } as const)
+
+  // eslint-disable-next-line unicorn/no-null
+  let results = null
+  if (params.query) {
+    const session = await getSession(request)
+    results = loadSearchResults(
+      params.query,
+      resolvePageParam(params.page || "1"),
+      session?.accessToken,
+    )
   }
 
-  const session = await getSession(request)
-
-  const results = loadSearchResults(
-    params.query,
-    resolvePageParam(params.page || "1"),
-    session?.accessToken,
-  )
-
-  return deferred({
-    state: "success",
-    search: shouldDefer(request) ? results : await results,
+  return defer({
     query: params.query,
-  } as const)
+    search: Promise.resolve(shouldDefer(request) ? results : await results),
+  })
 }
 
 export default function SearchPage() {
   const data = useLoaderData<typeof loader>()
-
-  if (data.state === "empty") {
-    return (
-      <p className="text-xl opacity-50 italic font-light text-center">
-        Enter a search term to get started!
-      </p>
-    )
-  }
-
   return (
     <Suspense fallback={<GridSkeleton />}>
-      <Deferred value={data.search}>
-        {
-          // @ts-expect-error: remix types are currently incorrect
-          (search: {
-            currentPage: number
-            previousPage: number | undefined
-            nextPage: number | undefined
-            items: AnilistMedia[]
-          }) => (
+      <Await resolve={data.search}>
+        {(search) =>
+          search ? (
             <GridSection title={`Results for "${data.query}"`}>
               {search.items.map((item) => (
                 <MediaCard key={item.id} media={item} />
               ))}
             </GridSection>
+          ) : (
+            <p className="text-xl opacity-50 italic font-light text-center">
+              Enter a search term to get started!
+            </p>
           )
         }
-      </Deferred>
+      </Await>
     </Suspense>
   )
 }

@@ -7,9 +7,9 @@ import type {
   ErrorBoundaryComponent,
   MetaFunction,
 } from "@remix-run/node"
-import { deferred } from "@remix-run/node"
+import { defer } from "@remix-run/node"
 import {
-  Deferred,
+  Await,
   Form,
   Link,
   Links,
@@ -23,7 +23,7 @@ import {
 } from "@remix-run/react"
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { Suspense, useEffect, useMemo, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { $path } from "remix-routes"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
@@ -51,21 +51,16 @@ import tailwind from "./tailwind.out.css"
 
 export const meta: MetaFunction = () => getAppMeta()
 
-type LoaderData = {
-  user: Promise<AnilistUser> | undefined
-}
-
 export async function loader({ request }: DataFunctionArgs) {
   const session = await getSession(request)
-  return deferred<LoaderData>({
-    user: session && loadViewerUser(session.accessToken),
+  return defer({
+    // eslint-disable-next-line unicorn/no-null
+    user: Promise.resolve(session ? loadViewerUser(session.accessToken) : null),
   })
 }
 
 export default function App() {
-  const { user } = useLoaderData<LoaderData>()
-  const authProviderValue = useMemo(() => ({ loggedIn: !!user }), [user])
-
+  const { user } = useLoaderData<typeof loader>()
   return (
     <Document>
       <Tooltip.Provider delayDuration={700}>
@@ -77,21 +72,23 @@ export default function App() {
                   <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
                 }
               >
-                <Deferred value={user}>
-                  {
-                    // @ts-expect-error: remix types are currently broken
-                    (user: AnilistUser) =>
-                      user ? <UserMenuButton user={user} /> : <LoginButton />
+                <Await resolve={user}>
+                  {(user) =>
+                    user ? <UserMenuButton user={user} /> : <LoginButton />
                   }
-                </Deferred>
+                </Await>
               </Suspense>
             }
           />
           <main className={maxWidthContainerClass}>
             <div className="my-8">
-              <AuthProvider value={authProviderValue}>
-                <Outlet />
-              </AuthProvider>
+              <Await resolve={user}>
+                {(user) => (
+                  <AuthProvider value={{ loggedIn: !!user }}>
+                    <Outlet />
+                  </AuthProvider>
+                )}
+              </Await>
             </div>
           </main>
         </div>
