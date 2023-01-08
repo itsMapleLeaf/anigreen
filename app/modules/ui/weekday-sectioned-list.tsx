@@ -12,14 +12,17 @@ export function WeekdaySectionedList<T>({
   getItemDate,
   getItemKey,
   renderItem,
+  sortWithinDay,
 }: {
   items: T[]
   timezone: string
   getItemDate: (item: T) => number | Date | undefined
   getItemKey: (item: T) => Key
   renderItem: (item: T) => ReactNode
+  sortWithinDay?: (a: T, b: T) => number
 }) {
   const getItemDateRef = useLatestRef(getItemDate)
+  const sortWithinDayRef = useLatestRef(sortWithinDay)
 
   const { listsByDay, notAiring } = useMemo(() => {
     const listsByDay = new Map<number, T[]>()
@@ -39,8 +42,15 @@ export function WeekdaySectionedList<T>({
       ).push(item)
     }
 
+    if (sortWithinDayRef.current) {
+      for (const list of listsByDay.values()) {
+        list.sort(sortWithinDayRef.current)
+      }
+      notAiring.sort(sortWithinDayRef.current)
+    }
+
     return { listsByDay, notAiring }
-  }, [items, getItemDateRef, timezone])
+  }, [sortWithinDayRef, items, getItemDateRef, timezone])
 
   return (
     <>

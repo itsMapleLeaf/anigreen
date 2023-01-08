@@ -146,6 +146,9 @@ function ScheduleItems({ schedule }: { schedule: ScheduleData }) {
       timezone={schedule.timezone}
       getItemDate={(item) => item.airingDayMs}
       getItemKey={(item) => item.id}
+      sortWithinDay={(a, b) =>
+        (b.media.popularity ?? 0) - (a.media.popularity ?? 0)
+      }
       renderItem={(item) => (
         <MediaCard
           media={item.media}

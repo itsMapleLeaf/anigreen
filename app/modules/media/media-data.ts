@@ -19,6 +19,7 @@ export type AnilistMedia = {
   nextEpisodeAiringTime?: number
   externalLinks: MediaExternalLink[]
   watchListEntry?: AnilistMediaListEntry
+  popularity?: number
 }
 
 export type AnilistMediaListEntry = {
@@ -57,6 +58,7 @@ export const mediaFragment = /* GraphQL */ `
       airingAt
     }
     isAdult
+    popularity
   }
 `
 
@@ -104,5 +106,6 @@ export function extractMediaData(
       progress: mediaListEntry.progress ?? 0,
       score: mediaListEntry.score,
     },
+    popularity: media.popularity,
   }
 }
