@@ -53,7 +53,7 @@ async function loadSchedule({
   const data = await anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
     query: /* GraphQL */ `
       query Schedule($startDate: Int!, $page: Int!) {
-        Page(page: $page, perPage: 30) {
+        Page(page: $page, perPage: 50) {
           pageInfo {
             currentPage
             hasNextPage
@@ -85,6 +85,7 @@ async function loadSchedule({
     (schedule) => {
       if (!schedule?.media) return []
       if (schedule.media.isAdult) return []
+      if (schedule.media.countryOfOrigin === "CN") return []
       return {
         id: schedule.id,
         episode: schedule.episode,

@@ -20,6 +20,7 @@ export type AnilistMedia = {
   externalLinks: MediaExternalLink[]
   watchListEntry?: AnilistMediaListEntry
   popularity?: number
+  countryOfOrigin?: string
 }
 
 export type AnilistMediaListEntry = {
@@ -59,6 +60,7 @@ export const mediaFragment = /* GraphQL */ `
     }
     isAdult
     popularity
+    countryOfOrigin
   }
 `
 
@@ -107,5 +109,6 @@ export function extractMediaData(
       score: mediaListEntry.score,
     },
     popularity: media.popularity,
+    countryOfOrigin: media.countryOfOrigin,
   }
 }
