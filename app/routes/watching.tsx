@@ -118,8 +118,8 @@ export default function WatchingPage() {
 }
 
 function isInProgress(media: AnilistMedia) {
-  return (
-    media.currentEpisode == undefined || // if it's endless, it's always in progress (conan pls)
-    (media.watchListEntry?.progress ?? 0) < media.currentEpisode
-  )
+  // no currentEpisode could mean the anime is not airing yet, or that it's unending
+  // but we won't account for unending anime for now
+  if (media.currentEpisode == undefined) return false
+  return (media.watchListEntry?.progress ?? 0) < media.currentEpisode
 }
