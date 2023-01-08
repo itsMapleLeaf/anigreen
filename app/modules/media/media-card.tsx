@@ -4,7 +4,6 @@ import { filterJoin } from "~/modules/common/filter-join"
 import { infix } from "~/modules/common/infix"
 import { MediaCardControls } from "~/modules/media/media-card-controls"
 import { LazyImage } from "~/modules/ui/lazy-image"
-import { getOptimizedImageUrl } from "~/routes/api/optimized-image"
 import type { AnilistMedia } from "./media-data"
 
 export const MediaCard = memo(function MediaCard({
@@ -26,7 +25,7 @@ export const MediaCard = memo(function MediaCard({
       >
         {media.bannerImageUrl != undefined && (
           <LazyImage
-            src={getOptimizedImageUrl(media.bannerImageUrl, 320, 80)}
+            src={media.bannerImageUrl}
             alt=""
             className="absolute inset-0 brightness-50"
           />
@@ -40,7 +39,7 @@ export const MediaCard = memo(function MediaCard({
         </h3>
         {media.coverImageUrl != undefined && (
           <LazyImage
-            src={getOptimizedImageUrl(media.coverImageUrl, 80, 96)}
+            src={media.coverImageUrl}
             alt=""
             className="relative w-20 h-24 rounded-md shadow -mt-20 overflow-hidden"
           />
