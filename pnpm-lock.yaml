@@ -23,10 +23,10 @@ dependencies:
     specifier: ^1.0.5
     version: 1.0.5(@types/react@18.0.33)(react-dom@18.2.0)(react@18.2.0)
   '@remix-run/node':
-    specifier: 1.15.0
+    specifier: ^1.15.0
     version: 1.15.0
   '@remix-run/react':
-    specifier: 1.15.0
+    specifier: ^1.15.0
     version: 1.15.0(react-dom@18.2.0)(react@18.2.0)
   '@vercel/remix':
     specifier: ^1.15.0
@@ -94,10 +94,10 @@ devDependencies:
     specifier: ^1.32.2
     version: 1.32.2
   '@remix-run/dev':
-    specifier: 1.15.0
+    specifier: ^1.15.0
     version: 1.15.0(@remix-run/serve@1.15.0)(@types/node@18.15.11)
   '@remix-run/serve':
-    specifier: 1.15.0
+    specifier: ^1.15.0
     version: 1.15.0
   '@rushstack/eslint-patch':
     specifier: ^1.2.0
