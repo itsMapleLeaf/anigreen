@@ -51,6 +51,8 @@ import { SystemMessage } from "./modules/ui/system-message"
 import { SearchInput } from "./routes/search"
 import tailwind from "./tailwind.css"
 
+export const config = { runtime: "edge" }
+
 export const meta: MetaFunction = () => getAppMeta()
 
 export const links: LinksFunction = () => [
