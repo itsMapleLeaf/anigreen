@@ -1,25 +1,30 @@
 import type { HtmlMetaDescriptor } from "@vercel/remix"
 import { $path } from "remix-routes"
+import banner from "~/assets/banner.png"
 
-const appDomain = "anigreen.mapleleaf.dev"
+const domain = "anigreen.mapleleaf.dev"
+const origin = `https://${domain}`
 
 export const getAppMeta = (titlePrefix?: string): HtmlMetaDescriptor => {
   const title = [titlePrefix, "anigreen"].filter(Boolean).join(" | ")
   const description = "your week in anime 🌠"
+  const scheduleUrl = new URL($path("/schedule"), origin).href
+  const bannerUrl = new URL(banner, origin).href
+
   return {
     title,
     description,
 
-    "og:url": `https://${appDomain}` + $path("/schedule"),
+    "og:url": scheduleUrl,
     "og:title": title,
     "og:description": description,
-    "og:image": `https://${appDomain}/banner.png`,
+    "og:image": bannerUrl,
 
     "twitter:card": "summary_large_image",
-    "twitter:domain": appDomain,
-    "twitter:url": `https://${appDomain}` + $path("/schedule"),
+    "twitter:domain": origin,
+    "twitter:url": scheduleUrl,
     "twitter:title": title,
     "twitter:description": description,
-    "twitter:image": `https://${appDomain}/banner.png`,
+    "twitter:image": bannerUrl,
   }
 }

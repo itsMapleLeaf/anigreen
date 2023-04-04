@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@fontsource/fira-sans':
+    specifier: ^4.5.10
+    version: 4.5.10
   '@heroicons/react':
     specifier: ^1.0.6
     version: 1.0.6(react@18.2.0)
@@ -2104,6 +2107,10 @@ packages:
       use-isomorphic-layout-effect: 1.1.2(@types/react@18.0.33)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /@fontsource/fira-sans@4.5.10:
+    resolution: {integrity: sha512-4Edj+GA0LYSqfXOvdTwVGmCShT8Ycd8bKzdfzM302n+I6Hsg6h3gBkBeNgN19PhkcngDznZyHv3EkyrKqvMTGw==}
     dev: false
 
   /@gar/promisify@1.1.3:

@@ -1,3 +1,4 @@
+import firaSans from "@fontsource/fira-sans/latin.css"
 import { MenuIcon } from "@heroicons/react/outline"
 import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
@@ -18,6 +19,7 @@ import {
 import type {
   DataFunctionArgs,
   ErrorBoundaryComponent,
+  LinksFunction,
   MetaFunction,
 } from "@vercel/remix"
 import { defer } from "@vercel/remix"
@@ -38,7 +40,7 @@ import {
 } from "~/modules/ui/button-style"
 import { LoadingIcon } from "~/modules/ui/loading-icon"
 import { Menu } from "~/modules/ui/menu"
-import fonts from "./fonts.css"
+import logo from "./assets/logo-32x.png"
 import type { AnilistUser } from "./modules/anilist/user"
 import { loadViewerUser } from "./modules/anilist/user"
 import { getSession } from "./modules/auth/session.server"
@@ -47,9 +49,15 @@ import { ActionScrollRestoration } from "./modules/remix/action-scroll-restorati
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
 import { SearchInput } from "./routes/search"
-import tailwind from "./tailwind.out.css"
+import tailwind from "./tailwind.css"
 
 export const meta: MetaFunction = () => getAppMeta()
+
+export const links: LinksFunction = () => [
+  { rel: "icon", href: logo },
+  { rel: "stylesheet", href: firaSans },
+  { rel: "stylesheet", href: tailwind },
+]
 
 export function loader({ request }: DataFunctionArgs) {
   async function getUser() {
@@ -153,51 +161,6 @@ function Document({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-        <link rel="icon" href="/images/logo-32x.png" />
-        <link rel="manifest" href="/manifest.webmanifest" />
-        <link
-          rel="preload"
-          href="/fonts/FiraSans/FiraSans-Regular.ttf"
-          as="font"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/FiraSans/FiraSans-LightItalic.ttf"
-          as="font"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/FiraSans/FiraSans-Light.ttf"
-          as="font"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/FiraSans/FiraSans-MediumItalic.ttf"
-          as="font"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/FiraSans/FiraSans-Medium.ttf"
-          as="font"
-          crossOrigin="anonymous"
-        />
-        <link rel="stylesheet" href={tailwind} />
-        <link rel="stylesheet" href={fonts} />
-
-        {process.env.NODE_ENV === "production" && (
-          <script
-            async
-            defer
-            data-website-id="1a4aa4cb-24ce-4cd9-88d9-e7408e76a791"
-            src="https://umami-production-72bc.up.railway.app/umami.js"
-          ></script>
-        )}
-
         <Meta />
         <Links />
       </head>
