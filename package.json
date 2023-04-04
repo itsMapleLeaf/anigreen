@@ -38,6 +38,7 @@
     "dotenv": "^16.0.3",
     "framer-motion": "^10.10.0",
     "graphql": "^16.6.0",
+    "isbot": "latest",
     "lodash-es": "^4.17.21",
     "node": "^19.8.1",
     "react": "^18.2.0",

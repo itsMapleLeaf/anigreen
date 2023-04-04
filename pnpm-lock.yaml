@@ -52,6 +52,9 @@ dependencies:
   graphql:
     specifier: ^16.6.0
     version: 16.6.0
+  isbot:
+    specifier: latest
+    version: 3.6.7
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
