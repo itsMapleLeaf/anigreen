@@ -4,6 +4,9 @@
   "author": "itsMapleLeaf",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "18"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development run-p --race --print-label dev:*",
     "dev:remix": "remix dev",
