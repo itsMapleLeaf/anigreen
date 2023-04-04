@@ -1,5 +1,4 @@
-import { setTimeout } from "node:timers/promises"
-import { inspect } from "node:util"
+import { delay } from "../common/delay"
 
 type AnyRecord = { [key: string]: unknown }
 
@@ -38,7 +37,7 @@ export async function anilistRequest<
   if (response.status === 429) {
     const retryAfterSeconds = Number(response.headers.get("retry-after"))
     if (Number.isFinite(retryAfterSeconds)) {
-      await setTimeout(retryAfterSeconds * 1000)
+      await delay(retryAfterSeconds * 1000)
       return anilistRequest(options)
     }
   }
@@ -48,10 +47,7 @@ export async function anilistRequest<
     | { errors: Array<{ message: string }> }
 
   if ("errors" in json) {
-    console.warn(
-      "errors:",
-      inspect(json.errors, { depth: Number.POSITIVE_INFINITY }),
-    )
+    console.warn("errors:", JSON.stringify(json.errors, undefined, 2))
     throw AnilistRequestError.fromResponse(response, json, query, variables)
   }
 
