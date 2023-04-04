@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node"
+import { json } from "@vercel/remix"
 import { getSession } from "~/modules/auth/session.server"
 import { raise } from "~/modules/common/errors"
 

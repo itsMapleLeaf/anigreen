@@ -1,4 +1,4 @@
-import type { LoaderFunction } from "@remix-run/node"
+import type { LoaderFunction } from "@vercel/remix"
 import { getAppMeta } from "~/modules/meta"
 
 export const meta = () => getAppMeta("Page not found")

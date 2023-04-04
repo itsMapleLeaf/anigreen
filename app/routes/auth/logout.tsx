@@ -1,5 +1,5 @@
-import type { ActionFunction } from "@remix-run/node"
-import { redirect } from "@remix-run/node"
+import type { ActionFunction } from "@vercel/remix"
+import { redirect } from "@vercel/remix"
 import { $path } from "remix-routes"
 import { destroySession } from "~/modules/auth/session.server"
 

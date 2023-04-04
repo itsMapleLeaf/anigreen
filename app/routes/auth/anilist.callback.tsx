@@ -1,5 +1,5 @@
-import type { LoaderFunction } from "@remix-run/node"
-import { redirect } from "@remix-run/node"
+import type { LoaderFunction } from "@vercel/remix"
+import { redirect } from "@vercel/remix"
 import { $path } from "remix-routes"
 import { createAnilistSession } from "~/modules/auth/session.server"
 

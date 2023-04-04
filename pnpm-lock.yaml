@@ -54,7 +54,7 @@ dependencies:
     version: 16.6.0
   isbot:
     specifier: latest
-    version: 3.6.7
+    version: 3.6.8
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -6881,6 +6881,11 @@ packages:
 
   /isbot@3.6.7:
     resolution: {integrity: sha512-SXNUQaNZlj/+9jdrGnAp6WW0YoHe3MIwwc6oRIYuhhERBUt7/L6I7JkMiA2sX9fcvS7gZ2C7GWgmDZfOOU4I5g==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /isbot@3.6.8:
+    resolution: {integrity: sha512-V8XUXN0/UYxfgrui4o38pmOve2eO/1KjluxR1G8Qnu5gqlUiNrvtX06t1W5n8vFtrtKfHj96iFYuPL39jXUe8g==}
     engines: {node: '>=12'}
     dev: false
 

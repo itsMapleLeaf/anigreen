@@ -1,4 +1,4 @@
-import type { HtmlMetaDescriptor } from "@remix-run/node"
+import type { HtmlMetaDescriptor } from "@vercel/remix"
 import { $path } from "remix-routes"
 
 const appDomain = "anigreen.mapleleaf.dev"

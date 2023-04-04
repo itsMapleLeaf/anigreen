@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/node"
+import { redirect } from "@vercel/remix"
 import { redirectBack } from "../network/redirect-back"
 
 export function redirectWithNoDefer(request: Request) {

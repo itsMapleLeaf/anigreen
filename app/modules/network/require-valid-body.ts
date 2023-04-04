@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node"
+import { json } from "@vercel/remix"
 import type { z, ZodTypeDef } from "zod"
 
 export async function requireValidBody<Output>(

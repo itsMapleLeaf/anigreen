@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/node"
+import { redirect } from "@vercel/remix"
 import { $path } from "remix-routes"
 
 export function redirectBack(

@@ -1,5 +1,5 @@
-import type { ActionFunction } from "@remix-run/node"
-import { redirect } from "@remix-run/node"
+import type { ActionFunction } from "@vercel/remix"
+import { redirect } from "@vercel/remix"
 import { raise } from "~/modules/common/errors"
 
 export const loader: ActionFunction = () => {

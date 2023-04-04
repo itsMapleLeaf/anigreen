@@ -1,4 +1,4 @@
-import { createCookie } from "@remix-run/node"
+import { createCookie } from "@vercel/remix"
 import { raise } from "~/modules/common/errors"
 
 const cookie = createCookie("session", {

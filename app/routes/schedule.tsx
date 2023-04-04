@@ -1,7 +1,7 @@
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid"
-import type { DataFunctionArgs, MetaFunction } from "@remix-run/node"
-import { defer } from "@remix-run/node"
 import { Await, Link, useLoaderData, useNavigate } from "@remix-run/react"
+import type { DataFunctionArgs, MetaFunction } from "@vercel/remix"
+import { defer } from "@vercel/remix"
 import { Suspense } from "react"
 import type {
   ScheduleQuery,

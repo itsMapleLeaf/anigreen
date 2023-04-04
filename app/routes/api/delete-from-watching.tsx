@@ -1,6 +1,6 @@
-import type { DataFunctionArgs } from "@remix-run/node"
 import type { FormProps } from "@remix-run/react"
 import { Form } from "@remix-run/react"
+import type { DataFunctionArgs } from "@vercel/remix"
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react"
 import { $path } from "remix-routes"
 import { z } from "zod"

@@ -2,12 +2,6 @@ import { MenuIcon } from "@heroicons/react/outline"
 import { BookmarkIcon, CalendarIcon } from "@heroicons/react/solid"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
-import type {
-  DataFunctionArgs,
-  ErrorBoundaryComponent,
-  MetaFunction,
-} from "@remix-run/node"
-import { defer } from "@remix-run/node"
 import {
   Await,
   Form,
@@ -21,6 +15,12 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react"
+import type {
+  DataFunctionArgs,
+  ErrorBoundaryComponent,
+  MetaFunction,
+} from "@vercel/remix"
+import { defer } from "@vercel/remix"
 import clsx from "clsx"
 import type { ReactNode } from "react"
 import { Suspense, useEffect, useState } from "react"
