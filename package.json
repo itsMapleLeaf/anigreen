@@ -15,10 +15,8 @@
     "build": "remix build",
     "start": "cross-env NODE_ENV=production remix-serve build",
     "test": "echo todo lol",
-    "lint": "eslint --ext js,ts,tsx .",
-    "lint-fix": "pnpm lint -- --fix",
-    "format": "prettier --write .",
-    "typecheck": "pnpm run graphql && remix-routes && tsc -b",
+    "lint": "pnpm run graphql && remix-routes && eslint --ext js,ts,tsx . && tsc -b",
+    "format": "prettier --write . && eslint --ext js,ts,tsx . --fix",
     "graphql": "graphql-codegen --config graphql.config.json"
   },
   "dependencies": {
