@@ -161,7 +161,7 @@ function Document({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="theme-color" content="#4ade80" />
+        <meta name="theme-color" content="#34D399" />
         <Meta />
         <Links />
       </head>
