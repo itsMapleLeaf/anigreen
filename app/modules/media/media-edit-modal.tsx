@@ -67,7 +67,7 @@ export function MediaEditModal({
     },
   ] as const
 
-  const statusItemClass = (item: typeof statusItems[number]) =>
+  const statusItemClass = (item: (typeof statusItems)[number]) =>
     cx(
       status === item.status ? activeClearButtonClass : clearButtonClass,
       cx`peer-focus-visible:ring-2 ring-emerald-500 cursor-pointer`,
@@ -281,7 +281,7 @@ function NumberInput({
   onChange?: (value: number) => void
 }) {
   const [value, setValue] = useState(
-    defaultValue != undefined ? String(defaultValue) : undefined,
+    defaultValue == undefined ? undefined : String(defaultValue),
   )
 
   const handleChange = (value: string) => {

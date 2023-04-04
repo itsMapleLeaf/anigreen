@@ -60,7 +60,7 @@ export async function action({ request }: DataFunctionArgs) {
     accessToken: session.accessToken,
     variables: {
       ...variables,
-      score: variables.score != undefined ? variables.score * 10 : undefined,
+      score: variables.score == undefined ? undefined : variables.score * 10,
     },
   })
 

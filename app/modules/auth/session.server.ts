@@ -38,7 +38,7 @@ export async function createAnilistSession(authCallbackUrl: string) {
     )
   }
 
-  const json = await response.json()
+  const json = (await response.json()) as { access_token: string }
 
   return cookie.serialize({
     accessToken: json.access_token,
@@ -48,7 +48,9 @@ export async function createAnilistSession(authCallbackUrl: string) {
 export async function getSession(
   request: Request,
 ): Promise<Session | undefined> {
-  const session = await cookie.parse(request.headers.get("cookie"))
+  const session = (await cookie.parse(
+    request.headers.get("cookie"),
+  )) as Session | null
   return session ?? undefined
 }
 

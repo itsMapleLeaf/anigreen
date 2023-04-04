@@ -8,7 +8,10 @@ import type {
   ScheduleQueryVariables,
 } from "~/generated/anilist-graphql"
 import { resolvePageInfo, resolvePageParam } from "~/modules/anilist/paging"
-import { anilistRequest } from "~/modules/anilist/request.server"
+import {
+  AnilistRequestError,
+  anilistRequest,
+} from "~/modules/anilist/request.server"
 import { getSession } from "~/modules/auth/session.server"
 import { startOfDayZoned } from "~/modules/dates/start-of-day-zoned"
 import { getTimezone } from "~/modules/dates/timezone-cookie.server"
@@ -50,58 +53,70 @@ async function loadSchedule({
   page: number
   timezone: string
 }): Promise<ScheduleData> {
-  const data = await anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
-    query: /* GraphQL */ `
-      query Schedule($startDate: Int!, $page: Int!) {
-        Page(page: $page, perPage: 50) {
-          pageInfo {
-            currentPage
-            hasNextPage
-          }
-          airingSchedules(airingAt_greater: $startDate, sort: TIME) {
-            id
-            episode
-            airingAt
-            media {
-              ...media
-              mediaListEntry {
-                ...mediaListEntry
+  try {
+    const data = await anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
+      query: /* GraphQL */ `
+        query Schedule($startDate: Int!, $page: Int!) {
+          Page(page: $page, perPage: 50) {
+            pageInfo {
+              currentPage
+              hasNextPage
+            }
+            airingSchedules(airingAt_greater: $startDate, sort: TIME) {
+              id
+              episode
+              airingAt
+              media {
+                ...media
+                mediaListEntry {
+                  ...mediaListEntry
+                }
               }
             }
           }
         }
-      }
-      ${mediaFragment}
-      ${mediaListEntryFragment}
-    `,
-    variables: {
-      page,
-      startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
-    },
-    accessToken,
-  })
+        ${mediaFragment}
+        ${mediaListEntryFragment}
+      `,
+      variables: {
+        page,
+        startDate: startOfDayZoned(new Date(), timezone).getTime() / 1000,
+      },
+      accessToken,
+    })
 
-  const items: ScheduleItem[] = (data.Page?.airingSchedules ?? []).flatMap(
-    (schedule) => {
-      if (!schedule?.media) return []
-      if (schedule.media.isAdult) return []
-      if (schedule.media.countryOfOrigin === "CN") return []
-      return {
-        id: schedule.id,
-        episode: schedule.episode,
-        airingDayMs: startOfDayZoned(
-          schedule.airingAt * 1000,
-          timezone,
-        ).getTime(),
-        media: extractMediaData(schedule.media, schedule.media?.mediaListEntry),
-      }
-    },
-  )
+    const items: ScheduleItem[] = (data.Page?.airingSchedules ?? []).flatMap(
+      (schedule) => {
+        if (!schedule?.media) return []
+        if (schedule.media.isAdult) return []
+        if (schedule.media.countryOfOrigin === "CN") return []
+        return {
+          id: schedule.id,
+          episode: schedule.episode,
+          airingDayMs: startOfDayZoned(
+            schedule.airingAt * 1000,
+            timezone,
+          ).getTime(),
+          media: extractMediaData(
+            schedule.media,
+            schedule.media?.mediaListEntry,
+          ),
+        }
+      },
+    )
 
-  return {
-    ...resolvePageInfo(data.Page?.pageInfo ?? {}),
-    items,
-    timezone,
+    return {
+      ...resolvePageInfo(data.Page?.pageInfo ?? {}),
+      items,
+      timezone,
+    }
+  } catch (error) {
+    if (error instanceof AnilistRequestError && error.response.status === 401) {
+      console.warn("bad access token")
+      // the access token is bad, try loading again without it
+      return await loadSchedule({ page, timezone })
+    }
+    throw error
   }
 }
 
@@ -176,7 +191,7 @@ function Pagination({ schedule }: { schedule: ScheduleData }) {
 
   return (
     <div className="flex items-center justify-center gap-4">
-      {schedule.previousPage != undefined ? (
+      {schedule.previousPage == undefined ? undefined : (
         <Link
           to={`?page=${schedule.previousPage}`}
           className={clearButtonClass}
@@ -188,8 +203,8 @@ function Pagination({ schedule }: { schedule: ScheduleData }) {
           </KeyboardKey>
           Previous Page
         </Link>
-      ) : undefined}
-      {schedule.nextPage != undefined ? (
+      )}
+      {schedule.nextPage == undefined ? undefined : (
         <Link
           to={`?page=${schedule.nextPage}`}
           className={clearButtonClass}
@@ -201,7 +216,7 @@ function Pagination({ schedule }: { schedule: ScheduleData }) {
           </KeyboardKey>
           Next Page
         </Link>
-      ) : undefined}
+      )}
     </div>
   )
 }

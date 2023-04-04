@@ -10,7 +10,4 @@ module.exports = {
     "**/.cache/**",
     "**/*.out.*",
   ],
-  parserOptions: {
-    project: require.resolve("./tsconfig.json"),
-  },
 }

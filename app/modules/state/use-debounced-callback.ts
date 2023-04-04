@@ -2,6 +2,7 @@ import { debounce } from "lodash-es"
 import { useEffect, useMemo, useRef } from "react"
 import { raise } from "../common/errors"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useDebouncedCallback<F extends (...args: any[]) => void>(
   callback: F,
 ) {

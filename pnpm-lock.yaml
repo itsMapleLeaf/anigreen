@@ -5,8 +5,8 @@ dependencies:
     specifier: ^1.0.6
     version: 1.0.6(react@18.2.0)
   '@itsmapleleaf/configs':
-    specifier: ^1.1.7
-    version: 1.1.7(eslint@8.37.0)(typescript@5.0.3)
+    specifier: ^2.0.0
+    version: 2.0.0(eslint@8.37.0)(typescript@5.0.3)
   '@radix-ui/react-collapsible':
     specifier: ^1.0.2
     version: 1.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -2644,8 +2644,8 @@ packages:
   /@humanwhocodes/object-schema@1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
 
-  /@itsmapleleaf/configs@1.1.7(eslint@8.37.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-j4rOD8xYLueVgxNA4SYstI+o4F0pswK5zIx5uqLtAjWsUeQZbjohU3EPpkgra7UwKDC9ecrrC6lj1MOYVZevjA==}
+  /@itsmapleleaf/configs@2.0.0(eslint@8.37.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-F8MxXmoQROZytf2pom6amL/yaK9fMs/fXNpkeduJ+f8bEbzVBZk8dIrowYJ8PAK9lQq3NyOY/tcfveHS69Lyfg==}
     hasBin: true
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.57.1(@typescript-eslint/parser@5.57.1)(eslint@8.37.0)(typescript@5.0.3)
@@ -6176,7 +6176,7 @@ packages:
       '@types/glob': 7.2.0
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.11
+      fast-glob: 3.2.12
       glob: 7.2.3
       ignore: 5.2.4
       merge2: 1.4.1

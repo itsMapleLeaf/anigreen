@@ -43,35 +43,45 @@ export async function anilistRequest<
     }
   }
 
-  const json = await response.json()
-  if (json.errors) {
+  const json = (await response.json()) as
+    | { data: Result }
+    | { errors: Array<{ message: string }> }
+
+  if ("errors" in json) {
     console.warn(
       "errors:",
       inspect(json.errors, { depth: Number.POSITIVE_INFINITY }),
     )
-    raiseRequestError(
-      query,
-      variables,
-      response,
-      json.errors[0]?.message || response.statusText || "Unknown error",
-    )
+    throw AnilistRequestError.fromResponse(response, json, query, variables)
   }
 
   return json.data
 }
 
-function raiseRequestError(
-  query: string,
-  variables: unknown,
-  response: Response,
-  message: string,
-): never {
-  console.warn("query:", query)
-  console.warn(
-    "variables:",
-    inspect(variables, { depth: Number.POSITIVE_INFINITY }),
-  )
-  throw new Error(
-    `Anilist request failed (status ${response.status}): ${message}`,
-  )
+export class AnilistRequestError extends Error {
+  private constructor(
+    message: string,
+    public response: Response,
+    public query: string,
+    public variables: unknown,
+  ) {
+    super(message)
+  }
+
+  static fromResponse(
+    response: Response,
+    json: { errors: Array<{ message: string }> },
+    query: string,
+    variables: unknown,
+  ): AnilistRequestError {
+    const message =
+      json.errors[0]?.message || response.statusText || "Unknown error"
+
+    return new AnilistRequestError(
+      `Anilist request failed (status ${response.status}): ${message}`,
+      response,
+      query,
+      variables,
+    )
+  }
 }

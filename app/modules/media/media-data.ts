@@ -109,6 +109,6 @@ export function extractMediaData(
       score: mediaListEntry.score,
     },
     popularity: media.popularity,
-    countryOfOrigin: media.countryOfOrigin,
+    countryOfOrigin: media.countryOfOrigin as string | undefined,
   }
 }

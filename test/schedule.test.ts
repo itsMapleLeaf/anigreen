@@ -55,7 +55,7 @@ describe("schedule", () => {
         )
         .filter(Boolean)
 
-      for (const title of titles!) {
+      for (const title of titles || []) {
         await expect(page.locator(`text=${title}`).first()).toBeVisible()
       }
     }

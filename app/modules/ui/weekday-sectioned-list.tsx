@@ -56,14 +56,14 @@ export function WeekdaySectionedList<T>({
     <>
       {[...listsByDay.keys()]
         .sort((a, b) => a - b)
-        .map((day) => ({ day, items: listsByDay.get(day)! }))
+        .map((day) => ({ day, items: listsByDay.get(day) }))
         .map(({ day, items }) => (
           <GridSection
             key={day}
             title={<DateTime date={day} weekday="long" />}
             subtitle={<DateTime date={day} dateStyle="long" />}
           >
-            {items.map((item) => (
+            {items?.map((item) => (
               <div key={getItemKey(item)}>{renderItem(item)}</div>
             ))}
           </GridSection>

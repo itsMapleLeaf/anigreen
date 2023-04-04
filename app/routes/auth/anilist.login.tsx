@@ -11,5 +11,7 @@ export const loader: ActionFunction = () => {
       raise("ANILIST_REDIRECT_URI not defined"),
     response_type: "code",
   })
-  return redirect(`https://anilist.co/api/v2/oauth/authorize?${params}`)
+  return redirect(
+    `https://anilist.co/api/v2/oauth/authorize?${params.toString()}`,
+  )
 }

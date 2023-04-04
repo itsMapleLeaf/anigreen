@@ -40,7 +40,7 @@ export function useWindowEvent<EventType extends keyof WindowEventMap>(
   options?: boolean | AddEventListenerOptions,
 ) {
   useEvent(
-    typeof window !== "undefined" ? window : undefined,
+    typeof window === "undefined" ? undefined : window,
     type,
     listener,
     options,

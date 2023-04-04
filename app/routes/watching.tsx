@@ -27,8 +27,11 @@ import { WeekdaySectionedList } from "~/modules/ui/weekday-sectioned-list"
 
 export const meta: MetaFunction = () => getAppMeta("Watching")
 
-async function loadWatchingItems(accessToken: string): Promise<AnilistMedia[]> {
+async function loadWatchingItems(
+  accessToken: string,
+): Promise<AnilistMedia[] | undefined> {
   const user = await loadViewerUser(accessToken)
+  if (!user) return
 
   const data = await anilistRequest<WatchingQuery, WatchingQueryVariables>({
     query: /* GraphQL */ `

@@ -51,11 +51,17 @@ import tailwind from "./tailwind.out.css"
 
 export const meta: MetaFunction = () => getAppMeta()
 
-export async function loader({ request }: DataFunctionArgs) {
-  const session = await getSession(request)
+export function loader({ request }: DataFunctionArgs) {
+  async function getUser() {
+    const session = await getSession(request)
+    if (!session) return null
+
+    const user = await loadViewerUser(session.accessToken)
+    return user || null
+  }
+
   return defer({
-    // eslint-disable-next-line unicorn/no-null
-    user: Promise.resolve(session ? loadViewerUser(session.accessToken) : null),
+    user: getUser(),
   })
 }
 

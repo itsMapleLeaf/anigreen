@@ -11,11 +11,11 @@ import type { AnilistMedia } from "./media-data"
 export function MediaCardControls({ media }: { media: AnilistMedia }) {
   const auth = useAuthContext()
 
-  const state = !auth.loggedIn
-    ? ({ status: "loggedOut" } as const)
-    : media.watchListEntry
-    ? ({ status: "onList", watchListInfo: media.watchListEntry } as const)
-    : ({ status: "notOnList" } as const)
+  const state = auth.loggedIn
+    ? media.watchListEntry
+      ? ({ status: "onList", watchListInfo: media.watchListEntry } as const)
+      : ({ status: "notOnList" } as const)
+    : ({ status: "loggedOut" } as const)
 
   return (
     <div className="bg-slate-800 grid grid-flow-col auto-cols-fr">
