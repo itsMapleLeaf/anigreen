@@ -14,6 +14,8 @@ import logo from "./assets/logo-32x.png"
 import { getAppMeta } from "./meta"
 import tailwind from "./tailwind.css"
 
+export const config = { runtime: "edge" }
+
 export const meta: V2_MetaFunction = () => getAppMeta()
 
 export const links: LinksFunction = () => [
