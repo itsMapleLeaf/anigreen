@@ -1,8 +1,9 @@
 import { createCookie } from "@vercel/remix"
+import { env } from "~/env"
 import { raise } from "~/modules/common/errors"
 
 const cookie = createCookie("session", {
-  secrets: [process.env.COOKIE_SECRET ?? raise("COOKIE_SECRET not set")],
+  secrets: [env.COOKIE_SECRET],
   httpOnly: true,
   maxAge: 60 * 60 * 24 * 365,
   sameSite: "lax",
@@ -25,9 +26,9 @@ export async function createAnilistSession(authCallbackUrl: string) {
     },
     body: JSON.stringify({
       grant_type: "authorization_code",
-      client_id: process.env.ANILIST_CLIENT_ID,
-      client_secret: process.env.ANILIST_CLIENT_SECRET,
-      redirect_uri: process.env.ANILIST_REDIRECT_URI,
+      client_id: env.ANILIST_CLIENT_ID,
+      client_secret: env.ANILIST_CLIENT_SECRET,
+      redirect_uri: env.ANILIST_REDIRECT_URI,
       code,
     }),
   })
