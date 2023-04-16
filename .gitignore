@@ -7,3 +7,5 @@ build
 artifacts
 .local
 /api
+
+.vercel
