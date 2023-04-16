@@ -1,12 +1,9 @@
-/* eslint-disable unicorn/prefer-module */
-/**
- * @type {import('@remix-run/dev').AppConfig}
- */
+/** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
-  serverDependenciesToBundle: ["lodash-es"],
-  devServerPort: 8002,
   future: {
-    unstable_tailwind: true,
-    unstable_cssSideEffectImports: true,
+    v2_errorBoundary: true,
+    v2_meta: true,
+    v2_normalizeFormMethod: true,
+    v2_routeConvention: true,
   },
 }

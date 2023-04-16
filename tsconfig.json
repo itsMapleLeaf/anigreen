@@ -1,21 +1,22 @@
 {
-  "extends": "@itsmapleleaf/configs/tsconfig.base",
+  "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
     "jsx": "react-jsx",
-    "checkJs": false,
+    "moduleResolution": "node",
     "resolveJsonModule": true,
+    "target": "ES2019",
+    "strict": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
-    }
-  },
-  "exclude": ["**/node_modules/**", "**/build/**", "**/.cache/**"],
-  "include": [
-    "remix.env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.cjs",
-    ".eslintrc.cjs"
-  ]
+    },
+
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true
+  }
 }
