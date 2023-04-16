@@ -4664,14 +4664,21 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']>;
 };
 
-export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
+export type ViewerButtonViewerFragment = { __typename?: 'User', name: string, siteUrl?: string | undefined, bannerImage?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined };
+
+export type ViewerOldQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ViewerQuery = { __typename?: 'Query', Viewer?: { __typename?: 'User', id: number, name: string, bannerImage?: string | undefined, siteUrl?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined } | undefined };
+export type ViewerOldQuery = { __typename?: 'Query', Viewer?: { __typename?: 'User', id: number, name: string, bannerImage?: string | undefined, siteUrl?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined } | undefined };
 
 export type MediaFragment = { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, isAdult?: boolean | undefined, popularity?: number | undefined, countryOfOrigin?: any | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined };
 
 export type MediaListEntryFragment = { __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined };
+
+export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ViewerQuery = { __typename?: 'Query', Viewer?: { __typename?: 'User', id: number, name: string, siteUrl?: string | undefined, bannerImage?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined } | undefined };
 
 export type DeleteFromWatchingMutationVariables = Exact<{
   mediaListId: Scalars['Int'];
@@ -4719,3 +4726,5 @@ export type WatchingQueryVariables = Exact<{
 
 
 export type WatchingQuery = { __typename?: 'Query', MediaListCollection?: { __typename?: 'MediaListCollection', lists?: Array<{ __typename?: 'MediaListGroup', entries?: Array<{ __typename?: 'MediaList', id: number, status?: MediaListStatus | undefined, progress?: number | undefined, score?: number | undefined, media?: { __typename?: 'Media', id: number, siteUrl?: string | undefined, format?: MediaFormat | undefined, bannerImage?: string | undefined, episodes?: number | undefined, isAdult?: boolean | undefined, popularity?: number | undefined, countryOfOrigin?: any | undefined, title?: { __typename?: 'MediaTitle', native?: string | undefined, romaji?: string | undefined, english?: string | undefined, userPreferred?: string | undefined } | undefined, coverImage?: { __typename?: 'MediaCoverImage', medium?: string | undefined, large?: string | undefined, extraLarge?: string | undefined, color?: string | undefined } | undefined, externalLinks?: Array<{ __typename?: 'MediaExternalLink', id: number, url?: string | undefined, site: string } | undefined> | undefined, nextAiringEpisode?: { __typename?: 'AiringSchedule', episode: number, airingAt: number } | undefined } | undefined } | undefined> | undefined } | undefined> | undefined } | undefined };
+
+export type ViewerFragment = { __typename?: 'User', id: number, name: string, siteUrl?: string | undefined, bannerImage?: string | undefined, avatar?: { __typename?: 'UserAvatar', medium?: string | undefined } | undefined };

@@ -1,6 +1,6 @@
 import type {
-  ViewerQuery,
-  ViewerQueryVariables,
+  ViewerOldQuery,
+  ViewerOldQueryVariables,
 } from "~/generated/anilist-graphql"
 import { AnilistRequestError, anilistRequest } from "./request.server"
 
@@ -16,9 +16,9 @@ export async function loadViewerUser(
   accessToken: string,
 ): Promise<AnilistUser | null> {
   try {
-    const data = await anilistRequest<ViewerQuery, ViewerQueryVariables>({
+    const data = await anilistRequest<ViewerOldQuery, ViewerOldQueryVariables>({
       query: /* GraphQL */ `
-        query Viewer {
+        query ViewerOld {
           Viewer {
             id
             name

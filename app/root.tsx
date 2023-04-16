@@ -5,7 +5,6 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import {
   Await,
-  Form,
   Link,
   Links,
   LiveReload,
@@ -25,13 +24,12 @@ import type {
 import { defer } from "@vercel/remix"
 import clsx from "clsx"
 import type { ReactNode } from "react"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { $path } from "remix-routes"
 import { AuthProvider } from "~/modules/auth/auth-context"
 import { useWindowEvent } from "~/modules/dom/use-event"
 import type { ActiveLinkProps } from "~/modules/navigation/active-link"
 import { ActiveLink } from "~/modules/navigation/active-link"
-import { Button } from "~/modules/ui/button"
 import {
   activeClearButtonClass,
   clearButtonClass,
@@ -39,17 +37,20 @@ import {
   solidButtonClass,
 } from "~/modules/ui/button-style"
 import { LoadingIcon } from "~/modules/ui/loading-icon"
-import { Menu } from "~/modules/ui/menu"
+import { anilistRequest } from "./anilist"
 import logo from "./assets/logo-32x.png"
-import type { AnilistUser } from "./modules/anilist/user"
-import { loadViewerUser } from "./modules/anilist/user"
-import { getSession } from "./modules/auth/session.server"
+import { ViewerButton } from "./components/viewer-button"
+import {
+  type ViewerQuery,
+  type ViewerQueryVariables,
+} from "./generated/anilist-graphql"
 import { getAppMeta } from "./modules/meta"
 import { ActionScrollRestoration } from "./modules/remix/action-scroll-restoration"
 import { maxWidthContainerClass } from "./modules/ui/components"
 import { SystemMessage } from "./modules/ui/system-message"
 import { SearchInput } from "./routes/search"
 import tailwind from "./tailwind.css"
+import { ViewerConsumer, ViewerProvider, viewerFragment } from "./viewer"
 
 export const config = { runtime: "edge" }
 
@@ -62,56 +63,67 @@ export const links: LinksFunction = () => [
 ]
 
 export function loader({ request }: DataFunctionArgs) {
-  async function getUser() {
-    const session = await getSession(request)
-    if (!session) return null
-
-    const user = await loadViewerUser(session.accessToken)
-    return user || null
-  }
-
   return defer({
-    user: getUser(),
+    viewer: getViewer(),
   })
+
+  async function getViewer() {
+    const result = await anilistRequest<ViewerQuery, ViewerQueryVariables>(
+      request,
+      {
+        query: /* GraphQL */ `
+          query Viewer {
+            Viewer {
+              ...viewer
+            }
+          }
+          ${viewerFragment}
+        `,
+      },
+    )
+    return ("data" in result && result.data.Viewer) || null
+  }
 }
 
 export default function App() {
-  const { user } = useLoaderData<typeof loader>()
+  const { viewer } = useLoaderData<typeof loader>()
   return (
     <Document>
       <Tooltip.Provider delayDuration={700}>
-        <div className="isolate">
-          <Header
-            authAction={
-              <Suspense
-                fallback={
-                  <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
-                }
-              >
-                <Await resolve={user}>
-                  {(user) =>
-                    user ? <UserMenuButton user={user} /> : <LoginButton />
-                  }
+        <ViewerProvider value={viewer}>
+          <div className="isolate">
+            <Header right={<AuthButton />} />
+            <main className={maxWidthContainerClass}>
+              <div className="my-8">
+                <Await resolve={viewer}>
+                  {(user) => (
+                    <AuthProvider value={{ loggedIn: !!user }}>
+                      <Outlet />
+                    </AuthProvider>
+                  )}
                 </Await>
-              </Suspense>
-            }
-          />
-          <main className={maxWidthContainerClass}>
-            <div className="my-8">
-              <Await resolve={user}>
-                {(user) => (
-                  <AuthProvider value={{ loggedIn: !!user }}>
-                    <Outlet />
-                  </AuthProvider>
-                )}
-              </Await>
-            </div>
-          </main>
-        </div>
+              </div>
+            </main>
+          </div>
+        </ViewerProvider>
       </Tooltip.Provider>
       <NavigationIndicator />
     </Document>
   )
+}
+
+function AuthButton() {
+  return (
+    <ViewerConsumer fallback={<AuthButtonFallback />}>
+      {(viewer) =>
+        viewer ? <ViewerButton viewer={viewer} /> : <LoginButton />
+      }
+    </ViewerConsumer>
+  )
+}
+
+function AuthButtonFallback() {
+  return <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
 }
 
 function NavigationIndicator() {
@@ -178,7 +190,7 @@ function Document({ children }: { children: React.ReactNode }) {
   )
 }
 
-function Header({ authAction }: { authAction?: ReactNode }) {
+function Header({ right }: { right?: ReactNode }) {
   const [collapsibleOpen, setCollapsibleOpen] = useState(true)
   return (
     <HeaderPanel>
@@ -210,7 +222,7 @@ function Header({ authAction }: { authAction?: ReactNode }) {
               <div className="hidden sm:flex gap-2 mx-6">
                 <MainNavigationItems />
               </div>
-              <div className="ml-auto">{authAction}</div>
+              <div className="ml-auto">{right}</div>
             </div>
 
             <Collapsible.Content asChild>
@@ -295,62 +307,5 @@ function LoginButton() {
     >
       log in with AniList
     </a>
-  )
-}
-
-function UserMenuButton({ user }: { user: AnilistUser }) {
-  return (
-    <Menu
-      side="bottom"
-      align="end"
-      trigger={
-        <Button className="transition opacity-75 hover:opacity-100 focus:opacity-100">
-          <img
-            src={user.avatarUrl}
-            alt={`Logged in as ${user.name}`}
-            // display block adds random bottom space for some reason
-            className="w-8 h-8 rounded-full inline"
-          />
-        </Button>
-      }
-      items={
-        <>
-          <Menu.Item>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={user.profileUrl}
-              className="relative px-3 py-2 text-white leading-none bg-slate-900 focus:outline-none focus-visible:text-emerald-400 transition-colors"
-            >
-              <div
-                style={{
-                  backgroundImage: user.bannerUrl
-                    ? `url(${user.bannerUrl})`
-                    : undefined,
-                }}
-                className="bg-cover bg-center absolute inset-0 bg-gradient-to-r from-blue-400 to-emerald-400 opacity-40"
-              />
-              <p className="text-sm relative opacity-90">hi, {user.name}!</p>
-              <p className="text-xs relative opacity-90">
-                View AniList profile
-              </p>
-            </a>
-          </Menu.Item>
-          <Menu.Separator />
-          <Form
-            action={$path("/auth/logout")}
-            method="post"
-            replace
-            className="contents"
-          >
-            <Menu.Item>
-              <button type="submit" className={Menu.itemClass}>
-                Log out
-              </button>
-            </Menu.Item>
-          </Form>
-        </>
-      }
-    />
   )
 }
