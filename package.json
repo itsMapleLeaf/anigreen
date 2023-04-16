@@ -13,6 +13,8 @@
     "format:prettier": "prettier --write ."
   },
   "dependencies": {
+    "@fontsource/fira-sans": "^4.5.10",
+    "@fontsource/fira-sans-condensed": "^4.5.10",
     "@remix-run/node": "^1.15.0",
     "@remix-run/react": "^1.15.0",
     "@vercel/remix": "^1.15.0",
@@ -33,6 +35,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.7",
+    "tailwindcss": "^3.3.1",
     "typescript": "^5.0.4"
   },
   "engines": {
