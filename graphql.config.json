@@ -9,7 +9,6 @@
       "plugins": ["typescript", "typescript-operations"],
       "config": {
         "declarationKind": "type",
-        "maybeValue": "T | undefined",
         "useTypeImports": true
       }
     }
