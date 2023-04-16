@@ -4,7 +4,13 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
-    "typecheck": "tsc -b"
+    "lint": "run-s --continue-on-error lint:*",
+    "lint:tsc": "tsc -b",
+    "lint:eslint": "eslint --ext js,ts,tsx .",
+    "lint:prettier": "tsc -b",
+    "format": "run-s --continue-on-error format:*",
+    "format:eslint": "eslint --ext js,ts,tsx . --fix",
+    "format:prettier": "prettier --write ."
   },
   "dependencies": {
     "@remix-run/node": "^1.15.0",
@@ -15,12 +21,18 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@itsmapleleaf/configs": "^2.0.0",
     "@remix-run/dev": "^1.15.0",
     "@remix-run/eslint-config": "^1.15.0",
     "@remix-run/serve": "^1.15.0",
+    "@types/eslint": "^8.37.0",
+    "@types/node": "^18.15.11",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
     "eslint": "^8.38.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.7",
+    "prettier-plugin-tailwindcss": "^0.2.7",
     "typescript": "^5.0.4"
   },
   "engines": {
