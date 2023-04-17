@@ -23,7 +23,7 @@ export default function ViewerButton(props: {
       </Button>
       <Popover
         placement="bottom end"
-        className="animate-from-opacity-0 animate-from-scale-95 data-[entering]:animate-in data-[exiting]:animate-out"
+        className="origin-top-right animate-from-opacity-0 animate-from-scale-95 data-[entering]:animate-in data-[exiting]:animate-out"
       >
         <Dialog className="flex min-w-[12rem] flex-col rounded bg-white text-slate-900 shadow-md shadow-black/25 focus:outline-none focus-visible:ring-0 data-[focus-visible]:ring-2">
           <div className="relative bg-black">
