@@ -23,6 +23,13 @@ export function Footer() {
       • not affiliated with{" "}
       <ExternalLink href="https://anilist.co" className="link">
         AniList
+      </ExternalLink>{" "}
+      •{" "}
+      <ExternalLink
+        href="https://www.pixiv.net/en/artworks/104730528"
+        className="link"
+      >
+        art source
       </ExternalLink>
     </footer>
   )

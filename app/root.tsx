@@ -23,6 +23,7 @@ import { LogIn } from "lucide-react"
 import { Suspense, type ReactNode } from "react"
 import { anilistRequest } from "~/anilist"
 import { type ViewerQuery, type ViewerQueryVariables } from "~/anilist-graphql"
+import background from "./assets/background.webp"
 import logo from "./assets/logo-32x.png"
 import { ErrorMessage } from "./components/error-message"
 import { Footer } from "./components/footer"
@@ -64,7 +65,7 @@ export function loader({ request }: LoaderArgs) {
 
 function Document(props: { headerContent?: ReactNode; children: ReactNode }) {
   return (
-    <html lang="en" className="bg-slate-900 text-slate-50">
+    <html lang="en" className="bg-black text-slate-50">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -73,6 +74,11 @@ function Document(props: { headerContent?: ReactNode; children: ReactNode }) {
         <Links />
       </head>
       <body>
+        <img
+          src={background}
+          alt=""
+          className="absolute inset-0 select-none object-cover object-top s-full [-webkit-mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0))]"
+        />
         <div className="flex min-h-screen flex-col gap-8 pb-6">
           <Header>{props.headerContent}</Header>
           <div className="container flex-1">{props.children}</div>
