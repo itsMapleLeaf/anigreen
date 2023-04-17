@@ -1,36 +1,14 @@
-import { Heart } from "lucide-react"
-import { ExternalLink } from "~/components/external-link"
+import { Link } from "@remix-run/react"
+import { Info } from "lucide-react"
+import { route } from "routes-gen"
 
 export function Footer() {
   return (
     <footer className="container text-sm opacity-75">
-      made with{" "}
-      <Heart
-        aria-label="love"
-        className="inline align-text-top text-emerald-300 s-4"
-      />{" "}
-      by{" "}
-      <ExternalLink href="https://mapleleaf.dev" className="link">
-        MapleLeaf
-      </ExternalLink>{" "}
-      •{" "}
-      <ExternalLink
-        href="https://github.com/itsMapleLeaf/anigreen"
-        className="link"
-      >
-        view source
-      </ExternalLink>{" "}
-      • not affiliated with{" "}
-      <ExternalLink href="https://anilist.co" className="link">
-        AniList
-      </ExternalLink>{" "}
-      •{" "}
-      <ExternalLink
-        href="https://www.pixiv.net/en/artworks/104730528"
-        className="link"
-      >
-        art source
-      </ExternalLink>
+      <Link to={route("/about")} className="link">
+        <Info aria-hidden className="inline align-middle s-4" />{" "}
+        <span className="link-underline">About</span>
+      </Link>
     </footer>
   )
 }

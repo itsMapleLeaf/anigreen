@@ -19,6 +19,9 @@
   }
 
   .link {
+    @apply transition-colors hover:text-emerald-400;
+  }
+  .link-underline {
     @apply underline underline-offset-2 hover:no-underline;
   }
 }
