@@ -7,6 +7,7 @@ module.exports = {
     "**/dist/**",
     "**/.cache/**",
     "**/public/**",
+    "app/anilist-graphql.ts",
   ],
   overrides: [
     {
