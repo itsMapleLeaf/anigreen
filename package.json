@@ -9,7 +9,7 @@
     "lint": "pnpm run graphql && run-s --continue-on-error lint:*",
     "lint:tsc": "tsc -b",
     "lint:eslint": "eslint --ext js,ts,tsx .",
-    "lint:prettier": "tsc -b",
+    "lint:prettier": "prettier --check .",
     "format": "pnpm run graphql && run-s --continue-on-error format:*",
     "format:eslint": "eslint --ext js,ts,tsx . --fix",
     "format:prettier": "prettier --write .",
