@@ -8,6 +8,7 @@ module.exports = {
     "**/.cache/**",
     "**/public/**",
     "app/anilist-graphql.ts",
+    "app/routes.d.ts",
   ],
   overrides: [
     {

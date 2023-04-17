@@ -11,3 +11,4 @@ build
 dist
 .vscode
 app/anilist-graphql.ts
+app/routes.d.ts

@@ -7,14 +7,16 @@
     "dev:server": "nodemon -w build dev-server.mjs",
     "dev:remix": "remix dev",
     "dev:graphql": "pnpm run graphql --watch",
-    "lint": "pnpm run graphql && run-s --continue-on-error lint:*",
+    "dev:routes": "pnpm run routes --watch",
+    "lint": "pnpm run graphql && pnpm run routes && run-s --continue-on-error lint:*",
     "lint:tsc": "tsc -b",
     "lint:eslint": "eslint --ext js,ts,tsx .",
     "lint:prettier": "prettier --check .",
-    "format": "pnpm run graphql && run-s --continue-on-error format:*",
+    "format": "pnpm run graphql && pnpm run routes && run-s --continue-on-error format:*",
     "format:eslint": "eslint --ext js,ts,tsx . --fix",
     "format:prettier": "prettier --write .",
-    "graphql": "graphql-codegen --config graphql.config.json"
+    "graphql": "graphql-codegen --config graphql.config.json",
+    "routes": "routes-gen -d @routes-gen/remix"
   },
   "dependencies": {
     "@fontsource/fira-sans": "^4.5.10",
@@ -28,6 +30,7 @@
     "react": "^18.2.0",
     "react-aria-components": "1.0.0-alpha.3",
     "react-dom": "^18.2.0",
+    "routes-gen": "^0.6.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -39,6 +42,7 @@
     "@remix-run/eslint-config": "^1.15.0",
     "@remix-run/express": "^1.15.0",
     "@remix-run/serve": "^1.15.0",
+    "@routes-gen/remix": "^0.3.6",
     "@types/eslint": "^8.37.0",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.35",
