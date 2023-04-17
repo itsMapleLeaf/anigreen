@@ -1,4 +1,4 @@
-import { redirect, type LoaderArgs } from "@remix-run/node"
+import { redirect, type LoaderArgs } from "@vercel/remix"
 import { createAnilistSession } from "../anilist-session"
 
 export async function loader({ request }: LoaderArgs) {

@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/node"
+import { redirect } from "@vercel/remix"
 import { destroyAnilistSession } from "../anilist-session"
 
 export async function loader() {

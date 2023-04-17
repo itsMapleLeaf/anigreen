@@ -2,11 +2,6 @@ import firaSansCondensed300 from "@fontsource/fira-sans-condensed/latin-300.css"
 import firaSans400 from "@fontsource/fira-sans/latin-400.css"
 import firaSans500 from "@fontsource/fira-sans/latin-500.css"
 import {
-  type LinksFunction,
-  type LoaderArgs,
-  type V2_MetaFunction,
-} from "@remix-run/node"
-import {
   Await,
   Links,
   LiveReload,
@@ -18,7 +13,12 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react"
-import { defer } from "@vercel/remix"
+import {
+  defer,
+  type LinksFunction,
+  type LoaderArgs,
+  type V2_MetaFunction,
+} from "@vercel/remix"
 import { LogIn } from "lucide-react"
 import { Suspense, type ReactNode } from "react"
 import { anilistRequest } from "~/anilist"
