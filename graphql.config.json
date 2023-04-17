@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/graphql-config@4.1.0/config-schema.json",
+  "exclude": ["server/**/*.mts"],
+  "overwrite": true,
+  "schema": "https://graphql.anilist.co/",
+  "documents": "app/**/*.{ts,tsx}",
+  "generates": {
+    "app/anilist-graphql.ts": {
+      "plugins": ["typescript", "typescript-operations"],
+      "config": {
+        "declarationKind": "type",
+        "useTypeImports": true,
+        "avoidOptionals": true,
+        "enumsAsTypes": true,
+        "skipTypename": true
+      }
+    }
+  }
+}

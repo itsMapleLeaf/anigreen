@@ -8,4 +8,12 @@ module.exports = {
     "**/.cache/**",
     "**/public/**",
   ],
+  overrides: [
+    {
+      files: ["app/routes/**"],
+      rules: {
+        "unicorn/filename-case": "off",
+      },
+    },
+  ],
 }

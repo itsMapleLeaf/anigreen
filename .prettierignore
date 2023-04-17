@@ -3,3 +3,4 @@ build
 dist
 .cache
 pnpm-lock.yaml
+app/anilist-graphql.ts

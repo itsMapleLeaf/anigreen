@@ -1,5 +1,4 @@
 node_modules
-
 .cache
 .env
 .vercel
@@ -11,3 +10,4 @@ node_modules
 build
 dist
 .vscode
+app/anilist-graphql.ts

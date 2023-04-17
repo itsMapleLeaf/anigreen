@@ -3,14 +3,17 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev",
-    "lint": "run-s --continue-on-error lint:*",
+    "dev": "run-p --race dev:*",
+    "dev:remix": "remix dev",
+    "dev:graphql": "pnpm run graphql --watch",
+    "lint": "pnpm run graphql && run-s --continue-on-error lint:*",
     "lint:tsc": "tsc -b",
     "lint:eslint": "eslint --ext js,ts,tsx .",
     "lint:prettier": "tsc -b",
-    "format": "run-s --continue-on-error format:*",
+    "format": "pnpm run graphql && run-s --continue-on-error format:*",
     "format:eslint": "eslint --ext js,ts,tsx . --fix",
-    "format:prettier": "prettier --write ."
+    "format:prettier": "prettier --write .",
+    "graphql": "graphql-codegen --config graphql.config.json"
   },
   "dependencies": {
     "@fontsource/fira-sans": "^4.5.10",
@@ -18,11 +21,15 @@
     "@remix-run/node": "^1.15.0",
     "@remix-run/react": "^1.15.0",
     "@vercel/remix": "^1.15.0",
+    "date-fns": "^2.29.3",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "3.3.0",
+    "@graphql-codegen/typescript": "3.0.3",
+    "@graphql-codegen/typescript-operations": "3.0.3",
     "@itsmapleleaf/configs": "^2.0.0",
     "@remix-run/dev": "^1.15.0",
     "@remix-run/eslint-config": "^1.15.0",
