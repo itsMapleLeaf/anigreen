@@ -19,6 +19,7 @@ import {
   useRouteError,
 } from "@remix-run/react"
 import { defer } from "@vercel/remix"
+import { LogIn } from "lucide-react"
 import { Suspense, type ReactNode } from "react"
 import { anilistRequest } from "~/anilist"
 import { type ViewerQuery, type ViewerQueryVariables } from "~/anilist-graphql"
@@ -26,6 +27,7 @@ import logo from "./assets/logo-32x.png"
 import { ErrorMessage } from "./components/error-message"
 import { Footer } from "./components/footer"
 import { Header } from "./components/header"
+import ViewerButton from "./components/viewer-button"
 import { toError } from "./helpers/errors"
 import { getAppMeta } from "./meta"
 import tailwind from "./tailwind.css"
@@ -154,17 +156,27 @@ function ErrorBoundaryContent() {
 function AuthButton() {
   const { viewerQuery } = useLoaderData<typeof loader>()
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense>
       <Await
         resolve={viewerQuery}
-        errorElement={<a href="/auth/anilist">Sign in with AniList</a>}
+        errorElement={
+          <a
+            href="/auth/anilist"
+            className="flex items-center gap-2 rounded bg-black/25 px-3 py-2 ring-emerald-400 transition hover:text-emerald-300 focus:outline-none focus-visible:ring-2"
+          >
+            <LogIn aria-hidden className="s-5" /> Sign in with AniList
+          </a>
+        }
       >
         {({ Viewer }) => (
-          <div>
-            <img src={Viewer?.avatar?.medium ?? ""} alt="" />
-            <h1>{Viewer?.name}</h1>
-            <a href="/auth/logout">Sign out</a>
-          </div>
+          <ViewerButton
+            name={Viewer?.name || "anonymous"}
+            avatarUrl={Viewer?.avatar?.medium}
+            siteUrl={
+              Viewer?.siteUrl || `https://anilist.co/user/${Viewer?.name ?? ""}`
+            }
+            bannerUrl={Viewer?.bannerImage}
+          />
         )}
       </Await>
     </Suspense>
