@@ -1,7 +1,11 @@
 import firaSansCondensed300 from "@fontsource/fira-sans-condensed/latin-300.css"
 import firaSans400 from "@fontsource/fira-sans/latin-400.css"
 import firaSans500 from "@fontsource/fira-sans/latin-500.css"
-import { type LinksFunction, type V2_MetaFunction } from "@remix-run/node"
+import {
+  type LinksFunction,
+  type LoaderArgs,
+  type V2_MetaFunction,
+} from "@remix-run/node"
 import {
   Await,
   Links,
@@ -38,21 +42,25 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },
 ]
 
-export function loader() {
-  const viewerQuery = anilistRequest<ViewerQuery, ViewerQueryVariables>({
-    query: /* GraphQL */ `
-      query Viewer {
-        Viewer {
-          name
-          avatar {
-            medium
+export function loader({ request }: LoaderArgs) {
+  const viewerQuery = anilistRequest<ViewerQuery, ViewerQueryVariables>(
+    request,
+    {
+      query: /* GraphQL */ `
+        query Viewer {
+          Viewer {
+            name
+            avatar {
+              medium
+            }
+            siteUrl
+            bannerImage
           }
-          siteUrl
-          bannerImage
         }
-      }
-    `,
-  })
+      `,
+    },
+  )
+
   return defer({ viewerQuery })
 }
 
@@ -155,6 +163,7 @@ function AuthButton() {
           <div>
             <img src={Viewer?.avatar?.medium ?? ""} alt="" />
             <h1>{Viewer?.name}</h1>
+            <a href="/auth/logout">Sign out</a>
           </div>
         )}
       </Await>

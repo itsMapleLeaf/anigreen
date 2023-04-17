@@ -1,5 +1,5 @@
 import { Await, useLoaderData } from "@remix-run/react"
-import { defer } from "@vercel/remix"
+import { type LoaderArgs, defer } from "@vercel/remix"
 import { Suspense } from "react"
 import { anilistRequest } from "../anilist"
 import {
@@ -16,11 +16,11 @@ function getCurrentSeason(): MediaSeason {
   return "WINTER"
 }
 
-export function loader() {
+export function loader({ request }: LoaderArgs) {
   const season = getCurrentSeason()
   const year = new Date().getFullYear()
 
-  const data = anilistRequest<ScheduleQuery, ScheduleQueryVariables>({
+  const data = anilistRequest<ScheduleQuery, ScheduleQueryVariables>(request, {
     query: /* GraphQL */ `
       query Schedule($season: MediaSeason, $year: Int) {
         Page(page: 1, perPage: 10) {

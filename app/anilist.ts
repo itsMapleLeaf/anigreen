@@ -1,16 +1,26 @@
+import { getAnilistSession } from "./anilist-session"
+
 type RequestOptions<Variables> = Variables extends { [key: string]: never }
   ? { query: string }
   : { query: string; variables: Variables }
 
 export async function anilistRequest<ResponseData, Variables>(
+  request: Request,
   options: RequestOptions<Variables>,
 ) {
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  })
+
+  const session = await getAnilistSession(request)
+  if (session) {
+    headers.set("Authorization", `Bearer ${session.accessToken}`)
+  }
+
   const response = await fetch("https://graphql.anilist.co", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    },
+    headers,
     body: JSON.stringify(options),
   })
 

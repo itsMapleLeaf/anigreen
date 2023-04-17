@@ -24,7 +24,8 @@
     "date-fns": "^2.29.3",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "3.3.0",
