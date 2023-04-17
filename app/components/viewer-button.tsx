@@ -1,19 +1,25 @@
 import { LogOut, User } from "lucide-react"
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components"
-import { type Nullish } from "~/helpers/types"
+import { type ViewerFragment } from "~/anilist-graphql"
 import { ExternalLink } from "./external-link"
 
-export default function ViewerButton(props: {
-  name: string
-  avatarUrl: Nullish<string>
-  siteUrl: string
-  bannerUrl: Nullish<string>
-}) {
+export const viewerFragment = /* GraphQL */ `
+  fragment viewer on User {
+    name
+    avatar {
+      medium
+    }
+    siteUrl
+    bannerImage
+  }
+`
+
+export function ViewerButton({ viewer }: { viewer: ViewerFragment }) {
   return (
     <DialogTrigger>
       <Button className="overflow-clip rounded-full transition focus-visible:ring-0 data-[pressed]:scale-95 data-[hovered]:opacity-75 data-[focus-visible]:ring-2">
-        {props.avatarUrl ? (
-          <img src={props.avatarUrl} alt="" className="rounded-full s-8" />
+        {viewer.avatar?.medium ? (
+          <img src={viewer.avatar.medium} alt="" className="rounded-full s-8" />
         ) : (
           <div className="flex items-center justify-center rounded-full bg-black/50 s-8">
             <User aria-hidden className="s-5" />
@@ -27,18 +33,18 @@ export default function ViewerButton(props: {
       >
         <Dialog className="flex min-w-[12rem] flex-col rounded bg-white text-slate-900 shadow-md shadow-black/25 focus:outline-none focus-visible:ring-0 data-[focus-visible]:ring-2">
           <div className="relative bg-black">
-            {props.bannerUrl && (
+            {!!viewer.bannerImage && (
               <img
-                src={props.bannerUrl}
+                src={viewer.bannerImage}
                 alt=""
                 className="absolute inset-0 select-none rounded-t object-cover brightness-[0.3] s-full"
               />
             )}
             <ExternalLink
-              href={props.siteUrl}
+              href={viewer.siteUrl || `https://anilist.co/user/${viewer.name}`}
               className="relative block rounded-t px-3 py-2 leading-none text-white ring-inset transition hover:text-emerald-300"
             >
-              <span>hi, {props.name}!</span>
+              <span>hi, {viewer.name}!</span>
               <br />
               <span className="text-sm">View AniList profile</span>
             </ExternalLink>

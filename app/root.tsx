@@ -27,7 +27,7 @@ import logo from "./assets/logo-32x.png"
 import { ErrorMessage } from "./components/error-message"
 import { Footer } from "./components/footer"
 import { Header } from "./components/header"
-import ViewerButton from "./components/viewer-button"
+import { ViewerButton, viewerFragment } from "./components/viewer-button"
 import { toError } from "./helpers/errors"
 import { getAppMeta } from "./meta"
 import tailwind from "./tailwind.css"
@@ -51,14 +51,10 @@ export function loader({ request }: LoaderArgs) {
       query: /* GraphQL */ `
         query Viewer {
           Viewer {
-            name
-            avatar {
-              medium
-            }
-            siteUrl
-            bannerImage
+            ...viewer
           }
         }
+        ${viewerFragment}
       `,
     },
   )
@@ -157,28 +153,22 @@ function AuthButton() {
   const { viewerQuery } = useLoaderData<typeof loader>()
   return (
     <Suspense>
-      <Await
-        resolve={viewerQuery}
-        errorElement={
-          <a
-            href="/auth/anilist"
-            className="flex items-center gap-2 rounded bg-black/25 px-3 py-2 ring-emerald-400 transition hover:text-emerald-300 focus:outline-none focus-visible:ring-2"
-          >
-            <LogIn aria-hidden className="s-5" /> Sign in with AniList
-          </a>
+      <Await resolve={viewerQuery} errorElement={<SignInButton />}>
+        {({ Viewer }) =>
+          Viewer ? <ViewerButton viewer={Viewer} /> : <SignInButton />
         }
-      >
-        {({ Viewer }) => (
-          <ViewerButton
-            name={Viewer?.name || "anonymous"}
-            avatarUrl={Viewer?.avatar?.medium}
-            siteUrl={
-              Viewer?.siteUrl || `https://anilist.co/user/${Viewer?.name ?? ""}`
-            }
-            bannerUrl={Viewer?.bannerImage}
-          />
-        )}
       </Await>
     </Suspense>
+  )
+}
+
+function SignInButton() {
+  return (
+    <a
+      href="/auth/anilist"
+      className="flex items-center gap-2 rounded bg-black/25 px-3 py-2 ring-emerald-400 transition hover:text-emerald-300 focus:outline-none focus-visible:ring-2"
+    >
+      <LogIn aria-hidden className="s-5" /> Sign in with AniList
+    </a>
   )
 }
